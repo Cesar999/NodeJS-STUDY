@@ -1,0 +1,80 @@
+.Card {
+    border: 2px solid black;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    flex-direction: column;
+    width: 30vw;
+    margin: 30px auto;
+    text-transform: capitalize;
+    animation: fade-in 0.6s forwards;
+
+    .title, .moves, .types, .ability, .image-wrapper {
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: white;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        li {
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 50%;
+        }
+    }
+
+    .name {
+        margin-bottom: 10px;
+    }
+
+    .image-wrapper {
+        padding: 30px;
+        background-color: red;
+    }
+
+    .image {
+        width: 20vw;
+        border: 2px solid black;
+    }
+
+    .ability {
+        border: 2px solid black;
+        height: max-content;
+        font-weight: bold;
+    }
+
+    .types {
+        border: 2px solid black;
+        font-weight: bold;
+    }
+
+    .moves {
+        border: 2px solid black;
+        padding: 10px;
+        li {
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid black;
+        }
+        
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+

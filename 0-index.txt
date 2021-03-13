@@ -1,0 +1,1517 @@
+What is NodeJS?
+    Node.js is a server side scripting based on Google’s V8 JavaScript engine. It is used to build scalable programs especially web applications that are computationally simple but are frequently accessed.   
+
+    The basic philosophy of node.js is:-
+    Non-Blocking I/O – Every I/O call must take a callback which will be executed as soon as response arrives whether it is to retrieve information from disk, network or another process
+    Built-in support for most important protocols – HTTP, DNS, TLS
+    Low-Level – Do not remove functionality present at POSIX layer.For example, support half-closed TCP connections
+    Stream Everything – never force buffering of data.
+
+    You can use Node.js in developing I/O intensive web applications like video streaming sites. You can also use it for developing: Real-time web applications, Network applications, General-purpose applications and Distributed systems.
+
+    Node.js is a single-threaded but highly scalable system that utilizes JavaScript as its scripting language. It uses asynchronous, event-driven I/O instead of separate processes or threads. It is able to achieve high output via single-threaded event loop and non-blocking I/O.
+
+    Has a package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+
+Node Buil-In Modules?
+    Consider modules to be the same as JavaScript libraries.
+    A set of functions you want to include in your application.
+    Node.js has a set of built-in modules which you can use without any further installation.
+    To include a module, use the require() function with the name of the module.
+
+    PATH Module: The Path module provides a way of working with directories and file paths.
+        The path.resolve() method is used to resolve a sequence of path-segments to an absolute path. It works by processing the sequence of paths from right to left, prepending each of the paths until the absolute path is created. The resulting path is normalized and trailing slashes are removed as required.
+        The path.join() method is used to join a number of path-segments using the platform-specific delimiter to form a single path. The final path is normalized after the joining takes place. The path-segments are specified using comma-separated values.
+        __dirname is an environment variable that tells you the absolute path of the directory containing the currently executing file. The __dirname in a node script returns the path of the folder where the current JavaScript file resides. __filename and __dirname are used to get the filename and directory name of the currently executing file.
+
+    HTTP Module: The HTTP module provides a way of making Node.js transfer data over HTTP (Hyper Text Transfer Protocol).
+    var http = require('http');
+    http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.write('Hello World!');
+    res.end();
+    }).listen(8080);
+
+    File System Module: The Node.js file system module allows you to work with the file system on your computer.
+    var fs = require('fs');
+    Read, Create, Update, Delete and Rename files
+    The fs.readFile() method is used to read files on your computer.
+    The fs.appendFile() method appends the specified content at the end of the specified file:
+    The fs.writeFile() method replaces the specified file and content:
+    The fs.unlink() method deletes the specified file:
+    The fs.rename() method renames the specified file:
+    fs.chmod: Asynchronously changes the permissions of a file. No arguments other than a possible exception are given to the completion callback.
+
+    readFile()	Reads the content of a file
+    readFileSync()	Same as readFile(), but synchronous instead of asynchronous
+
+    fs.appendFile('mynewfile1.txt', 'Hello content!', function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+    });
+
+    URL Module: The URL module splits up a web address into readable parts.
+    var url = require('url');
+    Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties:
+    var url = require('url');
+    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';
+    var q = url.parse(adr, true);
+    console.log(q.host); //returns 'localhost:8080'
+    console.log(q.pathname); //returns '/default.htm'
+    console.log(q.search); //returns '?year=2017&month=february'
+    var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
+
+    Events Module: Node.js has a built-in module, called "Events", where you can create-, fire-, and listen for- your own events. To include the built-in Events module use the require() method. In addition, all event properties and methods are an instance of an EventEmitter object. To be able to access these properties and methods, create an EventEmitter object.
+    var events = require('events');
+    var eventEmitter = new events.EventEmitter();
+    You can assign event handlers to your own events with the EventEmitter object.
+    To fire an event, use the emit() method.var events = require('events');
+    var eventEmitter = new events.EventEmitter();
+    //Create an event handler:
+    var myEventHandler = function () {
+    console.log('I hear a scream!');
+    }
+    //Assign the event handler to an event:
+    eventEmitter.on('scream', myEventHandler);
+    //Fire the 'scream' event:
+    eventEmitter.emit('scream')
+
+    React muiltiple listener to a single emit. Advantage against callbacks.
+
+    Net module provides an asynchronous network API for creating stream-based TCP or IPC servers (net.createServer()) and clients (net.createConnection())
+    const net = require('net')
+    net.createConnection()#
+    A factory function, which creates a new net.Socket, immediately initiates connection with socket.connect(), then returns the net.Socket that starts the connection.
+    When the connection is established, a 'connect' event will be emitted on the returned socket. The last parameter connectListener, if supplied, will be added as a listener for the 'connect' event once.
+    server.listen()[src]#
+    Start a server listening for connections. A net.Server can be a TCP or an IPC server depending on what it listens to.
+    Creates a new TCP or IPC server.
+    net.createServer([options][, connectionlistener])
+    If allowHalfOpen is set to true, when the other end of the socket sends a FIN packet, the server will only send a FIN packet back when socket.end() is explicitly called, until then the connection is half-closed (non-readable but still writable).
+
+    Cluster Module: A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
+    const cluster = require('cluster');
+
+    OS Module provides a number of operating system-related utility methods. 
+    const os = require('os');
+
+What are Globals in Node.js?
+    Three keywords in Node.js constitute as Globals:
+
+    Global – it represents the Global namespace object and acts as a container for all other <global> objects. The Global keyword represents the global namespace object. It acts as a container for all other <global> objects. If we type <console.log(global)>, it’ll print out all of them.
+    An important point to note about the global objects is that not all of them are in the global scope, some of them fall in the module scope. So, it’s wise to declare them without using the var keyword or add them to Global object.
+    Variables declared using the var keyword become local to the module whereas those declared without it get subscribed to the global object.
+
+    process
+    require()
+    __filename
+    __dirname
+    module
+    exports
+    setTimeout()
+    clearTimeout()
+    setInterval()
+    clearInterval()
+
+    Process – The process object is a global that provides information about, and control over, the current Node.js process. It is one of the global objects but can turn a synchronous function into an async callback. It can be accessed from anywhere in the code and it primarily gives back information about the application or the environment.
+    It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
+
+    Buffer – it is a class in Node.js to handle binary data. 
+    The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
+    We can convert JavaScript string objects into Buffers. But it requires mentioning the encoding type explicitly.
+    <ascii> – Specifies 7-bit ASCII data.
+    <utf8> – Represents multibyte encoded Unicode char set.
+    <utf16le> – Indicates 2 or 4 bytes, little endian encoded Unicode chars.
+    <base64> – Used for Base64 string encoding.
+    <hex> – Encodes each byte as two hexadecimal chars.
+
+module.exports and require?
+    The module.exports or exports is a special object which is included in every JS file in the Node.js application by default. module is a variable that represents current module and exports is an object that will be exposed as a module. So, whatever you assign to module.exports or exports, will be exposed as a module.
+    As mentioned above, exports is an object. So it exposes whatever you assigned to it as a module.
+
+        module.exports = 'Hello world'
+        var msg = require('./Messages.js');
+        console.log(msg);
+
+    exports is an object. So, you can attach properties or methods to it.
+
+        module.exports.SimpleMessage = 'Hello world';
+        var msg = require('./Messages.js');
+        console.log(msg.SimpleMessage);
+
+NPM?
+    NPM is a package manager for Node.js packages, or modules
+    A package in Node.js contains all the files you need for a module.
+    Modules are JavaScript libraries you can include in your project.
+
+    npm init
+    -y: omit initialization
+    package.json: dependencies and scripts
+    node_modules: In local mode it installs the package and its dependencies in a node_modules folder in your parent working directory. This location is owned by the current user.
+    npm install 'packagename'
+    npm install 'packagename'@'version'
+    -g: globals
+    -D: dev dependencies
+
+Webpack?
+    webpack is a module bundler
+    The ultimate goal of webpack is to unify all these different sources and module types in a way that's possible to import everything in your JavaScript code, and finally produce a shippable output
+
+    Dependency Graph: Any time one file depends on another, webpack treats this as a dependency. This allows webpack to take non-code assets, such as images or web fonts, and also provide them as dependencies for your application. When webpack processes your application, it starts from a list of modules defined on the command line or in its configuration file. Starting from these entry points, webpack recursively builds a dependency graph that includes every module your application needs, then bundles all of those modules into a small number of bundles - often, just one - to be loaded by the browser.
+
+    Entry point: An entry point indicates which module webpack should use to begin building out its internal dependency graph. webpack will figure out which other modules and libraries that entry point depends on (directly and indirectly). By default its value is ./src/index.js, but you can specify a different (or multiple entry points) by setting an entry property in the webpack configuration.
+
+    Output: The output property tells webpack where to emit the bundles it creates and how to name these files. It defaults to ./dist/main.js for the main output file and to the ./dist folder for any other generated file. You can configure this part of the process by specifying an output field in your configuration.
+
+    Loaders: Out of the box, webpack only understands JavaScript and JSON files. Loaders allow webpack to process other types of files and convert them into valid modules that can be consumed by your application and added to the dependency graph.
+    loaders have two properties in your webpack configuration:
+        The test property identifies which file or files should be transformed.
+        The use property indicates which loader should be used to do the transforming.
+
+    Plugins: While loaders are used to transform certain types of modules, plugins can be leveraged to perform a wider range of tasks like bundle optimization, asset management and injection of environment variables.
+
+    Mode: By setting the mode parameter to either development, production or none, you can enable webpack's built-in optimizations that correspond to each environment. The default value is production. 
+    Production mode:As introduced earlier, webpack has two modes of operation: development and production.
+        In development mode:
+            webpack takes all the JavaScript code we write, almost pristine, and loads it in the browser.
+            No minification is applied. This makes reloading the application in development faster.
+        In production mode instead, webpack applies a number of optimizations:
+            minification with TerserWebpackPlugin to reduce the bundle size
+            scope hoisting with ModuleConcatenationPlugin
+
+    Code splitting is one of the most compelling features of webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel. It can be used to achieve smaller bundles and control resource load prioritization which, if used correctly, can have a major impact on load time.
+    There are three general approaches to code splitting available:
+        Entry Points: Manually split code using entry configuration.
+        Prevent Duplication: Use Entry dependencies or SplitChunksPlugin to dedupe and split chunks.
+        Dynamic Imports: Split code via inline function calls within modules.
+
+    Code splitting with dynamic imports: You can load conditionally some JavaScript module in response to a user interaction, like a click, or a mouse move. Or, you can load relevant portions of your code on response to route changes.
+    Code splitting might be used:
+        at the module level
+        at the route level
+
+    webpack: At its simplest, webpack is a module bundler for your JavaScript. webpack.config.js
+
+    webpack-cli: webpack CLI provides a flexible set of commands for developers to increase speed when setting up a custom webpack project. 
+        serve|s [entries...] [options] - Run the webpack dev server.
+        watch|w [entries...] [options] - Run webpack and watch for files changes.
+        help|h [command] [option] - Display help for commands and options.
+
+    webpack-dev-server: provides live reloading. This should be used for development only.
+        devServer: This set of options is picked up by webpack-dev-server and can be used to change its behavior in various ways. 
+
+    html-loader: Exports HTML as string. HTML is minimized when the compiler demand. it allows our images to be referenced relative to the Markdown file itself.
+
+    html-webpack-plugin: The HtmlWebpackPlugin simplifies creation of HTML files to serve your webpack bundles. This is especially useful for webpack bundles that include a hash in the filename which changes every compilation. 
+        it loads our HTML files
+        it injects the bundle(s) in the same file
+
+    css-loader: The css-loader interprets @import and url() like import/require() and will resolve them. for loading CSS files with import.
+
+    style-loader: Inject CSS into the DOM. for loading the stylesheet in the DOM.
+
+    node-sass: Node-sass is a library that provides binding for Node.js to LibSass, the C version of the popular stylesheet preprocessor, Sass. It allows you to natively compile .scss files to css at incredible speed and automatically via a connect middleware.
+
+    sass-loader: Loads a Sass/SCSS file and compiles it to CSS. for loading SASS files with import.
+
+    babel-core: Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. the actual engine / Babel compiler core. babel.config.json
+
+    babel-loader: This package allows transpiling JavaScript files using Babel and webpack. for webpack.
+
+    babel-preset-env: @babel/preset-env is a smart preset that allows you to use the latest JavaScript without needing to micromanage which syntax transforms (and optionally, browser polyfills) are needed by your target environment(s). for compiling modern Javascript down to ES5. In Babel, a preset is a set of plugins used to support particular language features. 
+
+    babel-preset-react: Babel preset for all React plugins.
+
+    babel/plugin-proposal-class-properties: This plugin transforms static class properties as well as properties declared with the property initializer syntax.
+
+    regenerator-runtime: Standalone runtime for Regenerator-compiled generator and async functions.
+
+    copy-webpack-plugin: Copies individual files or entire directories, which already exist, to the build directory.
+
+    typescript: TypeScript is an open-source language which builds on JavaScript, one of the world’s most used tools, by adding static type definitions. Types provide a way to describe the shape of an object, providing better documentation, and allowing TypeScript to validate that your code is working correctly. Writing types can be optional in TypeScript, because type inference allows you to get a lot of power without writing additional code. tsconfig.json
+
+    ts-loader: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. In this guide we will learn how to integrate TypeScript with webpack.
+
+    webpack-dev-middleware: An express-style development middleware for use with webpack bundles and allows for serving of the files emitted from webpack. This should be used for development only.
+
+    types/node This package contains type definitions for Node.js (http://nodejs.org/).
+
+    types/express: This package contains type definitions for Express (http://expressjs.com).
+
+    Express/Webpack?
+        const webpack = require('webpack');
+        const config = require('../webpack.config.js');
+        const compiler = webpack(config);
+        const webpackDevMiddleware = require('webpack-dev-middleware');
+        const webpackHotMiddleware = require('webpack-hot-middleware');
+        app.use(webpackDevMiddleware(compiler, {
+            publicPath: config.output.publicPath,
+            })
+        );
+        app.use(webpackHotMiddleware(compiler))
+
+Typescript?
+    By definition, “TypeScript is JavaScript for application-scale development.” TypeScript is a strongly typed, object oriented, compiled language. It was designed by Anders Hejlsberg (designer of C#) at Microsoft. TypeScript is both a language and a set of tools. TypeScript is a typed superset of JavaScript compiled to JavaScript. In other words, TypeScript is JavaScript plus some additional features.
+
+    Advantages of TypesScript:
+        Types are one of the best forms of documentation.
+        Types enhance Code readability and mantanability.
+        Code scalability with “Interface oriented development”.
+        Catches errors at compile time.
+        Types help to avoids bugs.
+        Typescript mixes the old with the new in the best way possibility. You can use newer features from ES6, ES7, and beyond, and the compiler will convert them to ES5.
+
+    Dynamic/Weakly (JS) ---> Static/Strong(TS):
+        Static: You have to define the Type when declaring a Variable. (Self documented,Compile Time Errors).
+        Dynamic: You dont have to define the Type when declaring a Variable.
+
+        Strong: This implies that variables are necessarily bound to a particular data type. (Error on Compile time).
+        Weakly: Variables are not of a specific data type. (Implicit Type Coercion)
+
+    Basic Types: For programs to be useful, we need to be able to work with some of the simplest units of data: numbers, strings, structures, boolean values, and the like. In TypeScript, we support much the same types as you would expect in JavaScript, with a convenient enumeration type thrown in to help things along.
+
+    Boolean: The most basic datatype is the simple true/false value, which JavaScript and TypeScript call a boolean value.
+
+    Number: As in JavaScript, all numbers in TypeScript are floating point values. These floating point numbers get the type number. In addition to hexadecimal and decimal literals, TypeScript also supports binary and octal literals introduced in ECMAScript 2015.
+
+    String: Another fundamental part of creating programs in JavaScript for webpages and servers alike is working with textual data. As in other languages, we use the type string to refer to these textual datatypes. Just like JavaScript, TypeScript also uses double quotes (") or single quotes (') to surround string data.
+
+    Array: TypeScript, like JavaScript, allows you to work with arrays of values. Array types can be written in one of two ways. In the first, you use the type of the elements followed by [] to denote an array of that element type.
+
+    Tuple: Tuple types allow you to express an array with a fixed number of elements whose types are known, but need not be the same. 
+
+    Union: Union types are a powerful way to express a value that can be one of the several types. Two or more data types are combined using the pipe symbol (|) to denote a Union Type. In other words, a union type is written as a sequence of types separated by vertical bars.
+
+    Enum: A helpful addition to the standard set of datatypes from JavaScript is the enum. As in languages like C#, an enum is a way of giving more friendly names to sets of numeric values.
+
+    Any: We may need to describe the type of variables that we do not know when we are writing an application. These values may come from dynamic content, e.g. from the user or a 3rd party library.
+
+    Void: void is a little like the opposite of any: the absence of having any type at all. You may commonly see this as the return type of functions that do not return a value.
+
+    Null and Undefined: In TypeScript, both undefined and null actually have their own types named undefined and null respectively. Much like void, they’re not extremely useful on their own.
+
+    Never #: The never type represents the type of values that never occur. For instance, never is the return type for a function expression or an arrow function expression that always throws an exception or one that never returns; Variables also acquire the type never when narrowed by any type guards that can never be true. For example when you throw an error.
+
+    Object: object is a type that represents the non-primitive type, i.e. anything that is not number, string, boolean, symbol, null, or undefined.
+
+    Interface:  An interface defines a standard strcuture that the entities deriving the interface must follow. In other words is like a contract that describe the shape of objects. Interfaces define properties, methods, and events, which are the members of the interface. Interfaces contain only the declaration of the members. It is the responsibility of the deriving class to define the members. Optional properties: Not all properties of an interface may be required. Some exist under certain conditions or may not be there at all. Read only properties: only be modifiable when an object is first created.
+
+        interface SquareConfig {
+            color?: string;
+            width: number;
+        }
+
+    Generics: A major part of software engineering is building components that not only have well-defined and consistent APIs, but are also reusable. Components that are capable of working on the data of today as well as the data of tomorrow will give you the most flexible capabilities for building up large software systems. In languages like C# and Java, one of the main tools in the toolbox for creating reusable components is generics, that is, being able to create a component that can work over a variety of types rather than a single one. This allows users to consume these components and use their own types. We need a way of capturing the type of the argument in such a way that we can also use it to denote what is being returned. Here, we will use a type variable, a special kind of variable that works on types rather than values.
+
+    function identity<T>(arg: T): T {
+        return arg;
+    }
+
+    namespace: A namespace is a way to logically group related code. This is inbuilt into TypeScript unlike in JavaScript where variables declarations go into a global scope and if multiple JavaScript files are used within same project there will be possibility of overwriting or misconstruing the same variables, which will lead to the “global namespace pollution problem” in JavaScript.
+
+URL?
+    A URL (Uniform Resource Locator) is a unique identifier used to locate a resource on the internet. It is also referred to as a web address. 
+
+    A URL usually consists of the following components: 
+    Protocol, domain, path (or pathname), hash and query string.
+
+    Protocol is the technology that will be used to transfer the data, usually http or https.
+    Domain is the the domain name, tealium.com for example.
+    Path relates to the section and page on the site.
+    Query string contains data that is being passed to the page.
+    So if we look at a URL, you can see how it gets broken up:
+    Hash relates to a section within the page.
+
+    http://tealium.com:8080/solutions/?example=test&example2=test2#section3
+
+    Protocol: http://
+    Domain: tealium.com
+    Port: :8080
+    path: /solutions
+    Query: ?example=test&example2=test2
+    Hash: #section3
+
+HTTP Request?
+
+    HyperText Transfer Protocol (HTTP) is the underlying protocol used by the World Wide Web to define how messages are formatted and transmitted and what actions Web servers and browsers should take in response to various commands. It is a request-response protocol in the client-server computing model. Clients and servers communicate by exchanging individual messages. The message sent by the client, typically a Web browser, is the request while the message sent by the server as an answer is the response. The server will provide resources such as HTML files, which is which contain the information for formatting and displaying Web pages.
+
+    A similar abbreviation, HTTPS stands for HyperText Transfer Protocol Secure. Simply put, it is the secure version of HTTP. Communications between the browser and website (client and server) are encrypted by Transport Layer Security. Before entering sensitive information such as credit card details or a password, check that the website is using HTTPS. If it is not, any data entered into the website will be sent in plaintext, making it susceptible to interception.
+
+    HTTP defines a set of request methods to indicate the desired action to be performed for a given resource. Although they can also be nouns, these request methods are sometimes referred to as HTTP verbs.
+        GET: The HTTP GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
+        Request has body	No
+        Successful response has body	Yes
+        Safe	Yes
+        Idempotent	Yes
+        Cacheable	Yes
+        Allowed in HTML forms	Yes
+
+        POST: The HTTP POST method sends data to the server. The type of the body of the request is indicated by the Content-Type header. Non-idempotent.
+        Request has body	Yes
+        Successful response has body	Yes
+        Idempotent	No
+        Cacheable	Only if freshness information is included
+        Allowed in HTML forms	Yes
+
+        DELETE: The HTTP DELETE request method deletes the specified resource.
+        Request has body	May
+        Successful response has body	May
+        Idempotent	Yes
+        Cacheable	No
+        Allowed in HTML forms	No
+
+        PATCH: The HTTP PATCH request method applies partial modifications to a resource.
+        Request has body	Yes
+        Successful response has body	Yes
+        Idempotent	No
+        Cacheable	No
+        Allowed in HTML forms	No
+
+        The HTTP PUT request method creates a new resource or replaces a representation of the target resource with the request payload.
+        Request has body	Yes
+        Successful response has body	No
+        Idempotent	Yes
+        Cacheable	No
+        Allowed in HTML forms	No
+
+        The HTTP OPTIONS method is used to describe the communication options for the target resource. The client can specify a URL for the OPTIONS method, or an asterisk (*) to refer to the entire server. The HTTP OPTIONS method is used to request information about the communication options available for the target resource. The response may include an Allow header indicating allowed HTTP methods on the resource, or various Cross Origin Resource Sharing headers. The HTTP OPTIONS method is both safe and idempotent, as it is intended only for use in querying information about ways to interact with a resource.
+
+        The HTTP TRACE method performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism. 'TRACE' is a HTTP request method used for debugging which echo's back input back to the user.
+
+    An HTTP method is safe if it doesn't alter the state of the server. In other words, a method is safe if it leads to a read-only operation. 
+    An HTTP method is idempotent if an identical request can be made once or several times in a row with the same effect while leaving the server in the same state. In other words, an idempotent method should not have any side-effects (except for keeping statistics).
+    A cacheable response is an HTTP response that can be cached, that is stored to be retrieved and used later, saving a new request to the server. Not all HTTP responses can be cached.
+        
+    The status read-only property of the Response interface contains the status code of the response:        
+        Informational responses (100–199)
+        Successful responses (200–299)
+        Redirects (300–399)
+        Client errors (400–499)
+        Server errors (500–599)
+    Most common status:
+        200 - OK - The request has succeeded.
+        204 - No Content - There is no content to send for this request, but the headers may be useful. 
+        301 - Moved Permanently -nThe URL of the requested resource has been changed permanently. The new URL is given in the response.
+        400 - Bad Request - The server could not understand the request due to invalid syntax.
+        401 - Unauthorized - Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".
+        403 - Forbidden - The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource.
+        404 - Not Found - The server can not find the requested resource. In the browser, this means the URL is not recognized.
+        500 - Internal Server Error - The server has encountered a situation it doesn't know how to handle.
+
+    HTTP headers let the client and the server pass additional information with an HTTP request or response. An HTTP header consists of its case-insensitive name followed by a colon (:), then by its value. Whitespace before the value is ignored.
+        Authorization: Contains the credentials to authenticate a user-agent with a server.
+        Expires: The date/time after which the response is considered stale.
+        Accept: Informs the server about the types of data that can be sent back.
+        Content-Type: Indicates the media type of the resource. (application/json).
+        Cookie: Contains stored HTTP cookies previously sent by the server with the Set-Cookie header.
+        Location: Indicates the URL to redirect a page to.
+        Allow: Lists the set of HTTP request methods supported by a resource.
+        Origin: Indicates where a fetch originates from.
+        Date: Contains the date and time at which the message was originated.
+
+    An HTTP cookie (web cookie, browser cookie) is a small piece of data that a server sends to the user's web browser. The browser may store it and send it back with later requests to the same server. Typically, it's used to tell if two requests came from the same browser — keeping a user logged-in, for example. It remembers stateful information for the stateless HTTP protocol.
+    Cookies are mainly used for three purposes:
+        Session management: Logins, shopping carts, game scores, or anything else the server should remember
+        Personalization: User preferences, themes, and other settings
+        Tracking: Recording and analyzing user behavior
+
+    CORS (Cross-Origin Resource Sharing) is a system, consisting of transmitting HTTP headers, that determines whether browsers block frontend JavaScript code from accessing responses for cross-origin requests.
+    The same-origin security policy forbids cross-origin access to resources. But CORS gives web servers the ability to say they want to opt into allowing cross-origin access to their resources.
+    The same-origin policy is a critical security mechanism that restricts how a document or script loaded from one origin can interact with a resource from another origin. It helps isolate potentially malicious documents, reducing possible attack vectors.
+        Access-Control-Allow-Origin: The Access-Control-Allow-Origin response header indicates whether the response can be shared with requesting code from the given origin. 
+            * (wildcard): For requests without credentials, the literal value "*" can be specified, as a wildcard; the value tells browsers to allow requesting code from any origin to access the resource.
+            <origin>: Specifies an origin. Only a single origin can be specified. If the server supports clients from multiple origins, it must return the origin for the specific client making the request. Web content's origin is defined by the scheme (protocol), host (domain), and port of the URL used to access it. Two objects have the same origin only when the scheme, host, and port all match.
+
+        Access-Control-Allow-Methods: esponse header specifies the method or methods allowed when accessing the resource in response to a preflight request.
+            <method>: Comma-delimited list of the allowed HTTP request methods.
+            * (wildcard): The value "*" only counts as a special wildcard value for requests without credentials (requests without HTTP cookies or HTTP authentication information). In requests with credentials, it is treated as the literal method name "*" without special semantics.
+
+        Access-Control-Allow-Credentials: response header tells browsers whether to expose the response to frontend JavaScript code when the request's credentials mode (Request.credentials) is include. When a request's credentials mode (Request.credentials) is include, browsers will only expose the response to frontend JavaScript code if the Access-Control-Allow-Credentials value is true.Credentials are cookies, authorization headers or TLS client certificates.
+
+        Access-Control-Allow-Headers: esponse header is used in response to a preflight request which includes the Access-Control-Request-Headers to indicate which HTTP headers can be used during the actual request.
+        <header-name>: The name of a supported request header. The header may list any number of headers, separated by commas. (eg. 'Origin, X-Requested-With, Content-Type, Accept, authorization').
+        * (wildcard): The value "*" only counts as a special wildcard value for requests without credentials (requests without HTTP cookies or HTTP authentication information). In requests with credentials, it is treated as the literal header name "*" without special semantics. Note that the Authorization header can't be wildcarded and always needs to be listed explicitly.
+
+Express?
+    Express.js is a Node js web application server framework, which is specifically designed for building single-page, multi-page, and hybrid web applications.
+    Write handlers for requests with different HTTP verbs at different URL paths (routes).
+    Integrate with "view" rendering engines in order to generate responses by inserting data into templates.
+    Set common web application settings like the port to use for connecting, and the location of templates that are used for rendering the response.
+    Add additional request processing "middleware" at any point within the request handling pipeline.
+
+    Server: A Web server will accept a request and execute code and send a response to a client.
+
+    Middleware: Middleware functions are functions that have access to the request object (req), the response object (res), and the next middleware function in the application’s request-response cycle. The next middleware function is commonly denoted by a variable named next. Middleware functions can perform the following tasks:
+        Execute any code.
+        Make changes to the request and the response objects.
+        End the request-response cycle.
+        Call the next middleware function in the stack.
+    If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+    Application-level middleware: Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions, where METHOD is the HTTP method of the request that the middleware function handles (such as GET, PUT, or POST) in lowercase.
+
+    Router-level middleware works in the same way as application-level middleware, except it is bound to an instance of express.Router(). 
+    var router = express.Router()
+
+    Route: Routing refers to how an application’s endpoints (URIs) respond to client requests. You define routing using methods of the Express app object that correspond to HTTP methods; for example, app.get() to handle GET requests and app.post to handle POST requests. These routing methods specify a callback function (sometimes called “handler functions”) called when the application receives a request to the specified route (endpoint) and HTTP method. In other words, the application “listens” for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
+
+How to Start a Express Server?
+    import * as express from 'express'; //require express module
+    const app = express(); //invoke the imported function to create an instance
+    const port =  process.env.PORT || 3002; //declared a variable to hold the port ot listen, mostly using enviromental variables
+
+    app.use(bodyParser.json()); //Apply middlewares to express instance
+    app.use(cookieParser());
+
+    //Declare configuration using a callback function
+    //Setting the headers like Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Credentials
+    app.use((req, res, next) => {
+        const whitelist = [
+            'http://localhost:3000',
+            'http://192.168.99.100:3000'
+        ];
+        const origin = req.headers.origin;
+        if (whitelist.indexOf(origin) > -1) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, authorization');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        next();
+    });
+
+    //use the listen method to asing a port and a callback function
+    app.listen(port, () => info(`App is listening on port ${port}`));
+
+    //req.query returns and object with all the key-value pair queries.
+
+    1//require express module.
+    2//invoke the imported function expression to create an instance.
+    3//Apply middlewares to express instance (use() method). Third-party middleware.
+    4//Declare configuration using a callback function Setting the headers like     Access-Control-Allow-Origin, Access-Control-Allow-Methods. arguments: req, res, next. (next() method at the end).
+    5//declared a variable to hold the port to listen, mostly using enviromental variables (listen() method).
+
+How to implement a Express Route?
+    app.post('/login', loginPost); //Express instance and use the http method for the route, the argumenst are the route '/login' and the callback function to handle that route.
+    app.get('/authenticate', authenticator(), authenticateGet);
+
+    //Express instance and use the http method for the route, the argumenst are the route '/login' and the callback function to handle that route.
+
+    //You could add middlewares as the second argument, first the route and third the callback function to handle the route. receives a function reference and its invoke in the second argument.
+
+    The callback function to handle the routes are composed by the following:
+    two arguments request and response.
+    using request you could access to the data sent using the property body of the reqeuest object.
+        const email = req.body.email;
+        const pass = req.body.password;
+    the callback must use the send method fom the response object in order to send back a response. YOu could use the status method before send to deifne the status code.
+        res.status(200).send({msg: 'Login Succesfully'});
+
+    function loginPost (req, res){
+        try{
+            res.cookie('token', '', {maxAge: Date.now(), httpOnly: true });
+            res.status(200).send({msg: 'Login Succesfully'});
+        } catch(e){
+            error('error on login');
+        }
+    }
+
+How to implement Express Middleware?
+    When creating a middleware you have to return a function reference to be invoke as the second arhument in the respective route. the function has 3 arguments, request, response and next. for example in an authentication middleware if everything goes well you must use response object to send some data or credencial to the route handler and then use the next funcion so the handler funcions runs after the middleware. 
+    res.locals.user = {email: decoded.email, id: decoded.id};
+                next();
+
+    if not you just use the res.send method.
+    res.status(401).send({msg: 'No Authenticated', auth: false});
+
+    const authenticator = () => {
+        return (req, res, next) => {
+        if ('token' in req.cookies) {
+            let token = req.cookies['token'];
+            try{
+                let decoded = jwt.verify(token, 'secret');
+                res.locals.user = {email: decoded.email, id: decoded.id};
+                next();
+            } catch(e){
+                error('error on authentication');
+                res.status(401).send({msg: 'No Authenticated', auth: false});
+            }
+        } else {res.status(401).send({msg: 'No Authenticated', auth: false});}
+        }
+    }
+
+REST API?
+    A RESTful API is an application program interface (API) that uses HTTP requests to GET, PUT, POST and DELETE data.
+    A RESTful API -- also referred to as a RESTful web service -- is based on representational state transfer (REST) technology, an architectural style and approach to communications often used in web services development.
+
+    REST technology is generally preferred to the more robust Simple Object Access Protocol (SOAP) technology because REST leverages less bandwidth, making it more suitable for internet usage. An API for a website is code that allows two software programs to communicate with each another . The API spells out the proper way for a developer to write a program requesting services from an operating system or other application.
+
+    Use of a uniform interface (UI). Resources should be uniquely identifiable through a single URL, and only by using the underlying methods of the network protocol, such as DELETE, PUT and GET with HTTP, should it be possible to manipulate a resource.
+
+    Client-server: Separate the user interface from the data storage. Improves the portability of the user interface and improve the server components scalability.
+
+    Stateless: The requests must contain all necessary information without needing anything from the server. The session state must remain in its entirety in the client.
+
+    Cacheable: The data within the response must be implicitly or explicitly labeled as cacheable or non-cacheable.
+
+    Uniform interface: Identify the resources, manipulate the resources through representations, self-descriptive messages, and hypermedia as the engine of application state.
+
+    Layered system: Compose the architecture in hierarchical layers; each layer cannot see beyond the immediate layer with which they are interacting.
+
+    Code on demand: Functionality can be extended by applets or scripts
+
+Key Points of an API?
+    Endpoints and the need a a uniform interface (UI). Resources should be uniquely identifiable through a single URL, and only by using the underlying methods of the network protocol, such as DELETE, PUT and GET with HTTP, should it be possible to manipulate a resource.
+
+    Comprehensive documentation of the endpoints and how to use the API.
+
+    Auhentication: In order to maintain stateless you could use tokens to authenticate users.
+
+JsonWebToken?
+    JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret.
+
+    Here are some scenarios where JSON Web Tokens are useful:
+
+    Authorization: This is the most common scenario for using JWT. Once the user is logged in, each subsequent request will include the JWT, allowing the user to access routes, services, and resources that are permitted with that token. Single Sign On is a feature that widely uses JWT nowadays, because of its small overhead and its ability to be easily used across different domains.
+
+    Information Exchange: JSON Web Tokens are a good way of securely transmitting information between parties. Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are. Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
+
+    In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
+    Header
+    Payload
+    Signature
+
+    Header
+    The header typically consists of two parts: the type of the token, which is JWT,and the signing algorithm being used, such as HMAC SHA256 or RSA.
+
+    Payload
+    The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+    Signature
+    To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+Packages?
+    jsonwebtoken: Implements the sign and verify for a json web token.
+        import * as jwt from 'jsonwebtoken';
+        const payload = {email: email, id: id};
+        const secret = 'secret';
+        const signOptions = {expiresIn:  "12h"};
+        const token = jwt.sign(payload, secret, signOptions);
+        const decoded = jwt.verify(token, 'secret'); //calls an error if failed
+
+    body-parser: Node.js body parsing middleware. Parse incoming request bodies in a middleware before your handlers, available under the req.body property. You need to use bodyParser() if you want the form data to be available in req.body.
+        var bodyParser = require('body-parser');
+        Returns middleware that only parses json and only looks at requests where the Content-Type header matches the type option. This parser accepts any Unicode encoding of the body and supports automatic inflation of gzip and deflate encodings.
+        A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body).
+        app.use(bodyParser.json());
+
+
+    cookie-parser: Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
+        var cookieParser = require('cookie-parser')
+        app.use(cookieParser());
+        app.get('/', function (req, res) {
+        // Cookies that have not been signed
+        console.log('Cookies: ', req.cookies)
+        })
+
+    morgan: HTTP request logger middleware for node.js
+        var morgan = require('morgan')
+        morgan(format, options): Create a new morgan logger middleware function using the given format and options. The format argument may be a string of a predefined name (see below for the names), a string of a format string, or a function that will produce a log entry.
+        The format function will be called with three arguments tokens, req, and res, where tokens is an object with all defined tokens, req is the HTTP request and res is the HTTP response. The function is expected to return a string that will be the log line, or undefined / null to skip logging.
+        formats:
+        combined -> :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
+        common -> :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]
+        dev -> :method :url :status :response-time ms - :res[content-length]
+        tiny -> :method :url :status :res[content-length] - :response-time ms
+
+    winston: Winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each winston logger can have multiple transports (see: Transports) configured at different levels (see: Logging levels). 
+        The recommended way to use winston is to create your own logger. The simplest way to do this is using winston.createLogger:
+        const logger = winston.createLogger({
+        level: 'info',
+        format: winston.format.json(),
+        defaultMeta: { service: 'user-service' },
+        transports: [
+            //
+            // - Write to all logs with level `info` and below to `combined.log` 
+            // - Write all logs error (and below) to `error.log`.
+            //
+            new winston.transports.File({ filename: 'error.log', level: 'error' }),
+            new winston.transports.File({ filename: 'combined.log' })
+        ]
+        });
+        app.use(morgan('combined', { stream: winston.stream }));
+
+    Bcrypt: A library to help you hash passwords. The bcrypt hashing function allows us to build a password security platform that scales with computation power and always hashes every password with a salt.
+
+        Hashing is the practice of using an algorithm to map data of any size to a fixed length. This is called a hash value (or sometimes hash code or hash sums or even a hash digest if you’re feeling fancy). Whereas encryption is a two-way function, hashing is a one-way function. While it’s technically possible to reverse-hash something, the computing power required makes it unfeasible. Hashing is one-way.
+
+        Salting is a concept that typically pertains to password hashing. Essentially, it’s a unique value that can be added to the end of the password to create a different hash value. This adds a layer of security to the hashing process, specifically against brute force attacks. A brute force attack is where a computer or botnet attempt every possible combination of letters and numbers until the password is found.
+
+        bcrypt.genSalt(saltRounds, function(err, salt) {
+            bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+                // Store hash in your password DB.
+            });
+        });
+
+        bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+        // Store hash in your password DB.
+        });
+
+        // Load hash from your password DB.
+        bcrypt.compare(myPlaintextPassword, hash).then(function(res) {
+            // res == true
+        });
+        bcrypt.compare(someOtherPlaintextPassword, hash).then(function(res) {
+            // res == false
+        });
+
+   axios: Axios is a promise based HTTP client for the browser and Node.js. Axios makes it easy to send asynchronous HTTP requests to REST endpoints and perform CRUD operations for the browser and node.js.
+
+        Using Axios has quite a few advantages over the native Fetch API:
+            supports older browsers (Fetch needs a polyfill)
+            has a way to abort a request
+            has a way to set a response timeout
+            has built-in CSRF protection
+            supports upload progress
+            performs automatic JSON data transformation
+            works in Node.js
+
+        The Axios response object consists of:
+            data - the payload returned from the server
+            status - the HTTP code returned from the server
+            statusText - the HTTP status message returned by the server
+            headers - headers sent by server
+            config - the original request configuration
+            request - the request object
+
+        You can start an HTTP request from the axios object:
+            axios({
+            url: 'https://dog.ceo/api/breeds/list/all',
+            method: 'get',
+            data: {
+                foo: 'bar'
+            }
+            })
+
+        but for convenience, you will generally use
+            axios.get()
+            axios.post()
+            axios.get('https://dog.ceo/api/breeds/list/all')
+            axios.post('https://site.com/', {foo: 'bar'})
+
+        const config = {
+            headers: {
+                authorization: 'authorization',
+            }
+        };
+        axios.post(url_auth_be + '/check-auth',{username: 'Cesar'}, config)
+        .then(function (response) {
+            console.log(response.data, 'response data check auth');
+        })
+        .catch((e) => {
+            console.log('Check auth error');
+            res.send('Unauthorized');
+        });
+
+    node-fetch: A light-weight module that brings window.fetch to Node.js.
+        Stay consistent with window.fetch API.
+        Use native promise, but allow substituting it with [insert your favorite promise library].
+        Use native Node streams for body, on both request and response.
+        Decode content encoding (gzip/deflate) properly, and convert string output (such as res.text() and res.json()) to UTF-8 automatically.
+        explicit errors for troubleshooting.
+
+        const fetch = require('node-fetch');
+
+        const body = { a: 1 };
+        fetch('https://httpbin.org/post', {
+                method: 'post',
+                body:    JSON.stringify(body),
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(res => res.json())
+            .then(json => console.log(json));
+
+    UUID: Simple, fast generation of RFC4122 UUIDS. Universal Unique IDentifierS
+        Version 1 (timestamp):
+        const uuidv1 = require('uuid/v1');
+        uuidv1(); // ⇨ '45745c60-7b1a-11e8-9c9c-2d42b21b1a3e'
+
+        Version 4 (random):
+        const uuidv4 = require('uuid/v4');
+        uuidv4(); // ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
+
+    moment: A lightweight JavaScript date library for parsing, validating, manipulating, and formatting dates.
+        moment().format('MMMM Do YYYY, h:mm:ss a'); // July 10th 2019, 1:36:39 pm
+        moment().format('dddd');                    // Wednesday
+        moment().format("MMM Do YY");               // Jul 10th 19       
+        moment().startOf('day').fromNow();        // 14 hours ago
+        moment().endOf('day').fromNow();          // in 10 hours
+        moment().startOf('hour').fromNow();     
+
+    lodash: Lodash makes JavaScript easier by taking the hassle out of working with arrays, numbers, objects, strings, etc.
+    Lodash’s modular methods are great for:
+        Iterating arrays, objects, & strings
+        Manipulating & testing values
+        Creating composite functions
+        var _ = require('lodash');
+
+        _.flatten([1, [2, [3, [4]], 5]]);
+        // => [1, 2, [3, [4]], 5]
+
+        _.flattenDeep([1, [2, [3, [4]], 5]]);
+        // => [1, 2, 3, 4, 5]
+
+        var object = { 'a': 1, 'b': '2', 'c': 3 };
+        _.omit(object, ['a', 'c']);
+        // => { 'b': '2' }
+
+        var abc = function(a, b, c) {
+        return [a, b, c];
+        };
+        
+        var curried = _.curry(abc);
+        curried(1)(2)(3);
+        // => [1, 2, 3]
+
+How to create a NPM package?
+    First we need Npm account.
+    Login in the console npm login.
+    You need to create a folder with the file package.json.
+    You have to specify certain fields in the package.json.
+    Name, Version, Description, License, Main, Keywords.
+    We have to set the name like @<username>/<packagename> instead of just <packagename>, we create a package under the scope of our username. It’s called a scoped package It allows us to use short names that might already be taken.
+    Create a new repository in github to show how to use the package a describe it.
+    Use npm top publish and the flag to set the access to public.
+    Use npm publish --access=public.
+
+MongoDB?
+    Mongo-DB is a document database which provides high performance, high availability and easy scalability.
+    MongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time
+    MongoDB is a schema-less NoSQL document database. It means you can store JSON documents in it, and the structure of these documents can vary as it is not enforced like SQL databases. This is one of the advantages of using NoSQL as it speeds up application development and reduces the complexity of deployments.
+
+    RDBMS	        MongoDB
+    Table	        Collection
+    Column       	Key
+    Value	        Value
+    Records/Rows	Document/Object
+
+
+MongoDB stores documents in collections.
+The document is the unit of storing data in a MongoDB database.
+document use JSON (JavaScript Object Notation, is a lightweight, thoroughly explorable format used to interchange data between various applications) style for storing data.
+MongoDB documents are composed of field-and-value pairs and have the following structure:
+    {
+        field1: value1,
+        field2: value2,
+        ...
+        fieldN: valueN
+    }
+The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
+    var mydoc = {
+                _id: ObjectId("5099803df3f4948bd2f98391"),
+                name: { first: "Alan", last: "Turing" },
+                birth: new Date('Jun 23, 1912'),
+                contribs: [ "Turing machine", "Turing test", "Turingery" ]
+                }
+
+    BSON is a binary serialization format used to store documents and make remote procedure calls in MongoDB. ObjectId, Timestamps, Date, String.
+
+    Embedded Documents
+    To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
+        {
+        ...
+        name: { first: "Alan", last: "Turing" },
+        contact: { phone: { type: "cell", number: "111-222-3333" } },
+        ...
+        }
+    To specify the field named last in the name field, use the dot notation "name.last".
+    To specify the number in the phone document in the contact field, use the dot notation "contact.phone.number".
+
+MongoDB basic operations?
+    Create DataBase 
+        var MongoClient = require('mongodb').MongoClient;
+        const url =  'mongodb://localhost:27017/Songs';
+        MongoClient.connect(url,(err,client)=>{
+            if(err){
+                return console.log('Unable to connect to MongoDB server');
+            }
+            console.log('Connected to MongoDB server');
+            db = client.db('Songs');
+
+    Create a Collection
+        db.createCollection("customers", function(err, res) {
+        if (err) throw err;
+        console.log("Collection created!");
+        }
+
+    Insert
+        insertOne() method is an object containing the name(s) and value(s) of each field in the document you want to insert.
+        var myobj = { name: "Company Inc", address: "Highway 37" };
+        db.collection("customers").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+        });
+
+    Find 
+        The findOne() method returns the first occurrence in the selection.
+        The first parameter of the findOne() method is a query object. 
+        var query = { address: "Park Lane 38" };
+        db.collection("customers").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+        });
+
+    Delete
+        To delete a record, or document as it is called in MongoDB, we use the deleteOne() method.
+        The first parameter of the deleteOne() method is a query object defining which document to delete.
+        var myquery = { address: 'Mountain 21' };
+        dbo.collection("customers").deleteOne(myquery, function(err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+        });
+
+    Drop Collection
+        You can delete a table, or collection as it is called in MongoDB, by using the drop() method.
+        The drop() method takes a callback function containing the error object and the result parameter which returns true if the collection was dropped successfully, otherwise it returns false.
+
+        db.collection("customers").drop(function(err, delOK) {
+            if (err) throw err;
+            if (delOK) console.log("Collection deleted");
+            db.close();
+        });
+
+Mention what is Objecld composed of?
+    Timestamp
+    Client machine ID
+    Client process ID
+    3 byte incremented counter
+
+    _id is the primary key on elements in a collection; with it, records can be differentiated by default.
+    _id is automatically indexed. Lookups specifying { _id: <someval> } refer to the _id index as their guide.
+    Architecturally, by default the _id field is an ObjectID, one of MongoDB's BSON types. Users can also override _id to something other than an ObjectID, if desired.
+
+Explain what is a replica set?
+    A replica set is a group of mongo instances that host the same data set. In replica set, one node is primary, and another is secondary. From primary to the secondary node all data replicates. Replication provides redundancy and increases data availability. With multiple copies of data on different database servers, replication provides a level of fault tolerance against the loss of a single database server.
+    replication Across multiple servers, the process of synchronizing data is known as replication. It provides redundancy and increase data availability with multiple copies of data on different database server. Replication helps in protecting the database from the loss of a single server.
+
+Explain what are indexes in MongoDB?
+    Indexes are special structures in MongoDB, which stores a small portion of the data set in an easy to traverse form. Ordered by the value of the field specified in the index, the index stores the value of a specific field or set of fields. Typically, Indexes are data structures that can store collection’s data set in a form that is easy to traverse. Queries are efficiently executed with the help of indexes in MongoDB.
+    Indexes help MongoDB find documents that match the query criteria without performing a collection scan. If a query has an appropriate index, MongoDB uses the index and limits the number of documents it examines.
+    Indexes store field values in the order of the value.The order in which the index entries are made support operations, such as equality matches and range-based queries. MongoDB sorts and returns the results by using the sequential order of the indexes
+        Default _id: Each MongoDB collection contains an index on the default _id (Read as underscore id) field. If no value is specified for _id, the language driver or the mongod (read as mongo D) creates a _id field and provides an ObjectId (read as Object ID) value.
+        Single Field: For a single-field index and sort operation, the sort order of the index keys do not matter. MongoDB can traverse the indexes either in the ascending or descending order.
+        Compound Index: For multiple fields, MongoDB supports user-defined indexes, such as compound indexes. The sequential order of fields in a compound index is significant in MongoDB.
+        Multikey Index: To index array data, MongoDB uses multikey indexes. When indexing a field with an array value, MongoDB makes separate index entries for each array element.
+    Unique Indexes
+        The unique property of MongoDB indexes ensures that duplicate values for the indexed field are rejected. In addition, the unique indexes can be interchanged functionally with other MongoDB indexes.
+    Sparse Indexes
+        This property ensures that queries search document entries having an indexed field. Documents without indexed fields are skipped during a query. Sparse index and the unique index can be combined to reject documents with duplicate field values and ignore documents without indexed keys.
+
+    db.items.createIndex( { “item" : 1 } ) //Single Field Index
+    db.items.createIndex( {details.ISDN: 1 } ) //Embedded document Single Index
+    db.products.createIndex( { "item": 1, "stock": 1 } ) //Compound Indexes
+
+Aggregations in MongoDB?
+    Aggregation  are operations that process data records and return computed results. Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result. 
+    The pipeline provides efficient data aggregation using native operations within MongoDB, and is the preferred method for data aggregation in MongoDB.
+    db.orders.aggregate([
+    { $match: { status: "A" } },
+    { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
+    ])
+    MongoDB also provides map-reduce operations to perform aggregation. In general, map-reduce operations have two phases: a map stage that processes each document and emits one or more objects for each input document, and reduce phase that combines the output of the map operation
+    db.orders.mapReduce(
+        function(){emit(this.cust_id, this.amount);},
+        function(key,values){return Array.sum(values)},
+        {query: {status: "A"}, out: "order_totals"}
+        )
+    Map-reduce uses custom JavaScript functions to perform the map and reduce operations, as well as the optional finalize operation. While the custom JavaScript provide great flexibility compared to the aggregation pipeline, in general, map-reduce is less efficient and more complex than the aggregation pipeline.
+
+    Single Purpose Aggregation Operations
+    MongoDB also provides db.collection.estimatedDocumentCount(), db.collection.count() and db.collection.distinct().
+    db.orders.distinct("cust_id")
+
+What is “Namespace” in MongoDB?
+    MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. The concatenation of the collection name and database name is called a namespace.
+
+What is sharding in MongoDB?
+    The procedure of storing data records across multiple machines is referred as Sharding. It is a MongoDB approach to meet the demands of data growth. It is the horizontal partition of data in a database or search engine. Each partition is referred as shard or database shard.
+        Vertical Scaling involves increasing the capacity of a single server, such as using a more powerful CPU, adding more RAM, or increasing the amount of storage space. Limitations in available technology may restrict a single machine from being sufficiently powerful for a given workload. Additionally, Cloud-based providers have hard ceilings based on available hardware configurations. As a result, there is a practical maximum for vertical scaling.
+
+        Horizontal Scaling involves dividing the system dataset and load over multiple servers, adding additional servers to increase capacity as required. While the overall speed or capacity of a single machine may not be high, each machine handles a subset of the overall workload, potentially providing better efficiency than a single high-speed high-capacity server. Expanding the capacity of the deployment only requires adding additional servers as needed, which can be a lower overall cost than high-end hardware for a single machine. The trade off is increased complexity in infrastructure and maintenance for the deployment.
+
+
+Mongoose?
+    Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
+        import * as mongoose from 'mongoose';
+        const db_url = `mongodb://cesarenc:cesar90873@ds211083.mlab.com:11083/post_api`;
+        const connection = ()=>{
+            mongoose.connect(db_url, { useNewUrlParser: true });
+        };
+        export {connection};
+
+    Mongoose Schema vs Model
+    A Mongoose model is a wrapper on the Mongoose schema. A Mongoose schema defines the structure of the document, default values, validators, etc., whereas a Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc.
+
+    const userSchema = new Schema({
+        username: {type: String, required: true, unique: true},
+        password: {type: String, required: true},
+        posts:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        }],
+        comments:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comments'
+        }]
+    });
+
+    const User = mongoose.model('User', userSchema);
+    const newUser = new User({
+        username: name,
+        password: pass
+    });
+
+    newUser.save();
+    User.findOne({username: name});
+    User.findOneAndUpdate({username: name}, { $set: {'password': newPassword}});
+    User.deleteOne({username: name});
+
+    Class.find({professor: {$in: [professor_id]}})
+        .select('students name starts ends')
+        .populate({
+            path: 'students',
+            select: 'username classes',
+            model: 'Student',
+            populate:{
+                path: 'classes.class',
+                select: 'name -_id',
+                model: 'Class'
+            }
+        })
+
+MySQL / SQL?
+    MySQL is a relational database management system (RDBMS) currently developed by Oracle with open-source code. This code is available for free under the GNU General Public License, and commercial versions of MySQL are also available under various proprietary agreements.   host, user, password, port.
+
+    SQL (pronounced "ess-que-el") stands for Structured Query Language. SQL is used to communicate with a database. According to ANSI (American National Standards Institute), it is the standard language for relational database management systems. SQL statements are used to perform tasks such as update data on a database, or retrieve data from a database.
+
+SQL Basic Queries?
+    CREATE DATABASE databasename;
+        CREATE DATABASE testDB;
+
+    DROP DATABASE databasename;
+        DROP DATABASE testDB;
+
+    CREATE TABLE table_name (
+        column1 datatype,
+        column2 datatype,
+        column3 datatype,
+    ....
+    );   
+        CREATE TABLE Persons (
+        PersonID int,
+        LastName varchar(255),
+        FirstName varchar(255),
+        Address varchar(255),
+        City varchar(255) 
+        );
+
+    Create Table Using Another Table
+    CREATE TABLE new_table_name AS
+    SELECT column1, column2,...
+    FROM existing_table_name
+    WHERE ....;
+        CREATE TABLE TestTable AS
+        SELECT customername, contactname
+        FROM customers;
+
+    CREATE TABLE Persons (
+        ID int NOT NULL,
+        LastName varchar(255) NOT NULL,
+        FirstName varchar(255),
+        Age int,
+        PRIMARY KEY (ID)
+    );
+        CREATE TABLE Persons (
+            ID int NOT NULL PRIMARY KEY,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int
+        );
+
+    A FOREIGN KEY is a key used to link two tables together.
+    A FOREIGN KEY is a field (or collection of fields) in one table that refers to the PRIMARY KEY in another table.
+    CREATE TABLE Orders (
+        OrderID int NOT NULL,
+        OrderNumber int NOT NULL,
+        PersonID int,
+        PRIMARY KEY (OrderID),
+        FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+    );
+        CREATE TABLE Orders (
+        OrderID int NOT NULL PRIMARY KEY,
+        OrderNumber int NOT NULL,
+        PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+        );
+
+    SELECT column1, column2, ...
+    FROM table_name;
+        SELECT * FROM table_name;
+        SELECT CustomerName, City FROM Customers;
+
+    SELECT DISTINCT column1, column2, ...
+    FROM table_name;
+        SELECT DISTINCT Country FROM Customers;
+        SELECT COUNT(Country) FROM Customers;
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition;
+        SELECT * FROM Customers WHERE Country='Mexico';
+        SELECT * FROM Customers WHERE CustomerID=1;
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition1 AND condition2 AND condition3 ...;
+        SELECT * FROM Customers WHERE Country='Germany' AND City='Berlin';
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition1 OR condition2 OR condition3 ...;
+        SELECT * FROM Customers WHERE Country='Germany' OR Country='Spain';
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE NOT condition;
+        SELECT * FROM Customers WHERE NOT Country='Germany';
+
+    INSERT INTO table_name (column1, column2, column3, ...)
+    VALUES (value1, value2, value3, ...);
+
+    //If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table.
+    INSERT INTO table_name
+    VALUES (value1, value2, value3, ...);
+        INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+        UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
+
+    DELETE FROM table_name WHERE condition;
+        DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+    SELECT MIN(column_name)
+    FROM table_name
+    WHERE condition;
+        SELECT MIN(Price) AS SmallestPrice FROM Products;
+
+    SELECT MAX(column_name)
+    FROM table_name
+    WHERE condition;
+        SELECT MAX(Price) AS LargestPrice FROM Products;
+
+SQL Joins?
+    (INNER) JOIN: Returns records that have matching values in both tables
+    LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+    RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+    FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+    SQL JOIN: A JOIN clause is used to combine rows from two or more tables, based on a related column between them. 
+        SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+    The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
+    SELECT column_name(s)
+    FROM table1
+    LEFT JOIN table2
+    ON table1.column_name = table2.column_name;
+        SELECT Customers.CustomerName, Orders.OrderID
+        FROM Customers
+        LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+        ORDER BY Customers.CustomerName;
+        
+    The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
+        SELECT column_name(s)
+    FROM table1
+    RIGHT JOIN table2
+    ON table1.column_name = table2.column_name;
+        SELECT Orders.OrderID, Employees.LastName, Employees.FirstName
+        FROM Orders
+        RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
+        ORDER BY Orders.OrderID;
+
+    SQL FULL OUTER JOIN Keyword
+    The FULL OUTER JOIN keyword return all records when there is a match in either left (table1) or right (table2) table records.
+    SELECT column_name(s)
+    FROM table1
+    FULL OUTER JOIN table2
+    ON table1.column_name = table2.column_name
+    WHERE condition;
+        SELECT Customers.CustomerName, Orders.OrderID
+        FROM Customers
+        FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+        ORDER BY Customers.CustomerName;
+
+    The UNION operator is used to combine the result-set of two or more SELECT statements.
+    Each SELECT statement within UNION must have the same number of columns
+    The columns must also have similar data types
+    The columns in each SELECT statement must also be in the same order
+    SELECT column_name(s) FROM table1
+    UNION
+    SELECT column_name(s) FROM table2;
+        SELECT City FROM Customers
+        UNION
+        SELECT City FROM Suppliers
+
+SQL Trigger?
+    trigger is a database object that is associated with a table. It will be activated when a defined action is executed for the table. The trigger can be executed when you run one of the following MySQL statements on the table: INSERT, UPDATE and DELETE and it can be invoked before or after the event.
+    A SQL trigger is a set of  SQL statements stored in the database catalog. A SQL trigger is executed or fired whenever an event associated with a table occurs e.g.,  insert, update or delete.
+    A SQL trigger is a special type of stored procedure. It is special because it is not called directly like a stored procedure. The main difference between a trigger and a stored procedure is that a trigger is called automatically when a data modification event is made against a table whereas a stored procedure must be called explicitly.
+
+    CREATE TRIGGER trigger_name trigger_time trigger_event
+    ON table_name
+    FOR EACH ROW
+    BEGIN
+    ...
+    END;
+
+        DELIMITER $$
+        CREATE TRIGGER before_employee_update 
+            BEFORE UPDATE ON employees
+            FOR EACH ROW 
+        BEGIN
+            INSERT INTO employees_audit
+            SET action = 'update',
+            employeeNumber = OLD.employeeNumber,
+                lastname = OLD.lastname,
+                changedat = NOW(); 
+        END$$
+        DELIMITER ;
+
+Sequelizer?
+    Sequelize is a promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite and Microsoft SQL Server. It features solid transaction support, relations, eager and lazy loading, read replication and more.
+
+    const Sequelize = require('sequelize');
+
+    // Option 1: Passing parameters separately
+    const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+    });
+
+    // Option 2: Passing a connection URI
+    const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
+
+    //testing the connection
+    sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+
+    //Modeling a table
+    const User = sequelize.define('user', {
+    // attributes
+    firstName: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    lastName: {
+        type: Sequelize.STRING
+        // allowNull defaults to true
+    }
+    }, {
+    // options
+    });
+
+    // Find all users
+    User.findAll().then(users => {
+    console.log("All users:", JSON.stringify(users, null, 4));
+    });
+
+    // Create a new user
+    User.create({ firstName: "Jane", lastName: "Doe" }).then(jane => {
+    console.log("Jane's auto-generated ID:", jane.id);
+    });
+
+    // Delete everyone named "Jane"
+    User.destroy({
+    where: {
+        firstName: "Jane"
+    }
+    }).then(() => {
+    console.log("Done");
+    });
+
+    // Change everyone without a last name to "Doe"
+    User.update({ lastName: "Doe" }, {
+    where: {
+        lastName: null
+    }
+    }).then(() => {
+    console.log("Done");
+    });
+
+WebScokets?
+    The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
+    Once a websocket connection is established, both client and server may send the data to each other.
+    WebSocket is especially great for services that require continuous data exchange, e.g. online games, real-time trading systems and so on.
+
+    Once the socket is created, we should listen to events on it. There are totally 4 events:
+    open – connection established,
+    message – data received,
+    error – websocket error,
+    close – connection closed.
+
+    The WebSocket API is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
+
+    WebSocket
+    The primary interface for connecting to a WebSocket server and then sending and receiving data on the connection.
+
+    CloseEvent
+    The event sent by the WebSocket object when the connection closes.
+
+    MessageEvent
+    The event sent by the WebSocket object when a message is received from the server.
+
+    WebSocket by itself does not include reconnection, authentication and many other high-level mechanisms. So there are client/server libraries for that, and it’s also possible to implement these capabilities manually.
+
+    socket.io: Socket.IO enables real-time bidirectional event-based communication. It consists of: a Node.js server and a Javascript client library for the browser (or a Node.js client).
+
+        const server = require('http').createServer();
+        const io = require('socket.io')(server);
+        io.on('connection', client => {
+        client.on('event', data => { /* … */ });
+        client.on('disconnect', () => { /* … */ });
+        });
+        server.listen(3000);
+
+        const io = require('socket.io')();
+        io.on('connection', client => { ... });
+        io.listen(3000);
+
+        socket.emit() // Emitter
+        socket.on() // Listener
+
+ Testing JEST?
+    Jest: Jest is a library for testing JavaScript code is a Test runner. It's an open source project maintained by Facebook, and it's especially well suited for React code testing, although not limited to that: it can test any JavaScript code. the biggest feature of Jest is it’s an out of the box solution that works without having to interact with other testing libraries to perform its job.
+
+    describe(name, fn): creates a block that groups together several related tests. Jest method for containing one or more related tests. Every time you start writing a new suite of tests for a functionality wrap it in a describe block. As you can see it takes two arguments: a string for describing the test suite, and a callback function for wrapping the actual test. 
+
+    test(name, fn, timeout): Also under the alias: it(name, fn, timeout). All you need in a test file is the test method which runs a test. A function called test which is the actual test block. In the test block you have to define the expected result. 
+
+    expect: When you're writing tests, you often need to check that values meet certain conditions. expect gives you access to a number of "matchers" that let you validate different things.
+    expect(value): The expect function is used every time you want to test a value. You will rarely call expect by itself. Instead, you will use expect along with a "matcher" function to assert something about a value. Jest matchers:
+
+        toBe(value): Use .toBe to compare primitive values or to check referential identity of object instances. It calls Object.is to compare values, which is even better for testing than === strict equality operator.
+
+        not: If you know how to test something, .not lets you test its opposite.
+
+        toBeTruthy(): Use .toBeTruthy when you don't care what a value is and you want to ensure a value is true in a boolean context. 
+
+        toBeFalsy(): Use .toBeFalsy when you don't care what a value is and you want to ensure a value is false in a boolean context. 
+
+        toContain(item): Use .toContain when you want to check that an item is in an array. For testing the items in the array, this uses ===, a strict equality check. .toContain can also check whether a string is a substring of another string.
+
+        toEqual(value): Use .toEqual to compare recursively all properties of object instances (also known as "deep" equality). It calls Object.is to compare primitive values, which is even better for testing than === strict equality operator.
+
+        toMatch(regexp | string): Use .toMatch to check that a string matches a regular expression.
+
+        resolves: Use resolves to unwrap the value of a fulfilled promise so any other matcher can be chained. If the promise is rejected the assertion fails.
+
+        rejects: Use .rejects to unwrap the reason of a rejected promise so any other matcher can be chained. If the promise is fulfilled the assertion fails.
+
+        assertions(number): verifies that a certain number of assertions are called during a test. This is often useful when testing asynchronous code, in order to make sure that assertions in a callback actually got called.
+
+        hasAssertions() verifies that at least one assertion is called during a test. This is often useful when testing asynchronous code, in order to make sure that assertions in a callback actually got called.
+
+        toHaveReturned(): Also under the alias: .toReturn(). If you have a mock function, you can use .toHaveReturned to test that the mock function successfully returned (i.e., did not throw an error) at least one time.
+
+        toHaveReturnedTimes(number): Also under the alias: .toReturnTimes(number). Use .toHaveReturnedTimes to ensure that a mock function returned successfully (i.e., did not throw an error) an exact number of times. Any calls to the mock function that throw an error are not counted toward the number of times the function returned.
+
+        toThrow(error?): Also under the alias: .toThrowError(error?)
+
+    Mock Functions: Mock functions are also known as "spies", because they let you spy on the behavior of a function that is called indirectly by some other code, rather than only testing the output. You can create a mock function with jest.fn(). If no implementation is given, the mock function will return undefined when invoked.    
+
+    Snapshot Testing: Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly. A typical snapshot test case renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component. A similar approach can be taken when it comes to testing your React components. Instead of rendering the graphical UI, which would require building the entire app, you can use a test renderer to quickly generate a serializable value for your React tree.
+        toMatchSnapshot(propertyMatchers?, hint?): This ensures that a value matches the most recent snapshot.
+
+Docker?
+    Docker is a tool that allows developers, sys-admins etc. to easily deploy their applications in a sandbox (called containers) to run on the host operating system i.e. Linux. The key benefit of Docker is that it allows users to package an application with all of its dependencies into a standardized unit for software development. Unlike virtual machines, containers do not have the high overhead and hence enable more efficient usage of the underlying system and resources.
+
+    Docker daemon
+    Builds, runs, and manages Docker containers on a host machine.
+
+    Docker client
+    Primary user interface for the Docker daemon. It accepts commands from the user and communicates with the Docker daemon. The Docker daemon and client can run on the same or separate systems. The Docker client and daemon communicate via sockets or through RESTful APIs.
+
+    Docker active hosts
+    Compute hosts that have Docker installed and the Docker daemon running on the supported version are considered Docker active hosts. Docker active hosts can process Docker and non-Docker workloads.
+
+    Docker registries
+    Repositories of images for users to upload or download. Registries can be public or private. The public Docker registry is called the Docker Hub.
+
+    Docker container
+    Created from an image and is the run time component of Docker. A container holds everything that is needed for a Spark instance group to run, including an operating system, user-added files, meta-data, and Spark instance group dependencies.
+
+Docker Image?
+    Images - The blueprints of our application which form the basis of containers.
+    To conjure up a container, you use a Docker image. An image is like a blueprint, a basis for creating — just one, or as many as you like — brand-new containers.
+
+    Docker Hub - A registry of Docker images. You can think of the registry as a directory of all available Docker images. If required, one can host their own Docker registries and can use them for pulling images.   
+
+Docker Container?
+    Containers are lightweight and portable encapsulations of an environment in which to run applications. 
+
+    Containers offer a logical packaging mechanism in which applications can be abstracted from the environment in which they actually run. This decoupling allows container-based applications to be deployed easily and consistently, regardless of whether the target environment is a private data center, the public cloud, or even a developer’s personal laptop. This gives developers the ability to create predictable environments that are isolated from rest of the applications and can be run anywhere.
+
+    Created from Docker images and run the actual application. We create a container using docker run which we did using the busybox image that we downloaded. A list of running containers can be seen using the docker ps command.
+
+    Container deployment era: Containers are similar to VMs, but they have relaxed isolation properties to share the Operating System (OS) among the applications. Therefore, containers are considered lightweight. Similar to a VM, a container has its own filesystem, CPU, memory, process space, and more. As they are decoupled from the underlying infrastructure, they are portable across clouds and OS distributions.
+
+    Cloud and OS distribution portability: 
+    Loosely coupled, distributed, elastic, liberated micro-services:
+    Resource isolation: predictable application performance.
+    Resource utilization: high efficiency and density
+
+Docker Container Volumes?
+    Containers are designed to leave nothing behind — as soon as a Docker container is removed, any changes you made to its contents are lost.
+
+    When starting up a Docker container you can specify directories as mount points for volumes, which are repositories for shared or persistent data that remain even if a container gets removed. The beautiful thing here is that you don’t need to know anything about the host: you designate a volume, and Docker makes sure it’s saved somewhere on, and retrievable from, the host system. When a container is exited, any volumes it was using persist — so if you start a second container it can use all the data from the previous one.
+
+Dockerfile?
+    A Dockerfile is a simple text file that contains a list of commands the Docker client calls (on the command line) when assembling an image. This essentially automates the image creation process because these special files are, basically, scripts — a set list of commands/instructions and arguments that automatically perform actions on a chosen base image. Dockerfiles are essentially the build instructions for a new project, written in executable code. 
+    A Dockerfile is a set of precise instructions, stating how to create a new Docker image, setting defaults for containers being run based on it and a bit more. In the best case it’s going to create the same image for anybody running it at any point in time.
+
+    FROM nginx:alpine
+    COPY ./default.conf /etc/nginx/conf.d/default.conf
+    COPY ./dist/grades /usr/share/nginx/html
+
+    FROM node:10.8.0-alpine as node
+    COPY server.js .
+    COPY package.json .
+    RUN npm install
+    EXPOSE 3001
+    CMD ["npm", "start"]
+
+    FROM node:11-alpine as node
+    # Create server directory
+    WORKDIR /usr/src/server
+    COPY package*.json ./
+    RUN npm i
+    COPY . .
+    RUN npm run build
+    #deployment
+    FROM node:11-alpine
+    WORKDIR /usr/src/server
+    COPY package*.json ./
+    ENV NODE_ENV=production
+    RUN npm install
+    COPY --from=node /usr/src/server/build ./build
+    EXPOSE 3002
+    CMD [ "npm", "run", "start-deploy"]
+
+Docker-Compose?
+    Docker-Compose a file for defining and running multi-container Docker applications.
+
+    version: "3"
+    # Define the services/containers to be run
+    services:
+    database-auth: # name of the service
+        image: mysql:5.7
+        restart: always
+        command: --disable-partition-engine-check
+        environment:
+        #Change values for customization
+        - MYSQL_DATABASE=db
+        # So you don't have to use root, but you can if you like
+        - MYSQL_USER=user
+        # You can use whatever password you like
+        - MYSQL_PASSWORD=password
+        # Password for root access
+        - MYSQL_ROOT_PASSWORD=password
+        ports:
+        - "3306:3306" # specify port forewarding
+        expose:
+        # Opens port 3306 on the container
+        - '3306'
+        volumes:
+        - authDB:/var/lib/mysql
+
+    auth: #name of the service
+        build: ./back-end-auth # specify the directory of the Dockerfile
+        environment:
+        #Change values for customization
+        - MYSQL_DATABASE=db
+        # So you don't have to use root, but you can if you like
+        - MYSQL_USER=user
+        # You can use whatever password you like
+        - MYSQL_PASSWORD=password
+        # Password for root access
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_HOST=database-auth
+        ports:
+        - "3002:3002" #specify ports forewarding
+        links:
+        - database-auth # link this service to the database service
+
+    front-end: # name of the service
+        build: ./front-end-master # specify the directory of the Dockerfile
+        environment:
+        - URL_AUTH=/auth
+        ports:
+        - "3000:80" # specify port forewarding
+        links:
+        - auth # link this service to the server service  
+            
+    volumes:
+    authDB:
+
+    To use a file in the build context, the Dockerfile refers to the file specified in an instruction, for example, a COPY instruction. To increase the build’s performance, exclude files and directories by adding a .dockerignore file to the context directory. 
+    /node_modules
+    .git/
+
+Port Forwarding?
+    By default, a container is not accessible by other containers, nor from the outside world. However, you can tell Docker to expose a container port to a port of the host machine (either the 127.0.0.1 interface or an external one).
+
+    A common scenario for private servers, is when you want to run a web app under a subdomain. An example would be a Flask application which listens on port 5000 of the container, and Docker is told to expose it on 127.0.0.1:9010 on the server. This means only local apps can access it.
+
+    At the same time, Nginx is installed on the host. It listens on the public port 80 for any incomming requests, and takes care of serving files or acting as a reverse proxy, based on the domain. So if a request for the domain of the app hits the server, Nginx makes sure that it is passed to 127.0.0.1:9010, and the container receives it on port 5000 and takes over from there. The containerized application does not really care about anything apart from its port 5000. It only gets the requests which are meant for it, which is a nice separation of concerns.
+
+Docker Commands?
+    #display containers
+    docker ps
+    docker ps -a
+
+    #display images
+    docker images
+
+    #Always start a new container
+    docker container run <image>
+
+    #build an image
+    docker build -t <tag>:<version> .
+
+    #remove one image
+    dokcer rmi <name>:<tag>
+
+    #remove one container
+    docker rm <name>
+
+    # Delete every Docker containers
+    # Must be run first because images are attached to containers
+    docker rm -f $(docker ps -a -q)
+
+    # Delete every Docker image
+    docker rmi -f $(docker images -q)
+
+    #create image tag
+    docker image tag <source:tag> <target:tag>
+
+    docker stop <container>
+    docker start <container>
+
+    docker-compose up --build

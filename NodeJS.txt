@@ -1,0 +1,1979 @@
+What is NodeJS?
+    Node.js is a server side scripting based on Google’s V8 JavaScript engine. It is used to build scalable programs especially web applications that are computationally simple but are frequently accessed.   
+
+    The basic philosophy of node.js is:-
+    Non-Blocking I/O – Every I/O call must take a callback which will be executed as soon as response arrives whether it is to retrieve information from disk, network or another process
+    Built-in support for most important protocols – HTTP, DNS, TLS
+    Low-Level – Do not remove functionality present at POSIX layer.For example, support half-closed TCP connections
+    Stream Everything – never force buffering of data.
+
+    You can use Node.js in developing I/O intensive web applications like video streaming sites. You can also use it for developing: Real-time web applications, Network applications, General-purpose applications and Distributed systems.
+
+    Node.js is a single-threaded but highly scalable system that utilizes JavaScript as its scripting language. It uses asynchronous, event-driven I/O instead of separate processes or threads. It is able to achieve high output via single-threaded event loop and non-blocking I/O.
+
+    Has a package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
+
+    Asynchronous event driven IO helps concurrent request handling – All APIs of Node.js are asynchronous. This feature means that if a Node receives a request for some Input/Output operation, it will execute that operation in the background and continue with the processing of other requests. Thus it will not wait for the response from the previous requests.
+
+    Fast in Code execution – Node.js uses the V8 JavaScript Runtime engine, the one which is used by Google Chrome. Node has a wrapper over the JavaScript engine which makes the runtime engine much faster and hence processing of requests within Node.js also become faster.
+
+    Single Threaded but Highly Scalable – Node.js uses a single thread model for event looping. The response from these events may or may not reach the server immediately. However, this does not block other operations. Thus making Node.js highly scalable. 
+    Traditional servers create limited threads to handle requests while Node.js creates a single thread that provides service to much larger numbers of such requests.
+
+    Node.js library uses JavaScript – This is another important aspect of Node.js from the developer’s point of view. The majority of developers are already well-versed in JavaScript. Hence, development in Node.js becomes easier for a developer who knows JavaScript.
+
+    There is an Active and vibrant community for the Node.js framework – The active community always keeps the framework updated with the latest trends in the web development.
+
+    No Buffering – Node.js applications never buffer any data. They simply output the data in chunks.
+
+Callback in Node.js?
+    A callback function is called at the completion of a given task. This allows other code to be run in the meantime and prevents any blocking.  Being an asynchronous platform, Node.js heavily relies on callback. All APIs of Node are written to support callbacks. 
+    Callback hell is the result of heavily nested callbacks that make the code not only unreadable but also difficult to maintain. 
+
+Node Buil-In Modules?
+    Consider modules to be the same as JavaScript libraries.
+    A set of functions you want to include in your application.
+    Node.js has a set of built-in modules which you can use without any further installation.
+    To include a module, use the require() function with the name of the module.
+
+    HTTP Module: The HTTP module provides a way of making Node.js transfer data over HTTP (Hyper Text Transfer Protocol).
+    var http = require('http');
+    http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.write('Hello World!');
+    res.end();
+    }).listen(8080);
+
+    File System Module: The Node.js file system module allows you to work with the file system on your computer.
+    var fs = require('fs');
+    Read, Create, Update, Delete and Rename files
+    The fs.readFile() method is used to read files on your computer.
+    The fs.appendFile() method appends the specified content at the end of the specified file:
+    The fs.writeFile() method replaces the specified file and content:
+    The fs.unlink() method deletes the specified file:
+    The fs.rename() method renames the specified file:
+    fs.chmod: Asynchronously changes the permissions of a file. No arguments other than a possible exception are given to the completion callback.
+
+    readFile()	Reads the content of a file
+    readFileSync()	Same as readFile(), but synchronous instead of asynchronous
+
+    fs.appendFile('mynewfile1.txt', 'Hello content!', function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+    });
+
+    URL Module: The URL module splits up a web address into readable parts.
+    var url = require('url');
+    Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties:
+    var url = require('url');
+    var adr = 'http://localhost:8080/default.htm?year=2017&month=february';
+    var q = url.parse(adr, true);
+    console.log(q.host); //returns 'localhost:8080'
+    console.log(q.pathname); //returns '/default.htm'
+    console.log(q.search); //returns '?year=2017&month=february'
+    var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
+
+    Events Module: Node.js has a built-in module, called "Events", where you can create-, fire-, and listen for- your own events. To include the built-in Events module use the require() method. In addition, all event properties and methods are an instance of an EventEmitter object. To be able to access these properties and methods, create an EventEmitter object.
+    var events = require('events');
+    var eventEmitter = new events.EventEmitter();
+    You can assign event handlers to your own events with the EventEmitter object.
+    To fire an event, use the emit() method.var events = require('events');
+    var eventEmitter = new events.EventEmitter();
+    //Create an event handler:
+    var myEventHandler = function () {
+    console.log('I hear a scream!');
+    }
+    //Assign the event handler to an event:
+    eventEmitter.on('scream', myEventHandler);
+    //Fire the 'scream' event:
+    eventEmitter.emit('scream')
+
+    React muiltiple listener to a single emit. Advantage against callbacks.
+
+    Net module provides an asynchronous network API for creating stream-based TCP or IPC servers (net.createServer()) and clients (net.createConnection())
+    const net = require('net')
+    net.createConnection()#
+    A factory function, which creates a new net.Socket, immediately initiates connection with socket.connect(), then returns the net.Socket that starts the connection.
+    When the connection is established, a 'connect' event will be emitted on the returned socket. The last parameter connectListener, if supplied, will be added as a listener for the 'connect' event once.
+    server.listen()[src]#
+    Start a server listening for connections. A net.Server can be a TCP or an IPC server depending on what it listens to.
+    Creates a new TCP or IPC server.
+    net.createServer([options][, connectionlistener])
+    If allowHalfOpen is set to true, when the other end of the socket sends a FIN packet, the server will only send a FIN packet back when socket.end() is explicitly called, until then the connection is half-closed (non-readable but still writable).
+
+    Cluster Module: A single instance of Node.js runs in a single thread. To take advantage of multi-core systems, the user will sometimes want to launch a cluster of Node.js processes to handle the load. The cluster module allows easy creation of child processes that all share server ports.
+    const cluster = require('cluster');
+
+    OS Module provides a number of operating system-related utility methods. 
+    const os = require('os');
+
+NPM?
+    NPM is a package manager for Node.js packages, or modules
+    A package in Node.js contains all the files you need for a module.
+    Modules are JavaScript libraries you can include in your project.
+
+    npm init 
+    package.json: dependencies and scripts
+    node_modules: In local mode it installs the package and its dependencies in a node_modules folder in your parent working directory. This location is owned by the current user.
+    npm install 'packagename'
+    inpm install 'packagename'@'version'
+    --global
+    --dev
+
+URL?
+    A URL (Uniform Resource Locator) is a unique identifier used to locate a resource on the internet. It is also referred to as a web address. 
+
+    A URL usually consists of the following components: 
+    Protocol, domain, path (or pathname), hash and query string.
+
+    Protocol is the technology that will be used to transfer the data, usually http or https.
+    Domain is the the domain name, tealium.com for example.
+    Path relates to the section and page on the site.
+    Query string contains data that is being passed to the page.
+    So if we look at a URL, you can see how it gets broken up:
+    Hash relates to a section within the page.
+
+    http://tealium.com:8080/solutions/?example=test&example2=test2#section3
+
+    Protocol: http://
+    Domain: tealium.com
+    Port: :8080
+    path: /solutions
+    Query: ?example=test&example2=test2
+    Hash: #section3
+
+HTTP Methods?
+    GET: The HTTP GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
+    Request has body	No
+    Successful response has body	Yes
+    Safe	Yes
+    Idempotent	Yes
+    Cacheable	Yes
+    Allowed in HTML forms	Yes
+
+    POST: The HTTP POST method sends data to the server. The type of the body of the request is indicated by the Content-Type header. Non-idempotent.
+    Request has body	Yes
+    Successful response has body	Yes
+    Idempotent	No
+    Cacheable	Only if freshness information is included
+    Allowed in HTML forms	Yes
+
+    DELETE: The HTTP DELETE request method deletes the specified resource.
+    Request has body	May
+    Successful response has body	May
+    Idempotent	Yes
+    Cacheable	No
+    Allowed in HTML forms	No
+
+    PATCH: The HTTP PATCH request method applies partial modifications to a resource.
+    Request has body	Yes
+    Successful response has body	Yes
+    Idempotent	No
+    Cacheable	No
+    Allowed in HTML forms	No
+
+    The HTTP PUT request method creates a new resource or replaces a representation of the target resource with the request payload.
+    Request has body	Yes
+    Successful response has body	No
+    Idempotent	Yes
+    Cacheable	No
+    Allowed in HTML forms	No
+
+    The HTTP OPTIONS method is used to describe the communication options for the target resource. The client can specify a URL for the OPTIONS method, or an asterisk (*) to refer to the entire server. The HTTP OPTIONS method is used to request information about the communication options available for the target resource. The response may include an Allow header indicating allowed HTTP methods on the resource, or various Cross Origin Resource Sharing headers. The HTTP OPTIONS method is both safe and idempotent, as it is intended only for use in querying information about ways to interact with a resource.
+
+    The HTTP TRACE method performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism. 'TRACE' is a HTTP request method used for debugging which echo's back input back to the user.
+
+Status Codes?
+    HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes: informational responses, successful responses, redirects, client errors, and servers errors. 
+
+    1xx Informational
+    2xx Success
+    3xx Redirection
+    4xx Client Error
+    5xx Server Error
+
+    200 – ok
+    308 - Permanent Redirect
+    400 – bad request
+    401 – Unauthorized
+    403 – forbidden
+    404 – not found
+    500 – internal server error
+    503 – service unavailable
+    504 – gateway timeout
+
+Express: Server, Routes, Middleware?
+    Express.js is a Node js web application server framework, which is specifically designed for building single-page, multi-page, and hybrid web applications.
+    Write handlers for requests with different HTTP verbs at different URL paths (routes).
+    Integrate with "view" rendering engines in order to generate responses by inserting data into templates.
+    Set common web application settings like the port to use for connecting, and the location of templates that are used for rendering the response.
+    Add additional request processing "middleware" at any point within the request handling pipeline.
+
+    Server: A Web server will accept a request and execute code and send a response to a client.
+
+    Middleware: Middleware functions are functions that have access to the request object (req), the response object (res), and the next middleware function in the application’s request-response cycle. The next middleware function is commonly denoted by a variable named next. Middleware functions can perform the following tasks:
+        Execute any code.
+        Make changes to the request and the response objects.
+        End the request-response cycle.
+        Call the next middleware function in the stack.
+    If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+    Application-level middleware: Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions, where METHOD is the HTTP method of the request that the middleware function handles (such as GET, PUT, or POST) in lowercase.
+
+    Router-level middleware works in the same way as application-level middleware, except it is bound to an instance of express.Router(). 
+    var router = express.Router()
+
+    Route: Routing refers to how an application’s endpoints (URIs) respond to client requests. You define routing using methods of the Express app object that correspond to HTTP methods; for example, app.get() to handle GET requests and app.post to handle POST requests. These routing methods specify a callback function (sometimes called “handler functions”) called when the application receives a request to the specified route (endpoint) and HTTP method. In other words, the application “listens” for requests that match the specified route(s) and method(s), and when it detects a match, it calls the specified callback function.
+
+How to Start a Express Server?
+    import * as express from 'express'; //require express module
+    const app = express(); //invoke the imported function to create an instance
+    const port =  process.env.PORT || 3002; //declared a variable to hold the port ot listen, mostly using enviromental variables
+
+    app.use(bodyParser.json()); //Apply middlewares to express instance
+    app.use(cookieParser());
+
+    //Declare configuration using a callback function
+    //Setting the headers like Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Credentials
+    app.use((req, res, next) => {
+        const whitelist = [
+            'http://localhost:3000',
+            'http://192.168.99.100:3000'
+        ];
+        const origin = req.headers.origin;
+        if (whitelist.indexOf(origin) > -1) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, authorization');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        next();
+    });
+
+    //use the listen method to asing a port and a callback function
+    app.listen(port, () => info(`App is listening on port ${port}`));
+
+    //req.query returns and object with all the key-value pair queries.
+
+    1//require express module.
+    2//invoke the imported function expression to create an instance.
+    3//Apply middlewares to express instance (use() method). Third-party middleware.
+    4//Declare configuration using a callback function Setting the headers like     Access-Control-Allow-Origin, Access-Control-Allow-Methods. arguments: req, res, next. (next() method at the end).
+    5//declared a variable to hold the port to listen, mostly using enviromental variables (listen() method).
+
+How to implement a Express Route?
+    app.post('/login', loginPost); //Express instance and use the http method for the route, the argumenst are the route '/login' and the callback function to handle that route.
+    app.get('/authenticate', authenticator(), authenticateGet);
+
+    //Express instance and use the http method for the route, the argumenst are the route '/login' and the callback function to handle that route.
+
+    //You could add middlewares as the second argument, first the route and third the callback function to handle the route. receives a function reference and its invoke in the second argument.
+
+    The callback function to handle the routes are composed by the following:
+    two arguments request and response.
+    using request you could access to the data sent using the property body of the reqeuest object.
+        const email = req.body.email;
+        const pass = req.body.password;
+    the callback must use the send method fom the response object in order to send back a response. YOu could use the status method before send to deifne the status code.
+        res.status(200).send({msg: 'Login Succesfully'});
+
+    function loginPost (req, res){
+        try{
+            res.cookie('token', '', {maxAge: Date.now(), httpOnly: true });
+            res.status(200).send({msg: 'Login Succesfully'});
+        } catch(e){
+            error('error on login');
+        }
+    }
+
+How to implement Express Middleware?
+    When creating a middleware you have to return a function reference to be invoke as the second arhument in the respective route. the function has 3 arguments, request, response and next. for example in an authentication middleware if everything goes well you must use response object to send some data or credencial to the route handler and then use the next funcion so the handler funcions runs after the middleware. 
+    res.locals.user = {email: decoded.email, id: decoded.id};
+                next();
+
+    if not you just use the res.send method.
+    res.status(401).send({msg: 'No Authenticated', auth: false});
+
+    const authenticator = () => {
+        return (req, res, next) => {
+        if ('token' in req.cookies) {
+            let token = req.cookies['token'];
+            try{
+                let decoded = jwt.verify(token, 'secret');
+                res.locals.user = {email: decoded.email, id: decoded.id};
+                next();
+            } catch(e){
+                error('error on authentication');
+                res.status(401).send({msg: 'No Authenticated', auth: false});
+            }
+        } else {res.status(401).send({msg: 'No Authenticated', auth: false});}
+        }
+    }
+
+REST API?
+    A RESTful API is an application program interface (API) that uses HTTP requests to GET, PUT, POST and DELETE data.
+    A RESTful API -- also referred to as a RESTful web service -- is based on representational state transfer (REST) technology, an architectural style and approach to communications often used in web services development.
+
+    REST technology is generally preferred to the more robust Simple Object Access Protocol (SOAP) technology because REST leverages less bandwidth, making it more suitable for internet usage. An API for a website is code that allows two software programs to communicate with each another . The API spells out the proper way for a developer to write a program requesting services from an operating system or other application.
+
+    Use of a uniform interface (UI). Resources should be uniquely identifiable through a single URL, and only by using the underlying methods of the network protocol, such as DELETE, PUT and GET with HTTP, should it be possible to manipulate a resource.
+
+    Client-server: Separate the user interface from the data storage. Improves the portability of the user interface and improve the server components scalability.
+
+    Stateless: The requests must contain all necessary information without needing anything from the server. The session state must remain in its entirety in the client.
+
+    Cacheable: The data within the response must be implicitly or explicitly labeled as cacheable or non-cacheable.
+
+    Uniform interface: Identify the resources, manipulate the resources through representations, self-descriptive messages, and hypermedia as the engine of application state.
+
+    Layered system: Compose the architecture in hierarchical layers; each layer cannot see beyond the immediate layer with which they are interacting.
+
+    Code on demand: Functionality can be extended by applets or scripts
+
+Key Points of an API?
+    Endpoints and the need a a uniform interface (UI). Resources should be uniquely identifiable through a single URL, and only by using the underlying methods of the network protocol, such as DELETE, PUT and GET with HTTP, should it be possible to manipulate a resource.
+
+    Comprehensive documentation of the endpoints and how to use the API.
+
+    Auhentication: In order to maintain stateless you could use tokens to authenticate users.
+
+JsonWebToken?
+    JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret.
+
+    Here are some scenarios where JSON Web Tokens are useful:
+
+    Authorization: This is the most common scenario for using JWT. Once the user is logged in, each subsequent request will include the JWT, allowing the user to access routes, services, and resources that are permitted with that token. Single Sign On is a feature that widely uses JWT nowadays, because of its small overhead and its ability to be easily used across different domains.
+
+    Information Exchange: JSON Web Tokens are a good way of securely transmitting information between parties. Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are. Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
+
+    In its compact form, JSON Web Tokens consist of three parts separated by dots (.), which are:
+    Header
+    Payload
+    Signature
+
+    Header
+    The header typically consists of two parts: the type of the token, which is JWT,and the signing algorithm being used, such as HMAC SHA256 or RSA.
+
+    Payload
+    The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+    Signature
+    To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+How to create a NPM package?
+    First we need Npm account.
+    Login in the console npm login.
+    You need to create a folder with the file package.json.
+    You have to specify certain fields in the package.json.
+    Name, Version, Description, License, Main, Keywords.
+    We have to set the name like @<username>/<packagename> instead of just <packagename>, we create a package under the scope of our username. It’s called a scoped package It allows us to use short names that might already be taken.
+    Create a new repository in github to show how to use the package a describe it.
+    Use npm top publish and the flag to set the access to public.
+    Use npm publish --access=public.
+
+MongoDB?
+    Mongo-DB is a document database which provides high performance, high availability and easy scalability.
+    MongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time
+    MongoDB is a schema-less NoSQL document database. It means you can store JSON documents in it, and the structure of these documents can vary as it is not enforced like SQL databases. This is one of the advantages of using NoSQL as it speeds up application development and reduces the complexity of deployments.
+
+    RDBMS	        MongoDB
+    Table	        Collection
+    Column       	Key
+    Value	        Value
+    Records/Rows	Document/Object
+
+
+MongoDB stores documents in collections.
+The document is the unit of storing data in a MongoDB database.
+document use JSON (JavaScript Object Notation, is a lightweight, thoroughly explorable format used to interchange data between various applications) style for storing data.
+MongoDB documents are composed of field-and-value pairs and have the following structure:
+    {
+        field1: value1,
+        field2: value2,
+        ...
+        fieldN: valueN
+    }
+The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
+    var mydoc = {
+                _id: ObjectId("5099803df3f4948bd2f98391"),
+                name: { first: "Alan", last: "Turing" },
+                birth: new Date('Jun 23, 1912'),
+                contribs: [ "Turing machine", "Turing test", "Turingery" ]
+                }
+
+    BSON is a binary serialization format used to store documents and make remote procedure calls in MongoDB. ObjectId, Timestamps, Date, String.
+
+    Embedded Documents
+    To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
+        {
+        ...
+        name: { first: "Alan", last: "Turing" },
+        contact: { phone: { type: "cell", number: "111-222-3333" } },
+        ...
+        }
+    To specify the field named last in the name field, use the dot notation "name.last".
+    To specify the number in the phone document in the contact field, use the dot notation "contact.phone.number".
+
+MongoDB basic operations?
+    Create DataBase 
+        var MongoClient = require('mongodb').MongoClient;
+        const url =  'mongodb://localhost:27017/Songs';
+        MongoClient.connect(url,(err,client)=>{
+            if(err){
+                return console.log('Unable to connect to MongoDB server');
+            }
+            console.log('Connected to MongoDB server');
+            db = client.db('Songs');
+
+    Create a Collection
+        db.createCollection("customers", function(err, res) {
+        if (err) throw err;
+        console.log("Collection created!");
+        }
+
+    Insert
+        insertOne() method is an object containing the name(s) and value(s) of each field in the document you want to insert.
+        var myobj = { name: "Company Inc", address: "Highway 37" };
+        db.collection("customers").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+        });
+
+    Find 
+        The findOne() method returns the first occurrence in the selection.
+        The first parameter of the findOne() method is a query object. 
+        var query = { address: "Park Lane 38" };
+        db.collection("customers").find(query).toArray(function(err, result) {
+            if (err) throw err;
+            console.log(result);
+        });
+
+    Delete
+        To delete a record, or document as it is called in MongoDB, we use the deleteOne() method.
+        The first parameter of the deleteOne() method is a query object defining which document to delete.
+        var myquery = { address: 'Mountain 21' };
+        dbo.collection("customers").deleteOne(myquery, function(err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted");
+        });
+
+    Drop Collection
+        You can delete a table, or collection as it is called in MongoDB, by using the drop() method.
+        The drop() method takes a callback function containing the error object and the result parameter which returns true if the collection was dropped successfully, otherwise it returns false.
+
+        db.collection("customers").drop(function(err, delOK) {
+            if (err) throw err;
+            if (delOK) console.log("Collection deleted");
+            db.close();
+        });
+
+Mention what is Objecld composed of?
+    Timestamp
+    Client machine ID
+    Client process ID
+    3 byte incremented counter
+
+    _id is the primary key on elements in a collection; with it, records can be differentiated by default.
+    _id is automatically indexed. Lookups specifying { _id: <someval> } refer to the _id index as their guide.
+    Architecturally, by default the _id field is an ObjectID, one of MongoDB's BSON types. Users can also override _id to something other than an ObjectID, if desired.
+
+Explain what is a replica set?
+    A replica set is a group of mongo instances that host the same data set. In replica set, one node is primary, and another is secondary. From primary to the secondary node all data replicates. Replication provides redundancy and increases data availability. With multiple copies of data on different database servers, replication provides a level of fault tolerance against the loss of a single database server.
+    replication Across multiple servers, the process of synchronizing data is known as replication. It provides redundancy and increase data availability with multiple copies of data on different database server. Replication helps in protecting the database from the loss of a single server.
+
+Explain what are indexes in MongoDB?
+    Indexes are special structures in MongoDB, which stores a small portion of the data set in an easy to traverse form. Ordered by the value of the field specified in the index, the index stores the value of a specific field or set of fields. Typically, Indexes are data structures that can store collection’s data set in a form that is easy to traverse. Queries are efficiently executed with the help of indexes in MongoDB.
+    Indexes help MongoDB find documents that match the query criteria without performing a collection scan. If a query has an appropriate index, MongoDB uses the index and limits the number of documents it examines.
+    Indexes store field values in the order of the value.The order in which the index entries are made support operations, such as equality matches and range-based queries. MongoDB sorts and returns the results by using the sequential order of the indexes
+        Default _id: Each MongoDB collection contains an index on the default _id (Read as underscore id) field. If no value is specified for _id, the language driver or the mongod (read as mongo D) creates a _id field and provides an ObjectId (read as Object ID) value.
+        Single Field: For a single-field index and sort operation, the sort order of the index keys do not matter. MongoDB can traverse the indexes either in the ascending or descending order.
+        Compound Index: For multiple fields, MongoDB supports user-defined indexes, such as compound indexes. The sequential order of fields in a compound index is significant in MongoDB.
+        Multikey Index: To index array data, MongoDB uses multikey indexes. When indexing a field with an array value, MongoDB makes separate index entries for each array element.
+    Unique Indexes
+        The unique property of MongoDB indexes ensures that duplicate values for the indexed field are rejected. In addition, the unique indexes can be interchanged functionally with other MongoDB indexes.
+    Sparse Indexes
+        This property ensures that queries search document entries having an indexed field. Documents without indexed fields are skipped during a query. Sparse index and the unique index can be combined to reject documents with duplicate field values and ignore documents without indexed keys.
+
+    db.items.createIndex( { “item" : 1 } ) //Single Field Index
+    db.items.createIndex( {details.ISDN: 1 } ) //Embedded document Single Index
+    db.products.createIndex( { "item": 1, "stock": 1 } ) //Compound Indexes
+
+Aggregations in MongoDB?
+    Aggregation  are operations that process data records and return computed results. Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result. 
+    The pipeline provides efficient data aggregation using native operations within MongoDB, and is the preferred method for data aggregation in MongoDB.
+    db.orders.aggregate([
+    { $match: { status: "A" } },
+    { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
+    ])
+    MongoDB also provides map-reduce operations to perform aggregation. In general, map-reduce operations have two phases: a map stage that processes each document and emits one or more objects for each input document, and reduce phase that combines the output of the map operation
+    db.orders.mapReduce(
+        function(){emit(this.cust_id, this.amount);},
+        function(key,values){return Array.sum(values)},
+        {query: {status: "A"}, out: "order_totals"}
+        )
+    Map-reduce uses custom JavaScript functions to perform the map and reduce operations, as well as the optional finalize operation. While the custom JavaScript provide great flexibility compared to the aggregation pipeline, in general, map-reduce is less efficient and more complex than the aggregation pipeline.
+
+    Single Purpose Aggregation Operations
+    MongoDB also provides db.collection.estimatedDocumentCount(), db.collection.count() and db.collection.distinct().
+    db.orders.distinct("cust_id")
+
+What is “Namespace” in MongoDB?
+    MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. The concatenation of the collection name and database name is called a namespace.
+
+What is sharding in MongoDB?
+    The procedure of storing data records across multiple machines is referred as Sharding. It is a MongoDB approach to meet the demands of data growth. It is the horizontal partition of data in a database or search engine. Each partition is referred as shard or database shard.
+        Vertical Scaling involves increasing the capacity of a single server, such as using a more powerful CPU, adding more RAM, or increasing the amount of storage space. Limitations in available technology may restrict a single machine from being sufficiently powerful for a given workload. Additionally, Cloud-based providers have hard ceilings based on available hardware configurations. As a result, there is a practical maximum for vertical scaling.
+
+        Horizontal Scaling involves dividing the system dataset and load over multiple servers, adding additional servers to increase capacity as required. While the overall speed or capacity of a single machine may not be high, each machine handles a subset of the overall workload, potentially providing better efficiency than a single high-speed high-capacity server. Expanding the capacity of the deployment only requires adding additional servers as needed, which can be a lower overall cost than high-end hardware for a single machine. The trade off is increased complexity in infrastructure and maintenance for the deployment.
+
+
+Mongoose?
+    Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
+        import * as mongoose from 'mongoose';
+        const db_url = `mongodb://cesarenc:cesar90873@ds211083.mlab.com:11083/post_api`;
+        const connection = ()=>{
+            mongoose.connect(db_url, { useNewUrlParser: true });
+        };
+        export {connection};
+
+    Mongoose Schema vs Model
+    A Mongoose model is a wrapper on the Mongoose schema. A Mongoose schema defines the structure of the document, default values, validators, etc., whereas a Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc.
+
+    const userSchema = new Schema({
+        username: {type: String, required: true, unique: true},
+        password: {type: String, required: true},
+        posts:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        }],
+        comments:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comments'
+        }]
+    });
+
+    const User = mongoose.model('User', userSchema);
+    const newUser = new User({
+        username: name,
+        password: pass
+    });
+
+    newUser.save();
+    User.findOne({username: name});
+    User.findOneAndUpdate({username: name}, { $set: {'password': newPassword}});
+    User.deleteOne({username: name});
+
+    Class.find({professor: {$in: [professor_id]}})
+        .select('students name starts ends')
+        .populate({
+            path: 'students',
+            select: 'username classes',
+            model: 'Student',
+            populate:{
+                path: 'classes.class',
+                select: 'name -_id',
+                model: 'Class'
+            }
+        })
+
+
+MySQL / SQL?
+    MySQL is a relational database management system (RDBMS) currently developed by Oracle with open-source code. This code is available for free under the GNU General Public License, and commercial versions of MySQL are also available under various proprietary agreements.   host, user, password, port.
+
+    SQL (pronounced "ess-que-el") stands for Structured Query Language. SQL is used to communicate with a database. According to ANSI (American National Standards Institute), it is the standard language for relational database management systems. SQL statements are used to perform tasks such as update data on a database, or retrieve data from a database.
+
+SQL Basic Queries?
+    CREATE DATABASE databasename;
+        CREATE DATABASE testDB;
+
+    DROP DATABASE databasename;
+        DROP DATABASE testDB;
+
+    CREATE TABLE table_name (
+        column1 datatype,
+        column2 datatype,
+        column3 datatype,
+    ....
+    );   
+        CREATE TABLE Persons (
+        PersonID int,
+        LastName varchar(255),
+        FirstName varchar(255),
+        Address varchar(255),
+        City varchar(255) 
+        );
+
+    Create Table Using Another Table
+    CREATE TABLE new_table_name AS
+    SELECT column1, column2,...
+    FROM existing_table_name
+    WHERE ....;
+        CREATE TABLE TestTable AS
+        SELECT customername, contactname
+        FROM customers;
+
+    CREATE TABLE Persons (
+        ID int NOT NULL,
+        LastName varchar(255) NOT NULL,
+        FirstName varchar(255),
+        Age int,
+        PRIMARY KEY (ID)
+    );
+        CREATE TABLE Persons (
+            ID int NOT NULL PRIMARY KEY,
+            LastName varchar(255) NOT NULL,
+            FirstName varchar(255),
+            Age int
+        );
+
+    A FOREIGN KEY is a key used to link two tables together.
+    A FOREIGN KEY is a field (or collection of fields) in one table that refers to the PRIMARY KEY in another table.
+    CREATE TABLE Orders (
+        OrderID int NOT NULL,
+        OrderNumber int NOT NULL,
+        PersonID int,
+        PRIMARY KEY (OrderID),
+        FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+    );
+        CREATE TABLE Orders (
+        OrderID int NOT NULL PRIMARY KEY,
+        OrderNumber int NOT NULL,
+        PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
+        );
+
+    SELECT column1, column2, ...
+    FROM table_name;
+        SELECT * FROM table_name;
+        SELECT CustomerName, City FROM Customers;
+
+    SELECT DISTINCT column1, column2, ...
+    FROM table_name;
+        SELECT DISTINCT Country FROM Customers;
+        SELECT COUNT(Country) FROM Customers;
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition;
+        SELECT * FROM Customers WHERE Country='Mexico';
+        SELECT * FROM Customers WHERE CustomerID=1;
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition1 AND condition2 AND condition3 ...;
+        SELECT * FROM Customers WHERE Country='Germany' AND City='Berlin';
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE condition1 OR condition2 OR condition3 ...;
+        SELECT * FROM Customers WHERE Country='Germany' OR Country='Spain';
+
+    SELECT column1, column2, ...
+    FROM table_name
+    WHERE NOT condition;
+        SELECT * FROM Customers WHERE NOT Country='Germany';
+
+    INSERT INTO table_name (column1, column2, column3, ...)
+    VALUES (value1, value2, value3, ...);
+
+    //If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table.
+    INSERT INTO table_name
+    VALUES (value1, value2, value3, ...);
+        INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+        UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
+
+    DELETE FROM table_name WHERE condition;
+        DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+    SELECT MIN(column_name)
+    FROM table_name
+    WHERE condition;
+        SELECT MIN(Price) AS SmallestPrice FROM Products;
+
+    SELECT MAX(column_name)
+    FROM table_name
+    WHERE condition;
+        SELECT MAX(Price) AS LargestPrice FROM Products;
+
+SQL Joins?
+    (INNER) JOIN: Returns records that have matching values in both tables
+    LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+    RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+    FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+    SQL JOIN: A JOIN clause is used to combine rows from two or more tables, based on a related column between them. 
+        SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+    The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
+    SELECT column_name(s)
+    FROM table1
+    LEFT JOIN table2
+    ON table1.column_name = table2.column_name;
+        SELECT Customers.CustomerName, Orders.OrderID
+        FROM Customers
+        LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+        ORDER BY Customers.CustomerName;
+        
+    The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
+        SELECT column_name(s)
+    FROM table1
+    RIGHT JOIN table2
+    ON table1.column_name = table2.column_name;
+        SELECT Orders.OrderID, Employees.LastName, Employees.FirstName
+        FROM Orders
+        RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
+        ORDER BY Orders.OrderID;
+
+    SQL FULL OUTER JOIN Keyword
+    The FULL OUTER JOIN keyword return all records when there is a match in either left (table1) or right (table2) table records.
+    SELECT column_name(s)
+    FROM table1
+    FULL OUTER JOIN table2
+    ON table1.column_name = table2.column_name
+    WHERE condition;
+        SELECT Customers.CustomerName, Orders.OrderID
+        FROM Customers
+        FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID
+        ORDER BY Customers.CustomerName;
+
+    The UNION operator is used to combine the result-set of two or more SELECT statements.
+    Each SELECT statement within UNION must have the same number of columns
+    The columns must also have similar data types
+    The columns in each SELECT statement must also be in the same order
+    SELECT column_name(s) FROM table1
+    UNION
+    SELECT column_name(s) FROM table2;
+        SELECT City FROM Customers
+        UNION
+        SELECT City FROM Suppliers
+
+SQL Trigger?
+    trigger is a database object that is associated with a table. It will be activated when a defined action is executed for the table. The trigger can be executed when you run one of the following MySQL statements on the table: INSERT, UPDATE and DELETE and it can be invoked before or after the event.
+    A SQL trigger is a set of  SQL statements stored in the database catalog. A SQL trigger is executed or fired whenever an event associated with a table occurs e.g.,  insert, update or delete.
+    A SQL trigger is a special type of stored procedure. It is special because it is not called directly like a stored procedure. The main difference between a trigger and a stored procedure is that a trigger is called automatically when a data modification event is made against a table whereas a stored procedure must be called explicitly.
+
+    CREATE TRIGGER trigger_name trigger_time trigger_event
+    ON table_name
+    FOR EACH ROW
+    BEGIN
+    ...
+    END;
+
+        DELIMITER $$
+        CREATE TRIGGER before_employee_update 
+            BEFORE UPDATE ON employees
+            FOR EACH ROW 
+        BEGIN
+            INSERT INTO employees_audit
+            SET action = 'update',
+            employeeNumber = OLD.employeeNumber,
+                lastname = OLD.lastname,
+                changedat = NOW(); 
+        END$$
+        DELIMITER ;
+
+Sequelizer?
+    Sequelize is a promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite and Microsoft SQL Server. It features solid transaction support, relations, eager and lazy loading, read replication and more.
+
+    const Sequelize = require('sequelize');
+
+    // Option 1: Passing parameters separately
+    const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+    });
+
+    // Option 2: Passing a connection URI
+    const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
+
+    //testing the connection
+    sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+
+    //Modeling a table
+    const User = sequelize.define('user', {
+    // attributes
+    firstName: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    lastName: {
+        type: Sequelize.STRING
+        // allowNull defaults to true
+    }
+    }, {
+    // options
+    });
+
+    // Find all users
+    User.findAll().then(users => {
+    console.log("All users:", JSON.stringify(users, null, 4));
+    });
+
+    // Create a new user
+    User.create({ firstName: "Jane", lastName: "Doe" }).then(jane => {
+    console.log("Jane's auto-generated ID:", jane.id);
+    });
+
+    // Delete everyone named "Jane"
+    User.destroy({
+    where: {
+        firstName: "Jane"
+    }
+    }).then(() => {
+    console.log("Done");
+    });
+
+    // Change everyone without a last name to "Doe"
+    User.update({ lastName: "Doe" }, {
+    where: {
+        lastName: null
+    }
+    }).then(() => {
+    console.log("Done");
+    });
+
+Webpack?
+    Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming,bundling, or packaging just about any resource or asset.
+
+    entry: './index.js',
+    output: {
+        path: path.resolve(__dirname + '/dist'),
+        filename: 'bundle.js'
+    }
+
+    command: webpack
+
+    --mode development optimizes for build speed and debugging
+    --mode production optimizes for execution speed at runtime and output file size.
+
+    module: {
+        rules: [
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+            }
+        }
+        ]
+    }
+
+    Loaders are transformations that are applied on the source code of a module. They allow you to pre-process files as you import or “load” them. Thus, loaders are kind of like “tasks” in other build tools and provide a powerful way to handle front-end build steps. Loaders can transform files from a different language (like TypeScript) to JavaScript or inline images as data URLs. Loaders even allow you to do things like import CSS files directly from your JavaScript modules.
+
+    Code splitting is one of the most compelling features of Webpack. This feature allows you to split your code into various bundles which can then be loaded on demand or in parallel. It can be used to achieve smaller bundles and control resource load prioritization which, if used correctly, can have a major impact on load time.
+
+    Babel is a JavaScript compiler
+        Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. Here are the main things Babel can do for you:
+        Transform syntax
+        Polyfill features that are missing in your target environment (through @babel/polyfill)
+        Source code transformations (codemods)
+        And more! (check out these videos for inspiration)
+
+module.exports and require?
+    The module.exports or exports is a special object which is included in every JS file in the Node.js application by default. module is a variable that represents current module and exports is an object that will be exposed as a module. So, whatever you assign to module.exports or exports, will be exposed as a module.
+    As mentioned above, exports is an object. So it exposes whatever you assigned to it as a module.
+
+        module.exports = 'Hello world'
+        var msg = require('./Messages.js');
+        console.log(msg);
+
+    exports is an object. So, you can attach properties or methods to it.
+
+        module.exports.SimpleMessage = 'Hello world';
+        var msg = require('./Messages.js');
+        console.log(msg.SimpleMessage);
+
+Module Loaders?
+    A module loader is typically some library that can load, interpret and execute JavaScript 	modules you defined using a certain module format/syntax.
+    When you write modular JavaScript applications, you usually end up having one file per 	module. So when writing an application that consist of hundreds of modules it could get quite 	painful to make sure all files are included and in the correct order. So basically a loader will 	take care of the dependency management for you, by making sure all modules are loaded 	when the application is executed. Checkout some popular module loaders such as 	RequireJS and SystemJS to get an idea.
+
+    Module bundlers are an alternative to module loaders. Basically they do the same thing 	(manage and load interdependent modules), but do it as part of the application build rather 	than at runtime. So instead of loading dependencies as they appear when your code is 	executed, a bundler stitches together all modules into a single file (a bundle) before the 	execution. An example is Webpack or Bvrowserify.
+
+    CommonJS: The CommonJS module specification is the standard used in Node.js for working with modules. Modules let you encapsulate all sorts of functionality, and expose this functionality to other JavaScript files, as libraries. The CommonJS module specification is the standard used in Node.js for working with modules. In CommonJS, modules are loaded synchronously, and processed in the order the JavaScript runtime finds them. 
+            module.exports = 'Hello world'
+            var msg = require('./Messages.js');
+            console.log(msg);
+
+        exports is an object. So, you can attach properties or methods to it.
+            module.exports.SimpleMessage = 'Hello world';
+            var msg = require('./Messages.js');
+            console.log(msg.SimpleMessage);
+
+    ES6:ES6 Modules is the ECMAScript2015 standard for working with modules.
+    To make available certain parts of the module, use the export keyword. 
+        Export a single value or element - Use export default: export default element_name
+        Export multiple values or elements: export {element_name1,element_name2,....}.
+        To be able to consume a module, use the import keyword. 
+        Import a single value or element: import element name from module_name
+        Export multiple values or elements: import {element_name1,element_name2,....} from 	module_name.
+
+        import package from 'module-name'
+        export default str => str.toUpperCase()
+
+    Asynchronous Module Definition(AMD): The AMD module format itself is a proposal for defining modules where both the module and dependencies can be asynchronously loaded. 
+    The two key concepts you need to be aware of here are the idea of a define method for facilitating module definition and a require method for handling dependency loading. 
+    define is used to define named or unnamed modules based on the proposal using the following signature:
+        define(
+            module_id /*optional*/, 
+            [dependencies] /*optional*/, 
+            definition function /*function for instantiating the module or object*/
+        );
+
+        define('myModule', 
+        ['foo', 'bar'], 
+        // module definition function
+        // dependencies (foo and bar) are mapped to function parameters
+        function ( foo, bar ) {
+            // return a value that defines the module export
+            // (i.e the functionality we want to expose for consumption)
+        
+            // create your module here
+            var myModule = {
+                doStuff:function(){
+                    console.log('Yay! Stuff');
+                }
+            }
+    
+            return myModule;
+        });
+
+        require(['foo', 'bar'], function ( foo, bar ) {
+            // rest of your code here
+            foo.doSomething();
+        });
+
+    UMD: Universal Module Definition
+    Since CommonJS and AMD styles have both been equally popular, it seems there’s yet no consensus. This has brought about the push for a “universal” pattern that supports both styles, which brings us to none other than the Universal Module Definition.
+
+    RequireJS: RequireJS is a JavaScript file and module loader. It is optimized for in-browser use, but it can be used in other JavaScript environments
+    In a large application a lot of JavaScript files are needed, and each script tag needs a request. RequireJS is a basic loader, which is used to loads the JavaScript files, it is a framework to manage dependencies between JavaScript files, and in modular programming, all the functionality divides in different modules, so RequireJs is a best tool to assemble different JavaScript files from different modules by which it helps to improve speed and quality of your code.
+    You have to put them in a same order in which they are called, i.e. File which is dependent on other should be loaded after the dependent ones.
+
+    <script data-main="scripts/main" src="scripts/require.js"></script>
+
+    In above <script> tag by the data-main attribute require.js will start initialization of files.(path of the folder/file name).
+    data-main is uses when you have only single entry point, if you have multiple entry points then you can include it by html also.
+
+Testing?
+    It is a set o procedures to ensure the Quality of the product. Quality product delivered to the customers helps in gaining their confidence. Testing is necessary in order to provide  high quality product or software application which requires lower maintenance cost and hence results into more accurate, consistent and reliable results. Testing is required for an effective performance of software application or product. It’s important to ensure that the application should not result into any failures because it can be very expensive in the future or in the later stages of the development.
+
+    suite (describe): is a collection of test cases that are intended to be used to test a software program to show that it has some specified set of behaviours. Test suite is a container that has a set of tests which helps testers in executing and reporting the test execution status.
+
+    test (it||test): actual test function that invokes the function to test and uses assertion methods.
+
+    spy: (Supervise Function Calls, Arguments and Returned values)
+    A test spy is an object that records its interaction with other objects throughout the code base. When deciding if a test was successful based on the state of available objects alone is not sufficient, we can use test spies and make assertions on things such as the number of calls, arguments passed to specific functions, return values and more. Test spies are useful to test both callbacks and how certain functions/methods are used throughout the system under test. 
+
+    Mock: (Dummy Simulate Behavior )
+    An object under test may have dependencies on other (complex) objects. To isolate the behavior of the object you want to replace the other objects by mocks that simulate the behavior of the real objects. This is useful if the real objects are impractical to incorporate into the unit test.
+    A mock is like a stub but the test will also verify that the object under test calls the mock as expected. Part of the test is verifying that the mock was used correctly.
+    In short, mocking is creating objects that simulate the behavior of real objects.
+    Mocks are objects that register calls they receive.
+    In test assertion we can verify on Mocks that all expected actions were performed. When most people talk about Mocks what they are actually referring to are Test Doubles. A Test Double is simply another object that conforms to the interface of the required Collaborator, and can be passed in its place. There are very few classes that operate entirely in isolation. Usually they need other classes or objects in order to function, whether injected via the constructor or passed in as method parameters. These are known as Collaborators or Depencies.
+
+    Stub: (Dummy Predefined Data)
+    Stub is an object that holds predefined data and uses it to answer calls during tests. It is used when we cannot or don’t want to involve objects that would answer with real data or have undesirable side effects.
+    To avoid some inconvenient interface - for instance to avoid making actual requests to a server from tests.
+    To feed the system with known data, forcing a specific code path.
+
+    Snapshot: (Photo Screen of a state on your UI)
+    Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
+
+    Fakes: are objects that have working implementations, but not same as production one. Usually they take some shortcut and have simplified version of production code. The simplest way to think of a Fake is as a step up from a Stub. This means not only does it return values, but it also works just as a real Collaborator would.
+
+What Is Unit Testing?
+    When you test your codebase, you take a piece of code — typically a function — and verify it behaves correctly in a specific situation. Unit testing is a structured and automated way of doing this. As a result, the more tests you write, the bigger the benefit you receive. You will also have a greater level of confidence in your codebase as you continue to develop it.
+
+TDD Testing?
+    TDD is a software development technique that involves writing automated test cases prior to writing functional pieces of the code. 
+    A developer, based on requirement documents, writes an automated test case.
+    The development team runs these automated test scripts against what is currently developed and the tests fail, as they should since none of the features have been implemented yet.
+    development team functional code to ensure the automated test script gives them a green light.
+    The development team can then refactor and organize the code to produce a tested deliverable at the end of the sprint.
+
+BDD Testing?
+    BDD is a software development technique that defines the user behavior prior to writing test automation scripts or the functional pieces of code. Used in an agile sprint, this method ensures that a shippable product is generated at the end of a sprint. This involves:
+    Behavior of the user is defined by a product owner/business analyst/QA in simple English.
+    These are then converted to automated scripts to run against functional code.
+    The development team then starts writing the functional code to ensure the automated test script gives them a green light.
+    The development team can then refactor and organize the code to produce a tested deliverable at the end of the sprint.
+
+Integration Testing?
+    Integration testing is a level of software testing where individual units are combined and tested as a group. The purpose of this level of testing is to expose faults in the interaction between integrated units. Test drivers and test stubs are used to assist in Integration Testing.
+
+Functional Testing?
+    Functional testing is a type of software testing whereby the system is tested against the functional requirements/specifications.
+    Functions (or features) are tested by feeding them input and examining the output. Functional testing ensures that the requirements are properly satisfied by the application. This type of testing is not concerned with how processing occurs, but rather, with the results of processing. It simulates actual system usage but does not make any system structure assumptions.
+    Black Box Testing
+    A component is rendered correctly.
+    When a component is rendered the counter is equal to 0.
+    When we click on the button it calls the onChange function only ones.
+    When we click on the button it updates it’s own state and call an onClick function with the counter.
+
+    const wrapper = mount(<MyComponent />);
+    expect(wrapper.state().foo).to.equal(10);const wrapper = mount(<MyComponent />);
+    expect(wrapper.state().foo).to.equal(10);
+
+    const wrapper = mount(<Foo />);
+    expect(wrapper.find('.clicks-0').length).to.equal(1);
+    wrapper.find('a').simulate('click');
+    expect(wrapper.find('.clicks-1').length).to.equal(1);
+
+Testing flow?
+    Typically, functional testing involves the following steps:
+    Identify functions that the software is expected to perform.
+    Create input data based on the function’s specifications.
+    Determine the output based on the function’s specifications.
+    Execute the test case.
+    Compare the actual and expected outputs.
+
+    Import the libraries or necessary tools.
+    Group test together using a describe() block.
+    Define some beforeEach or aferEach  thats basically the setup work that needs to happen before tests run, and you have some finishing work that needs to happen after tests run.
+    Test cases usually the assertions or expectations including the definition of what the test case should do.
+
+    Can you put a describe inside a describe in testing?
+    Yes, describe() allows you to gather your tests into separate groupings within the same file, even multiple nested levels. Now, nesting is one of the most-maligned features of RSpec, because it’s easy to take it too far. When you have three or four levels of nesting, and each level runs setup code in its own beforeEach(), you have to look at many places throughout the file just to understand what’s going on in one test. 
+
+Mocha, Chai and Sinon?
+    Mocha: Testing Environment: Mocha is a JavaScript test framework for Node.js programs, featuring browser support, asynchronous testing, test coverage reports, and use of any assertion library.
+
+    Chai: Assertion Library: is an assertion library. The assert style is very similar to node.js, included assert module, with a bit of extra sugar. fail, isOk, isNotOk, equal, notEqual, isAbove, isBelow, isTrue, is False, typeOf, instanceOf.
+    Assertion functions are functions that make sure that tested variables contain the expected value.
+        var chai = require('chai');
+        var expect = chai.expect;
+        var assert = chai.assert;
+        var Add = require('../maths.js');
+
+        describe('Addition Test',function(){
+            it('should return 3 when passed one and two', function(){
+                var numberOne = 1;
+                var numberTwo = 2;
+
+                var expectedResult = 3;
+
+                var actualResult = Add(numberOne, numberTwo);
+
+                actualResult.should.equal(expectedResult);
+                expect(actualResult).to.equal(expectedResult);
+                assert.equal(actualResult,expectedResult);
+            });
+
+            it('should not return 3 when passed one and four', function(){
+                var numberOne = 1;
+                var numberTwo = 4;
+
+                var notExpectedResult = 3;
+
+                var actualResult = Add(numberOne, numberTwo);
+
+                actualResult.should.not.equal(notExpectedResult);
+                expect(actualResult).to.not.equal(notExpectedResult);
+                assert.notEqual(actualResult,notExpectedResult);
+            });
+        });
+
+    Sinon: Standalone test spies, stubs and mocks for JavaScript. Works with any unit testing framework.
+    Spies provide us with information about functions- How many times were they called, in what cases, and by whom? They are used in integration tests to make sure that the side effects of a process are as expected
+    Mocks or Fakes are faking certain modules or behaviors to test different parts of a processes.
+    Stubbing or dubbing (like doubles in movies) replaces selected functions with selected functions to ensure an expected behavior on selected modules.
+        var sinon = require('sinon');
+        var Add = require('../maths.js');
+
+        describe('Addition Test',function(){
+            it('should log result of add', function(){
+                var numerOne = 1;
+                var numberTwo = 2;
+                var logSpy = sinon.spy();
+                Add(numerOne,numberTwo,logSpy);
+                //logSpy.called.should.be.true;
+                logSpy.calledWith(3).should.be.true;
+            });
+        });
+
+Jasmine and Karma?
+    Jasmine is the framework we are going to use to create our tests. It has a bunch of functionalities to allow us the write different kinds of tests.
+    Jasmine is a javascript testing framework that supports a software development practice called Behaviour Driven Development, or BDD for short. It’s a specific flavour of Test Driven Development (TDD).
+    Jasmine, and BDD in general, attempts to describe tests in a human readable format so that non-technical people can understand what is being tested. However even if you are technical reading tests in BDD format makes it a lot easier to understand what’s going on.
+        describe('Hello world', () => { (1)
+        it('says hello', () => { (2)
+            expect(helloWorld()) (3)
+                .toEqual('Hello world!'); (4)
+        });
+        });
+        The describe(string, function) function defines what we call a Test Suite, a collection of individual Test Specs.
+        The it(string, function) function defines an individual Test Spec, this contains one or more Test Expectations.
+        The expect(actual) expression is what we call an Expectation. In conjunction with a Matcher it describes an expected piece of behaviour in the application.
+        The matcher(expected) expression is what we call a Matcher. It does a boolean comparison with the expected value passed in vs. the actual value passed to the expect function, if they are false the spec fails.
+
+    Karma is a task runner for our tests. It uses a configuration file in order to set the startup file, the reporters, the testing framework, the browser among other things.Manually running Jasmine tests by refreshing a browser tab repeatedly in different browsers every-time we edit some code can become tiresome.
+    Karma is a tool which lets us spawn browsers and run jasmine tests inside of them all from the command line. The results of the tests are also displayed on the command line.
+    Karma can also watch your development files for changes and re-run the tests automatically.
+    Karma lets us run jasmine tests as part of a development tool chain which requires tests to be runnable and results inspectable via the command line.
+    It’s not necessary to know the internals of how Karma works. When using the Angular CLI it handles the configuration for us and for the rest of this section we are going to run the tests using only Jasmine.
+
+Jest?
+    Jest is a library for testing JavaScript code. It's an open source project maintained by Facebook, and it's especially well suited for React code testing, although not limited to that: it can test any JavaScript code. the biggest feature of Jest is it’s an out of the box solution that works without having to interact with other testing libraries to perform its job.
+    const { sum} = require('./math')
+    test('Adding 1 + 1 equals 2', () => {
+    expect(sum(1, 1)).toBe(2)
+    })
+
+    expect(Promise.resolve('lemon')).resolves.toBe('lemon')
+
+    describe('first set', () => {
+    beforeEach(() => {
+        //do something
+    })
+    afterAll(() => {
+        //do something
+    })
+    test(/*...*/)
+    test(/*...*/)
+    })
+
+    Snapshot: Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
+    import React from 'react';
+    import Link from '../Link.react';
+    import renderer from 'react-test-renderer';
+
+    it('renders correctly', () => {
+    const tree = renderer
+        .create(<Link page="http://www.facebook.com">Facebook</Link>)
+        .toJSON();
+    expect(tree).toMatchSnapshot();
+    });
+
+    import TestRenderer from 'react-test-renderer'; // ES6
+    This package provides a React renderer that can be used to render React components to pure JavaScript objects, without depending on the DOM or a native mobile environment.
+
+    Essentially, this package makes it easy to grab a snapshot of the platform view hierarchy (similar to a DOM tree) rendered by a React DOM or React Native component without using a browser or jsdom.
+
+Enzyme?
+    Enzyme is a JavaScript Testing utility for React that makes it easier to test your React Components' output. 
+    To get started with enzyme, you can simply install it via npm. You will need to install enzyme along with an Adapter corresponding to the version of react  you are using.
+    npm i --save-dev enzyme enzyme-adapter-react-16.    
+
+    Shallow rendering is useful to constrain yourself to testing a component as a unit, and to ensure that your tests aren't indirectly asserting on behavior of child components.
+
+    Finds every node in the render tree of the current wrapper that matches the provided selector.
+
+    import React from 'react';
+    import App from './App';
+    import {shallow} from 'enzyme';
+    import { configure } from 'enzyme';
+    import Adapter from 'enzyme-adapter-react-16';
+    configure({ adapter: new Adapter() });
+
+    describe('<App />', ()=>{
+    it('check app text', () => {
+        const app = shallow(<App msg={'Cesar'} num1={1} num2={2}/>);
+        expect(app.find('.msg').text()).toBe('Cesar');
+    });
+    });
+
+WebScokets?
+    The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
+    Once a websocket connection is established, both client and server may send the data to each other.
+    WebSocket is especially great for services that require continuous data exchange, e.g. online games, real-time trading systems and so on.
+
+    Once the socket is created, we should listen to events on it. There are totally 4 events:
+    open – connection established,
+    message – data received,
+    error – websocket error,
+    close – connection closed.
+
+    The WebSocket API is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
+
+    WebSocket
+    The primary interface for connecting to a WebSocket server and then sending and receiving data on the connection.
+
+    CloseEvent
+    The event sent by the WebSocket object when the connection closes.
+
+    MessageEvent
+    The event sent by the WebSocket object when a message is received from the server.
+
+    WebSocket by itself does not include reconnection, authentication and many other high-level mechanisms. So there are client/server libraries for that, and it’s also possible to implement these capabilities manually.
+
+What are “streams” in Node.js? 
+    Streams are objects that allow reading of data from the source and writing of data to the destination as a continuous process.
+
+    Stream in Node.js are objects that allow reading data from a source or writing data to a specific destination in a continuous fashion. In Node.js, there are four types of streams.
+    
+    All streams created by Node.js APIs operate exclusively on strings and Buffer (or Uint8Array) objects. 
+
+    <Readable> – This is the Stream to be used for reading operation.
+    <Writable> – It facilitates the write operation.
+    <Duplex> – This Stream can be used for both the read and write operations.
+    <Transform> – It is a form of a duplex Stream, which performs the computations based on the available input.
+    All the Streams, discussed above are an instance of an “EventEmitter” class. The event thrown by the Stream varies with time. Some of the commonly used events are as follows.
+
+    <data> – This event gets fired when there is data available for reading.
+    <end> – The Stream fires this event when there is no more data to read.
+    <error> – This event gets fired when there is any error in reading or writing data.
+    <finish> – It fires this event after it has flushed all the data to the underlying system.
+
+    Readable: HTTP Responses Client, HTTP Request Server, fs read, TCP sockets, process.stdin
+
+    Writable: HTTP request client, HTTP response Server, fs write, TCP sockets, process.stdout, process.stderr
+
+    The readable.pipe() method attaches a Writable stream to the readable, causing it to switch automatically into flowing mode and push all of its data to the attached Writable. The flow of data will be automatically managed so that the destination Writable stream is not overwhelmed by a faster Readable stream.
+    The following example pipes all of the data from the readable into a file named file.txt:
+    const fs = require('fs');
+    const readable = getReadableStreamSomehow();
+    const writable = fs.createWriteStream('file.txt');
+    // All the data from readable goes into 'file.txt'.
+    readable.pipe(writable);
+    It is possible to attach multiple Writable streams to a single Readable stream.
+    The readable.pipe() method returns a reference to the destination stream making it possible to set up chains of piped streams:
+    const fs = require('fs');
+    const r = fs.createReadStream('file.txt');
+    const z = zlib.createGzip();
+    const w = fs.createWriteStream('file.txt.gz');
+    r.pipe(z).pipe(w);
+
+Node Readline?
+    To use this module, do require('readline'). Readline allows reading of a stream (such as STDIN) on a line-by-line basis.
+
+    Note that once you've invoked this module, your node program will not terminate until you've closed the interface, and the STDIN stream. Here's how to allow your program to gracefully terminate:
+
+    const readline = require('readline');
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.question('Please enter the first number : ', (answer1) => {
+        rl.question('Please enter the second number : ', (answer2) => {
+            var result = (+answer1) + (+answer2);
+            console.log(`The sum of above two numbers is ${result}`);
+            rl.close();
+        });
+    });
+
+    Instances of the readline.Interface class are constructed using the readline.createInterface() method. Every instance is associated with a single input Readable stream and a single output Writable stream. The output stream is used to print prompts for user input that arrives on, and is read from, the input stream.
+
+    The rl.close() method closes the readline.Interface instance and relinquishes control over the input and output streams. When called, the 'close' event will be emitted.
+    Calling rl.close() does not immediately stop other events (including 'line') from being emitted by the readline.Interface instance.
+
+    The rl.question() method displays the query by writing it to the output, waits for user input to be provided on input, then invokes the callback function passing the provided input as the first argument.
+    When called, rl.question() will resume the input stream if it has been paused.
+    If the readline.Interface was created with output set to null or undefined the query is not written.
+    query <string> A statement or query to write to output, prepended to the prompt.
+    callback <Function> A callback function that is invoked with the user's input in response to the query.
+
+Readline CLI?
+
+    The 'line' event is emitted whenever the input stream receives an end-of-line input (\n, \r, or \r\n). This usually occurs when the user presses the <Enter>, or <Return> keys.
+
+    The rl.setPrompt() method sets the prompt that will be written to output whenever rl.prompt() is called.
+
+    The rl.prompt() method writes the readline.Interface instances configured prompt to a new line in output in order to provide a user with a new location at which to provide input.
+
+    var readline = require('readline'),
+    rl = readline.createInterface(process.stdin, process.stdout);
+    rl.setPrompt('OHAI> ');
+    rl.prompt();
+    rl.on('line', function(data) {
+    if(data==='Cesar'){
+        console.log('Encinas!');
+    } else if(data==='Leslie'){
+        console.log('Gaxiola');
+    } else {
+        console.log('Unknown');
+    }
+    rl.prompt();
+    }).on('close', function() {
+        console.log('Have a great day!');
+        process.exit(0);
+    });
+
+createStream vs readFile?
+    While the fs.readfile loads the whole file into the memory you pointed out, the fs.createReadStream, on the other hand, reads the entire file in chunks of sizes that you specified. The client will also receive the data faster with fs.createReadStream since it is sent in chunks while it’s being read. The fs.readfile, however, reads the whole file first before it’s sent to the client. This can be negligible if the file size is small, but makes such a great difference where the disks are slow and the file content isbig.
+
+REPL?
+    A Read-Eval-Print-Loop (REPL) is available both as a standalone program and easily includable in other programs. REPL provides a way to interactively run JavaScript and see the results. It can be used for debugging, testing, or just trying things out.
+    node on the terminal.
+    .break - When in the process of inputting a multi-line expression, entering the .break command (or pressing the <ctrl>-C key combination) will abort further input or processing of that expression.
+    .clear - Resets the REPL context to an empty object and clears any multi-line expression currently being input.
+    .exit - Close the I/O stream, causing the REPL to exit.
+    .help - Show this list of special commands.
+    .save - Save the current REPL session to a file: > .save ./file/to/save.js
+    .load - Load a file into the current REPL session. > .load ./file/to/load.js
+    .editor - Enter editor mode (<ctrl>-D to finish, <ctrl>-C to cancel).
+
+What are exit codes in Node.js? 
+    Exit codes are specific codes that are used to end a “process” (a global object used to represent a node process). 
+    We can exit Node.js programs using the explicit process.exit function call. The process.exit function exits from the current Node.js process. It takes an exit code, which is an integer.
+    process.exit()
+    
+    Examples of exit codes include:
+    Unused.
+    Uncaught Fatal Exception.
+    Fatal Error.
+    Non-function Internal Exception Handler.
+    Internal Exception handler Run-Time Failure.
+    Internal JavaScript Evaluation Failure.
+
+What are Globals in Node.js?
+    Three keywords in Node.js constitute as Globals:
+
+    Global – it represents the Global namespace object and acts as a container for all other <global> objects. The Global keyword represents the global namespace object. It acts as a container for all other <global> objects. If we type <console.log(global)>, it’ll print out all of them.
+    An important point to note about the global objects is that not all of them are in the global scope, some of them fall in the module scope. So, it’s wise to declare them without using the var keyword or add them to Global object.
+    Variables declared using the var keyword become local to the module whereas those declared without it get subscribed to the global object.
+
+    process
+    require()
+    __filename
+    __dirname
+    module
+    exports
+    setTimeout()
+    clearTimeout()
+    setInterval()
+    clearInterval()
+
+    Process – The process object is a global that provides information about, and control over, the current Node.js process. It is one of the global objects but can turn a synchronous function into an async callback. It can be accessed from anywhere in the code and it primarily gives back information about the application or the environment.
+    It is also one of the global objects but includes additional functionality to turn a synchronous function into an async callback. There is no boundation to access it from anywhere in the code. It is the instance of the EventEmitter class. And each node application object is an instance of the Process object.
+
+    Buffer – it is a class in Node.js to handle binary data. 
+    The Buffer is a class in Node.js to handle binary data. It is similar to a list of integers but stores as a raw memory outside the V8 heap.
+    We can convert JavaScript string objects into Buffers. But it requires mentioning the encoding type explicitly.
+    <ascii> – Specifies 7-bit ASCII data.
+    <utf8> – Represents multibyte encoded Unicode char set.
+    <utf16le> – Indicates 2 or 4 bytes, little endian encoded Unicode chars.
+    <base64> – Used for Base64 string encoding.
+    <hex> – Encodes each byte as two hexadecimal chars.
+
+NodeJS Basic Server?
+    http built in module    
+    http.createServer(callback)
+    callback(req, res)
+    res.write()
+    res.end()
+    server.lsiten(port, callback2)
+
+    var http = require('http');
+    //create a server object:
+    http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'}); // http header
+    var url = req.url;
+    if(url ==='/about'){
+        res.write('<h1>about us page<h1>'); //write a response
+        res.end(); //end the response
+    }else if(url ==='/contact'){
+        res.write('<h1>contact us page<h1>'); //write a response
+        res.end(); //end the response
+    }else{
+        res.write('<h1>Hello World!<h1>'); //write a response
+        res.end(); //end the response
+    }
+    }).listen(3000, function(){
+    console.log("server start at port 3000"); //the server object listens on port 3000
+    });
+
+NodeJS Advance Server?
+    const http = require('http');
+    const url = require('url');
+
+    //create a server object:
+    http.createServer(function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/html'}); // http header
+    const parts = url.parse(req.url, true);
+    const {query, pathname} = parts;
+
+    if(pathname ==='/query'){   
+        if(req.method === 'GET'){
+            const {name, age} = query;
+            res.write(`<h1>My Names is ${name} and I am ${age} years old<h1>`); //write a response
+        } else {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.write('Error'); //write a response
+        }
+        res.end(); //end the response
+    } else if(pathname ==='/add'){
+        if(req.method === 'POST'){
+            let body = '';
+            let user = {};
+            req.on('data', chunk => {
+                body += chunk; // convert Buffer to string
+            });
+            req.on('end', () => {
+                user = JSON.parse(body);
+                console.log(user.username);
+                res.write(`<h1>Welcome ${user.username} <h1>`); //write a response
+                res.end();
+            });
+        } else {
+            res.writeHead(404, {'Content-Type': 'text/html'});
+            res.write('Error'); //write a response
+            res.end(); //end the response
+        }
+    } else{
+        res.write('<h1>Hello World!<h1>'); //write a response
+        res.end(); //end the response
+    }
+    }).listen(3000, function(){
+    console.log("server start at port 3000"); //the server object listens on port 3000
+    });
+
+
+NodeJS Basic Express Server?
+    const express = require('express');
+    const app = express();
+
+    app.use(express.json({type: '*/*'}));
+    app.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        next();
+    });
+
+    app.listen(3000, () => console.log(`App is listening on port ${3000}`));
+
+    app.post('/', (req, res)=>{
+        console.log(req.body);
+        res.send('hi');
+    });
+
+NodeJS Server https?
+    var fs = require('fs');
+    var http = require('http');
+    var https = require('https');
+    var privateKey  = fs.readFileSync('certificates/key.pem', 'utf8');
+    var certificate = fs.readFileSync('certificates/cert.pem', 'utf8');
+    var credentials = {key: privateKey, cert: certificate};
+    var express = require('express');
+    var app = express();
+    // your express configuration here
+    var httpServer = http.createServer(app);
+    var httpsServer = https.createServer(credentials, app);
+    // For http
+    httpServer.listen(8080);
+    // For https
+    httpsServer.listen(8443);
+    app.get('/', function (req, res) {
+        res.header('Content-type', 'text/html');
+        return res.end('<h1>Hello, Secure World!</h1>');
+    });
+
+Node Clusters?
+    A single instance of Node runs in a single thread. To take advantage of multi-core systems the user will sometimes want to launch a cluster of Node processes to handle the load.
+    The cluster module allows you to easily create a network of processes that all share server ports.
+
+    Cluster Module — Cores Engagement:
+    NodeJs single-threaded nature is by default using a single core of a processor for code execution.
+    The cluster mode allows networked Node.js applications (http(s)/tcp/udp server) to be scaled accross all CPUs available, without any code modifications. This greatly increases the performance and reliability of your applications, depending on the number of CPUs available.
+
+    In Node, a cluster is a network of processes that share a single server port. Each process running in cluster-mode is capable of running on a separate CPU.
+
+    This means the optimal number of processes a cluster can have would depend on the number of CPU cores available on the executing machine.
+
+    What is a process?
+    A process is an instance of a program running on a single CPU. When you execute a program you have written, it becomes a process.
+
+    What is a port?
+    A network port is a software construct that serves as a communication endpoint, used to identify a process or application in a network.
+    A port is usually process or application specific. This means that if a process uses a port 3000, no other process can use that port while the first process exists.
+
+    When running in cluster-mode, a process may be either a Master or Fork process.
+    The first process is always the master process, and it creates forks of itself which become Fork / Worker processes.
+
+    In our program, we determine the number of available CPU cores on my development machine (it’s four, by the way), then we make forks/clones of our master process as seen in …
+    A process can determine whether it is a master or fork process and act accordingly, which is why we have 
+    When a process determines that it is a fork, it starts an express instance, and begins serving HTTP requests.
+    It is important to note that fork processes may terminate due to exceptions, and it may be important to restart them when they do.
+
+    cluster.fork() #
+    Spawn a new worker process. This can only be called from the master process.
+
+    cluster.isWorker #
+    Boolean flags to determine if the current process is a master or a worker process in a cluster.
+    
+    cluster.isMaster # A process isMaster if process.env.NODE_WORKER_ID is undefined.
+
+    When any of the workers die the cluster module will emit the 'death' event. This can be used to restart the worker by calling fork() again.
+
+    const express = require('express');
+    const path = require('path');
+    const cluster = require('cluster');
+    const os = require('os');
+
+    if (cluster.isMaster) {
+        const cpuCount = os.cpus().length
+        for (let i = 0; i < cpuCount; i++) {
+            cluster.fork()
+        }
+    }
+    else {
+        const app = express();
+
+        app.use(express.json({type: '*/*'}));
+
+        app.use('/', express.static(path.join(__dirname, 'public')));
+
+        app.use((req, res, next) => {
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            next();
+        });
+        app.listen(3000,()=>{
+            console.log('Listen on Port 3000');
+        });
+
+        app.get('/user', (req, res)=>{
+            res.send('Hi');
+        });
+    }
+
+    cluster.on('exit', (worker) => {
+        console.log('mayday! mayday! worker', worker.id, ' is no more!');
+        cluster.fork();
+    });
+
+    loadtest -t 20 -c 30000 --rps 1000  http://localhost:3000/
+
+PM2?
+    Pm2 is a process management module for Node.js applications. It is used to start and monitor Node.js application so if the application goes down ( for example if the node index.js process dies) the process manager will restart the app immediately making it available once again.
+
+    A production process manager for Node.js applications that has a built-in load balancer. PM2 enables you to keep applications alive forever, reloads them without downtime, helps you to manage application logging, monitoring, and clustering.
+
+    you will be presented with a table containing all the applications you have added to Pm2. In our case, since this is our first app, the table only has one entry. Please note that using that command will give an automatic name to the application which you will have to then use as a reference when executing pm2 commands against the application. 
+    │ App name │ id │ version │ mode │ pid │ status  │ restart │ uptime │ cpu │ mem    │ user │ watching │
+
+    pm2 start app.js --name "my-api"
+    pm2 stop my-api
+
+    pm2 start process_prod.json — Start process(es) via process JSON file
+    pm2 ls — Show a list of all applications
+    pm2 stop <app> — Stops a specific application
+    pm2 start <app> — Starts a specific application
+    pm2 kill — Kills all running applications
+    pm2 restart — Restarts all running applications
+    pm2 reload — Reloads the app configuration (this comes in handy when you modify your application’s environment variables)
+    
+TCP server/client with net module?
+    var net = require('net');
+    var options = {host:'localhost', port: 9999}
+    //create and return a net.Socket object to represent TCP client.
+    var client = net.createConnection(options, callback)
+    // When receive server send back data.
+    client.on('data', function (data) {
+        console.log('Server return data : ' + data);
+    });
+    'data', 'error', 'end', 'timeout'
+    client.setEncoding('utf-8');
+    client.setTimeout(1000);
+
+
+    // Create and return a net.Server object, the function will be invoked when client connect to this server.
+    var server = net.createServer(function(client) {})
+    client.on('data', function (data) {});
+    // Make the server a TCP server listening on port 9999.
+    server.listen(9999, callback);
+
+TCP Socket Chat?
+    const server = require('net').createServer();
+    let counter = 0;
+    let sockets = {};
+    server.on('connection', socket => {
+        socket.id = counter++;
+        sockets[socket.id] = socket;
+        sockets[socket.id].message = '';
+
+        console.log('Client Connected');
+        socket.write('Welcome New Client!');
+        socket.write('\n\r');
+
+        socket.on('data', chunk => {
+            sockets[socket.id].message += chunk.toString();
+            if(JSON.stringify(chunk)==='{"type":"Buffer","data":[13,10]}'){
+                Object.entries(sockets).forEach(([key, cs])=>{
+                    cs.write(`${socket.id}: `);
+                    cs.write(sockets[socket.id].message);
+                });
+                sockets[socket.id].message = '';
+            }
+
+        });
+
+        socket.on('end', ()=>{
+            delete sockets[socket.id];
+            console.log('Client disconnected');
+        });
+    });
+
+    server.listen(5000, ()=>{console.log('Server Bound')});
+
+
+Packages?
+    jsonwebtoken: Implements the sign and verify for a json web token.
+        import * as jwt from 'jsonwebtoken';
+        const payload = {email: email, id: id};
+        const secret = 'secret';
+        const signOptions = {expiresIn:  "12h"};
+        const token = jwt.sign(payload, secret, signOptions);
+        const decoded = jwt.verify(token, 'secret'); //calls an error if failed
+
+    axios: Axios is a promise based HTTP client for the browser and Node.js. Axios makes it easy to send asynchronous HTTP requests to REST endpoints and perform CRUD operations for the browser and node.js.
+
+        Using Axios has quite a few advantages over the native Fetch API:
+            supports older browsers (Fetch needs a polyfill)
+            has a way to abort a request
+            has a way to set a response timeout
+            has built-in CSRF protection
+            supports upload progress
+            performs automatic JSON data transformation
+            works in Node.js
+
+        The Axios response object consists of:
+            data - the payload returned from the server
+            status - the HTTP code returned from the server
+            statusText - the HTTP status message returned by the server
+            headers - headers sent by server
+            config - the original request configuration
+            request - the request object
+
+        You can start an HTTP request from the axios object:
+            axios({
+            url: 'https://dog.ceo/api/breeds/list/all',
+            method: 'get',
+            data: {
+                foo: 'bar'
+            }
+            })
+
+        but for convenience, you will generally use
+            axios.get()
+            axios.post()
+            axios.get('https://dog.ceo/api/breeds/list/all')
+            axios.post('https://site.com/', {foo: 'bar'})
+
+        const config = {
+            headers: {
+                authorization: 'authorization',
+            }
+        };
+        axios.post(url_auth_be + '/check-auth',{username: 'Cesar'}, config)
+        .then(function (response) {
+            console.log(response.data, 'response data check auth');
+        })
+        .catch((e) => {
+            console.log('Check auth error');
+            res.send('Unauthorized');
+        });
+
+    node-fetch: A light-weight module that brings window.fetch to Node.js.
+        Stay consistent with window.fetch API.
+        Use native promise, but allow substituting it with [insert your favorite promise library].
+        Use native Node streams for body, on both request and response.
+        Decode content encoding (gzip/deflate) properly, and convert string output (such as res.text() and res.json()) to UTF-8 automatically.
+        explicit errors for troubleshooting.
+
+        const fetch = require('node-fetch');
+
+        const body = { a: 1 };
+        fetch('https://httpbin.org/post', {
+                method: 'post',
+                body:    JSON.stringify(body),
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(res => res.json())
+            .then(json => console.log(json));
+
+    body-parser: Node.js body parsing middleware. Parse incoming request bodies in a middleware before your handlers, available under the req.body property. You need to use bodyParser() if you want the form data to be available in req.body.
+        var bodyParser = require('body-parser');
+        Returns middleware that only parses json and only looks at requests where the Content-Type header matches the type option. This parser accepts any Unicode encoding of the body and supports automatic inflation of gzip and deflate encodings.
+        A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body).
+        app.use(bodyParser.json());
+
+
+    cookie-parser: Parse Cookie header and populate req.cookies with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a secret string, which assigns req.secret so it may be used by other middleware.
+        var cookieParser = require('cookie-parser')
+        app.use(cookieParser());
+        app.get('/', function (req, res) {
+        // Cookies that have not been signed
+        console.log('Cookies: ', req.cookies)
+        })
+
+    morgan: HTTP request logger middleware for node.js
+        var morgan = require('morgan')
+        morgan(format, options): Create a new morgan logger middleware function using the given format and options. The format argument may be a string of a predefined name (see below for the names), a string of a format string, or a function that will produce a log entry.
+        The format function will be called with three arguments tokens, req, and res, where tokens is an object with all defined tokens, req is the HTTP request and res is the HTTP response. The function is expected to return a string that will be the log line, or undefined / null to skip logging.
+        formats:
+        combined -> :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
+        common -> :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]
+        dev -> :method :url :status :response-time ms - :res[content-length]
+        tiny -> :method :url :status :res[content-length] - :response-time ms
+
+    winston: Winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each winston logger can have multiple transports (see: Transports) configured at different levels (see: Logging levels). 
+        The recommended way to use winston is to create your own logger. The simplest way to do this is using winston.createLogger:
+        const logger = winston.createLogger({
+        level: 'info',
+        format: winston.format.json(),
+        defaultMeta: { service: 'user-service' },
+        transports: [
+            //
+            // - Write to all logs with level `info` and below to `combined.log` 
+            // - Write all logs error (and below) to `error.log`.
+            //
+            new winston.transports.File({ filename: 'error.log', level: 'error' }),
+            new winston.transports.File({ filename: 'combined.log' })
+        ]
+        });
+        app.use(morgan('combined', { stream: winston.stream }));
+
+    Bcrypt: A library to help you hash passwords. The bcrypt hashing function allows us to build a password security platform that scales with computation power and always hashes every password with a salt.
+
+        Hashing is the practice of using an algorithm to map data of any size to a fixed length. This is called a hash value (or sometimes hash code or hash sums or even a hash digest if you’re feeling fancy). Whereas encryption is a two-way function, hashing is a one-way function. While it’s technically possible to reverse-hash something, the computing power required makes it unfeasible. Hashing is one-way.
+
+        Salting is a concept that typically pertains to password hashing. Essentially, it’s a unique value that can be added to the end of the password to create a different hash value. This adds a layer of security to the hashing process, specifically against brute force attacks. A brute force attack is where a computer or botnet attempt every possible combination of letters and numbers until the password is found.
+
+        bcrypt.genSalt(saltRounds, function(err, salt) {
+            bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
+                // Store hash in your password DB.
+            });
+        });
+
+        bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+        // Store hash in your password DB.
+        });
+
+        // Load hash from your password DB.
+        bcrypt.compare(myPlaintextPassword, hash).then(function(res) {
+            // res == true
+        });
+        bcrypt.compare(someOtherPlaintextPassword, hash).then(function(res) {
+            // res == false
+        });
+
+    moment: A lightweight JavaScript date library for parsing, validating, manipulating, and formatting dates.
+        moment().format('MMMM Do YYYY, h:mm:ss a'); // July 10th 2019, 1:36:39 pm
+        moment().format('dddd');                    // Wednesday
+        moment().format("MMM Do YY");               // Jul 10th 19       
+        moment().startOf('day').fromNow();        // 14 hours ago
+        moment().endOf('day').fromNow();          // in 10 hours
+        moment().startOf('hour').fromNow();     
+
+    socket.io: Socket.IO enables real-time bidirectional event-based communication. It consists of: a Node.js server and a Javascript client library for the browser (or a Node.js client).
+
+        const server = require('http').createServer();
+        const io = require('socket.io')(server);
+        io.on('connection', client => {
+        client.on('event', data => { /* … */ });
+        client.on('disconnect', () => { /* … */ });
+        });
+        server.listen(3000);
+
+        const io = require('socket.io')();
+        io.on('connection', client => { ... });
+        io.listen(3000);
+
+        socket.emit() // Emitter
+        socket.on() // Listener
+
+    UUID: Simple, fast generation of RFC4122 UUIDS. Universal Unique IDentifierS
+        Version 1 (timestamp):
+        const uuidv1 = require('uuid/v1');
+        uuidv1(); // ⇨ '45745c60-7b1a-11e8-9c9c-2d42b21b1a3e'
+
+        Version 4 (random):
+        const uuidv4 = require('uuid/v4');
+        uuidv4(); // ⇨ '10ba038e-48da-487b-96e8-8d3b99b6d18a'
+
+    lodash: Lodash makes JavaScript easier by taking the hassle out of working with arrays, numbers, objects, strings, etc.
+    Lodash’s modular methods are great for:
+        Iterating arrays, objects, & strings
+        Manipulating & testing values
+        Creating composite functions
+        var _ = require('lodash');
+
+        _.flatten([1, [2, [3, [4]], 5]]);
+        // => [1, 2, [3, [4]], 5]
+
+        _.flattenDeep([1, [2, [3, [4]], 5]]);
+        // => [1, 2, 3, 4, 5]
+
+        var object = { 'a': 1, 'b': '2', 'c': 3 };
+        _.omit(object, ['a', 'c']);
+        // => { 'b': '2' }
+
+        var abc = function(a, b, c) {
+        return [a, b, c];
+        };
+        
+        var curried = _.curry(abc);
+        curried(1)(2)(3);
+        // => [1, 2, 3]
+
+    nodemailer: Send e-mails from Node.js
+        var nodemailer = require('nodemailer');
+
+        var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+                user: '
+        youremail@address.com',
+                pass: 'yourpassword'
+            }
+        });
+
+        const mailOptions = {
+        from: 'sender@email.com', // sender address
+        to: 'to@email.com', // list of receivers
+        subject: 'Subject of your email', // Subject line
+        html: '<p>Your html here</p>'// plain text body
+        };
+
+        transporter.sendMail(mailOptions, function (err, info) {
+        if(err)
+            console.log(err)
+        else
+            console.log(info);
+        });
+
+    Multer: Node.js middleware for handling multipart/form-data.
+        var multer  = require('multer')
+        var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, '/tmp/my-uploads')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now())
+        }
+        })
+        var upload = multer({ storage: storage, limits:{fileSize: 10} }).single('avatar')
+        app.post('/profile', upload, function (req, res, next) {
+        // req.file is the `avatar` file
+        // req.body will hold the text fields, if there were any
+        })
+
+    Pdfkit: PDFKit is a PDF document generation library for Node and the browser that makes creating complex, multi-page, printable documents easy. The API embraces chainability, and includes both low level functions as well as abstractions for higher level functionality. The PDFKit API is designed to be simple, so generating complex documents is often as simple as a few function calls.
+        const PDFDocument = require('pdfkit');
+
+        // Create a document
+        const doc = new PDFDocument;
+
+        // Pipe its output somewhere, like to a file or HTTP response
+        // See below for browser usage
+        doc.pipe(fs.createWriteStream('output.pdf'));
+
+        // Embed a font, set the font size, and render some text
+        doc.font('fonts/PalatinoBold.ttf')
+        .fontSize(25)
+        .text('Some text with an embedded font!', 100, 100);
+
+        // Add an image, constrain it to a given size, and center it vertically and horizontally
+        doc.image('path/to/image.png', {
+        fit: [250, 300],
+        align: 'center',
+        valign: 'center'
+        });
+
+        // Add another page
+        doc.addPage()
+        .fontSize(25)
+        .text('Here is some vector graphics...', 100, 100);
+
+        // Draw a triangle
+        doc.save()
+        .moveTo(100, 150)
+        .lineTo(100, 250)
+        .lineTo(200, 250)
+        .fill("#FF3300");
+
+        // Apply some transforms and render an SVG path with the 'even-odd' fill rule
+        doc.scale(0.6)
+        .translate(470, -380)
+        .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
+        .fill('red', 'even-odd')
+        .restore();
+
+        // Add some text with annotations
+        doc.addPage()
+        .fillColor("blue")
+        .text('Here is a link!', 100, 100)
+        .underline(100, 100, 160, 27, {color: "#0000FF"})
+        .link(100, 100, 160, 27, 'http://google.com/');
+
+        // Finalize PDF file
+        doc.end();
+
+Gulp?
+    Gulp is a JavaScript task runner that allows to runs custom defined repetitious tasks and manages process automation.
+        building and minifyng libraries and stylesheets.
+        automatically refresh your browser after saving a file.
+        compilation from scss to css and from es6 to es5.
+        run unit test every time a file is saved.
+
+    Workflow:
+        Define the task you want to accomplish.
+        Lopad files to be processed into the gulp stream. Once files are in the stream, modifications are made.
+        Send the new files to a specified location.
+
+    What makes Gulp different from other task runners is that it uses Node streams, piping output from one task as an input to the next. It reads a file once, processes it through multiple tasks, and then writes the output file. This results in faster builds because there is no need to create and read intermediary files on hard drive.
+
+    vinyl: Vinyl is a metadata object that describes a file. The main properties of a Vinyl instance are path and contents - core aspects of a file on your file system. Vinyl objects can be used to describe files from many sources - on a local file system or any remote storage option.
+
+    Globs: A glob is a string of literal and/or wildcard characters, like *, **, or !, used to match filepaths. Globbing is the act of locating files on a file system using one or more globs.
+
+    gulp.task(js, function(){
+        return gulp
+            .src('src/js./**/*.js')
+            .pipe(uglify())
+            .pipe(gulp.dest('./dist/js/));
+    });
+
+    gulpfile.js:
+
+    gulp-sass, gulp-mocha, gulp-rename, gulp-uglify.
+
+    gulp.task(name, fn): Defines a task within the task system. The task can then be accessed from the command line and the series(), parallel(), and lastRun() APIs.
+
+    gulp.src(): Creates a stream for reading Vinyl objects from the file system.
+    gupl.dest(): Creates a stream for writing Vinyl objects to the file system.
+    gulp.pipe(fn): transforms stream using the provided gulp function.
+
+    gulp.series('name1, name2, ...): Combines task functions and/or composed operations into larger operations that will be executed one after another, in sequential order. There are no imposed limits on the nesting depth of composed operations using series() and parallel().
+
+    gulp.parallel(): Combines task functions and/or composed operations into larger operations that will be executed simultaneously. There are no imposed limits on the nesting depth of composed operations using series() and parallel().
+
+    gulp.watch(file location, gulp.series): Allows watching and running a task when a change occurs. Tasks are handled uniformly with the rest of the task system.
+
+    browserSync: static server to reload the page on('change').
+
+    *.js Matches any amount - including none - of characters within a single segment. 
+
+    scripts/**/*.js Matches any amount - including none - of characters across segments. Useful for globbing files in nested directories. 
+
+Redis?
+    Redis is very powerful in-memory data-store that we can use in our applications. It’s very simple to save and get data without much overhead. 
+    Redis is used as a database and for cache since it’s super fast due to the fact that the data is stored “in-memory” contrary to other databases in which the data is usually stored “on-disk”.
+    Even though the data is in memory, a snapshot is taken to save the current database contents into the disk which is great to recover from unexpected server shutdowns with only loosing the last few minutes of information, this is called RDB and it’s enabled by default saving, every couple of minutes after X number of changes in the database.
+
+    var redis = require('redis');
+    var client = redis.createClient();
+    client.on('connect', function() {
+        console.log('Redis client connected');
+    });
+    client.on('error', function (err) {
+        console.log('Something went wrong ' + err);
+    });
+
+    client.set('my test key', 'my test value', redis.print);
+    client.get('my test key', function (error, result) {
+        if (error) {
+            console.log(error);
+            throw error;
+        }
+        console.log('GET result ->' + result);
+    });
