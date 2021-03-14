@@ -1,0 +1,29 @@
+info 2021-03-14T08:24:14.689Z: GET - {} - /getTodos
+info 2021-03-14T08:25:33.876Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:25:33.880Z: GET - {} - /getTodos
+info 2021-03-14T08:25:34.151Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:25:34.155Z: GET - {} - /getTodos
+info 2021-03-14T08:25:34.665Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:25:34.670Z: GET - {} - /getTodos
+info 2021-03-14T08:25:35.211Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:25:35.216Z: GET - {} - /getTodos
+info 2021-03-14T08:26:29.796Z: GET - {} - /getTodos
+info 2021-03-14T08:26:32.678Z: POST - {"text":"Lower Body Workout"} - /postTodo
+info 2021-03-14T08:26:32.683Z: GET - {} - /getTodos
+info 2021-03-14T08:26:33.356Z: GET - {} - /getTodos
+info 2021-03-14T08:26:34.620Z: DELETE - {} - /deleteTodo/85df463f-efda-4dd0-a9cd-8326db204d4c
+info 2021-03-14T08:26:34.625Z: GET - {} - /getTodos
+info 2021-03-14T08:26:35.724Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:26:35.729Z: GET - {} - /getTodos
+info 2021-03-14T08:26:36.071Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:26:36.075Z: GET - {} - /getTodos
+info 2021-03-14T08:26:36.633Z: POST - {"text":"Lower Body Workout"} - /postTodo
+info 2021-03-14T08:26:36.639Z: GET - {} - /getTodos
+info 2021-03-14T08:26:37.344Z: PATCH - {} - /patchTodo/455ec838-cf04-4ccb-b405-1d01e91f6a5e
+info 2021-03-14T08:26:37.350Z: GET - {} - /getTodos
+info 2021-03-14T08:26:38.379Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:26:38.384Z: GET - {} - /getTodos
+info 2021-03-14T08:26:39.420Z: PATCH - {} - /patchTodo/7e8317d4-ba09-4cdf-9176-2f417d05edae
+info 2021-03-14T08:26:39.425Z: GET - {} - /getTodos
+info 2021-03-14T08:26:39.841Z: PATCH - {} - /patchTodo/455ec838-cf04-4ccb-b405-1d01e91f6a5e
+info 2021-03-14T08:26:39.845Z: GET - {} - /getTodos

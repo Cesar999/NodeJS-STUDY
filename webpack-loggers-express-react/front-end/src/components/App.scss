@@ -1,0 +1,17 @@
+.App {
+    background-color: #213255;
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    min-width: 400px;
+
+    .button-getTodos {
+        padding: 5px;
+        cursor: pointer;
+        border:none;
+        background-color: white;
+        color: #213255;
+        font-weight: bold;
+    }
+}

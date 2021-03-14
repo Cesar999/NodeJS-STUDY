@@ -1,0 +1,33 @@
+.Todo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #a43030;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 500px;
+    margin: auto;
+
+    &.done {
+        text-decoration: line-through;
+        color: gray;
+    }
+
+    .text {
+        margin-left: 15px;
+    }
+
+    .date {
+        margin-left: 15px;
+    }
+
+    .removeButton {
+        margin-left: auto;
+        cursor: pointer;
+        border: none;
+        background-color: white;
+        color: #a43030;
+        font-weight: bold;
+    }
+}
