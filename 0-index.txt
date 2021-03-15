@@ -232,6 +232,8 @@ Webpack?
 
     ts-loader: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. In this guide we will learn how to integrate TypeScript with webpack.
 
+    ts-node: TypeScript execution and REPL for node.js, with source map support.
+
     webpack-dev-middleware: An express-style development middleware for use with webpack bundles and allows for serving of the files emitted from webpack. This should be used for development only.
 
     types/node This package contains type definitions for Node.js (http://nodejs.org/).
@@ -540,6 +542,29 @@ How to implement Express Middleware?
         } else {res.status(401).send({msg: 'No Authenticated', auth: false});}
         }
     }
+
+Loggers?
+    winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each winston logger can have multiple transports configured at different levels . For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
+    winston aims to decouple parts of the logging process to make it more flexible and extensible. Attention is given to supporting flexibility in log formatting levels, and ensuring those APIs decoupled from the implementation of transport logging to the API that they exposed to the programmer.
+
+        levels: Logging levels in winston conform to the severity ordering specified by RFC5424: severity of all levels is assumed to be numerically ascending from most important to least important.
+        Each level is given a specific integer priority. The higher the priority the more important the message is considered to be, and the lower the corresponding integer priority.
+
+        transports: There are several core transports included in winston, which leverage the built-in networking and file I/O offered by Node.js core. In addition, there are additional transports written by members of the community.
+
+        formats: winston can be accessed from winston.format. They are implemented in logform, a separate module from winston. This allows flexibility when writing your own transports in case you wish to include a default format with your transport. In modern versions of node template strings are very performant and are the recommended way for doing most end-user formatting. If you want to bespoke format your logs, winston.format.printf is for yo
+
+        https://github.com/winstonjs/winston
+
+    morgan: HTTP request logger middleware for node.js
+
+    morgan(format, options): Create a new morgan logger middleware function using the given format and options. The format argument may be a string of a predefined name (see below for the names), a string of a format string, or a function that will produce a log entry.
+    Predefined Formats: (combined, common, dev, short, tiny)
+
+    morgan.compile(format): Compile a format string into a format function for use by morgan. A format string is a string that represents a single log line and can utilize token syntax.
+    Predefined string helpers: (:date[format], :method, :remote-addr, :remote-user, :req[header], :res[header], :response-time[digits], :status, :url :user-agent)
+
+    https://github.com/expressjs/morgan
 
 REST API?
     A RESTful API is an application program interface (API) that uses HTTP requests to GET, PUT, POST and DELETE data.
