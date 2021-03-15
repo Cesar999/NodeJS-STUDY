@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { createToken } = require('./auth.js');
 const {findUser, saveUser, findAllUsers} = require('./database.js');
+const { getSecret } = require('./secrets.js');
 
 function loginPost (req, res){
     const username = req.body.username;
@@ -42,7 +43,7 @@ function registerPost (req, res){
           return;
       }
 
-      const userSaved = saveUser(username, password, uuidv4());
+      const userSaved = saveUser(username, password, uuidv4(), getSecret());
       if(userSaved){
             res.status(200).send({msg: 'Registration Succesfully'});
           return;
@@ -58,7 +59,6 @@ function registerPost (req, res){
 }
 
 function authenticateGet(req, res){
-    console.log(res.locals);
     res.send({msg: 'Authenticated', auth: true, username: res.locals.user.username});
 }
 

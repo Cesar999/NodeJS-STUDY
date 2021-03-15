@@ -26,9 +26,11 @@ class Dashboard extends Component {
             <div className="Dashboard">
                 <h1>Welcome {this.props.username}</h1>
                 <h1>This is the Dashboard</h1>
-                <button onClick={this.onLogout}>Logout</button>
-                <button onClick={this.setAllUsers}>Get All Users</button>
-                {this.state.users.map(user=><div key={user.id}>{user.username}</div>)}
+                <button className="button-logout" onClick={this.onLogout}>Logout</button>
+                <button className="button-allusers" onClick={this.setAllUsers}>Get All Users</button>
+                <div className="users-container">
+                    {this.state.users.map(user=><div className="user" key={user.id}>{user.username} {user.secret}</div>)}
+                </div>
             </div>
         )
     }

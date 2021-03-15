@@ -34,7 +34,7 @@ class AsyncPrivateRoute extends React.Component {
       const { component: Component, ...rest } = this.props;
       if (this.state.loading) {
         return (
-        <div>
+        <div className="loader">
             LOADING
           <div>
             <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

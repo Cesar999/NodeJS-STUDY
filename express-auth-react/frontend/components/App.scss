@@ -1,0 +1,33 @@
+.App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: sans-serif;
+    
+    &>h1 {
+        color: cornflowerblue;
+    }
+
+    .navbar {
+        width: 100%;
+        background-color: cornflowerblue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            padding: 10px 30px;
+
+            &.active-link {
+                color: cornflowerblue;
+                background-color: white;
+            }
+
+        }
+    }
+
+}

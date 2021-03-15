@@ -1,0 +1,27 @@
+.Login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 45px;
+    margin-top: 15px;
+    background-color: teal;
+    color: white;
+
+    input {
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: teal;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 5px;
+        border: none;
+        color: teal;
+        background-color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+}

@@ -1,0 +1,29 @@
+.Register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 45px;
+    margin-top: 15px;
+    background-color: tomato;
+    color: white;
+    font-weight: bold;
+
+    input {
+        margin-bottom: 20px;
+        color: white;
+        font-weight: bold;
+        color: tomato;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 5px;
+        border: none;
+        color: tomato;
+        background-color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+}
