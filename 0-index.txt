@@ -832,92 +832,55 @@ MongoDB?
     Value	        Value
     Records/Rows	Document/Object
 
-
-MongoDB stores documents in collections.
-The document is the unit of storing data in a MongoDB database.
-document use JSON (JavaScript Object Notation, is a lightweight, thoroughly explorable format used to interchange data between various applications) style for storing data.
-MongoDB documents are composed of field-and-value pairs and have the following structure:
-    {
-        field1: value1,
-        field2: value2,
-        ...
-        fieldN: valueN
-    }
-The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
-    var mydoc = {
-                _id: ObjectId("5099803df3f4948bd2f98391"),
-                name: { first: "Alan", last: "Turing" },
-                birth: new Date('Jun 23, 1912'),
-                contribs: [ "Turing machine", "Turing test", "Turingery" ]
-                }
-
-    BSON is a binary serialization format used to store documents and make remote procedure calls in MongoDB. ObjectId, Timestamps, Date, String.
-
-    Embedded Documents
-    To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
+    MongoDB stores documents in collections.
+    The document is the unit of storing data in a MongoDB database.
+    document use JSON (JavaScript Object Notation, is a lightweight, thoroughly explorable format used to interchange data between various applications) style for storing data.
+    MongoDB documents are composed of field-and-value pairs and have the following structure:
         {
-        ...
-        name: { first: "Alan", last: "Turing" },
-        contact: { phone: { type: "cell", number: "111-222-3333" } },
-        ...
+            field1: value1,
+            field2: value2,
+            ...
+            fieldN: valueN
         }
-    To specify the field named last in the name field, use the dot notation "name.last".
-    To specify the number in the phone document in the contact field, use the dot notation "contact.phone.number".
+    The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
+        var mydoc = {
+                    _id: ObjectId("5099803df3f4948bd2f98391"),
+                    name: { first: "Alan", last: "Turing" },
+                    birth: new Date('Jun 23, 1912'),
+                    contribs: [ "Turing machine", "Turing test", "Turingery" ]
+                    }
 
-MongoDB basic operations?
-    Create DataBase 
-        var MongoClient = require('mongodb').MongoClient;
-        const url =  'mongodb://localhost:27017/Songs';
-        MongoClient.connect(url,(err,client)=>{
-            if(err){
-                return console.log('Unable to connect to MongoDB server');
+        BSON is a binary serialization format used to store documents and make remote procedure calls in MongoDB. ObjectId, Timestamps, Date, String.
+
+        Embedded Documents
+        To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
+            {
+            ...
+            name: { first: "Alan", last: "Turing" },
+            contact: { phone: { type: "cell", number: "111-222-3333" } },
+            ...
             }
-            console.log('Connected to MongoDB server');
-            db = client.db('Songs');
+        To specify the field named last in the name field, use the dot notation "name.last".
+        To specify the number in the phone document in the contact field, use the dot notation "contact.phone.number".
 
-    Create a Collection
-        db.createCollection("customers", function(err, res) {
-        if (err) throw err;
-        console.log("Collection created!");
-        }
+MongoDB Types?
+    String: This is the most commonly used datatype to store the data. String in MongoDB must be UTF-8 valid.
+    Integer: This type is used to store a numerical value. Integer can be 32 bit or 64 bit depending upon your server.
+    Boolean: This type is used to store a boolean (true/ false) value.
+    Double: This type is used to store floating point values.
+    Min/ Max keys: This type is used to compare a value against the lowest and highest BSON elements.
+    Arrays: This type is used to store arrays or list or multiple values into one key.
+    Timestamp: ctimestamp. This can be handy for recording when a document has been modified or added.
+    Object: This datatype is used for embedded documents.
+    Null: This type is used to store a Null value.
+    Symbol: This datatype is used identically to a string; however, it's generally reserved for languages that use a specific symbol type.
+    Date: This datatype is used to store the current date or time in UNIX time format. You can specify your own date time by creating object of Date and passing day, month, year into it.
+    Object ID: This datatype is used to store the document’s ID.
+    Binary data: This datatype is used to store binary data.
+    Code: This datatype is used to store JavaScript code into the document.
+    Regular expression: This datatype is used to store regular expression.
 
-    Insert
-        insertOne() method is an object containing the name(s) and value(s) of each field in the document you want to insert.
-        var myobj = { name: "Company Inc", address: "Highway 37" };
-        db.collection("customers").insertOne(myobj, function(err, res) {
-            if (err) throw err;
-            console.log("1 document inserted");
-        });
-
-    Find 
-        The findOne() method returns the first occurrence in the selection.
-        The first parameter of the findOne() method is a query object. 
-        var query = { address: "Park Lane 38" };
-        db.collection("customers").find(query).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-        });
-
-    Delete
-        To delete a record, or document as it is called in MongoDB, we use the deleteOne() method.
-        The first parameter of the deleteOne() method is a query object defining which document to delete.
-        var myquery = { address: 'Mountain 21' };
-        dbo.collection("customers").deleteOne(myquery, function(err, obj) {
-            if (err) throw err;
-            console.log("1 document deleted");
-        });
-
-    Drop Collection
-        You can delete a table, or collection as it is called in MongoDB, by using the drop() method.
-        The drop() method takes a callback function containing the error object and the result parameter which returns true if the collection was dropped successfully, otherwise it returns false.
-
-        db.collection("customers").drop(function(err, delOK) {
-            if (err) throw err;
-            if (delOK) console.log("Collection deleted");
-            db.close();
-        });
-
-Mention what is Objecld composed of?
+Objecld composition?
     Timestamp
     Client machine ID
     Client process ID
@@ -927,11 +890,30 @@ Mention what is Objecld composed of?
     _id is automatically indexed. Lookups specifying { _id: <someval> } refer to the _id index as their guide.
     Architecturally, by default the _id field is an ObjectID, one of MongoDB's BSON types. Users can also override _id to something other than an ObjectID, if desired.
 
-Explain what is a replica set?
+    Namespace: MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. The concatenation of the collection name and database name is called a namespace.
+
+MongoDB basic operations?
+    db.collection.insert(): Creates a new document in a collection.
+    db.collection.insertOne(): Inserts a new document in a collection.
+    db.collection.insertMany(): Inserts several new document in a collection.
+    db.collection.deleteOne(): Deletes a single document in a collection.
+    db.collection.deleteMany(): Deletes multiple documents in a collection.
+    db.collection.remove(): Deletes documents from a collection.
+    db.collection.find(): Performs a query on a collection or a view and returns a cursor object.
+    db.collection.findOne(): Performs a query and returns a single document.
+    db.collection.findOneAndDelete(): Finds a single document and deletes it.
+    db.collection.findOneAndReplace(): Finds a single document and replaces it.
+    db.collection.findOneAndUpdate(): Finds a single document and updates it.
+    db.collection.save(): Provides a wrapper around an insert() and update() to insert new documents.
+    db.collection.update(): Modifies a document in a collection.
+    db.collection.updateOne(): Modifies a single document in a collection.
+    db.collection.updateMany(): Modifies multiple documents in a collection.
+
+replica set?
     A replica set is a group of mongo instances that host the same data set. In replica set, one node is primary, and another is secondary. From primary to the secondary node all data replicates. Replication provides redundancy and increases data availability. With multiple copies of data on different database servers, replication provides a level of fault tolerance against the loss of a single database server.
     replication Across multiple servers, the process of synchronizing data is known as replication. It provides redundancy and increase data availability with multiple copies of data on different database server. Replication helps in protecting the database from the loss of a single server.
 
-Explain what are indexes in MongoDB?
+indexes in MongoDB?
     Indexes are special structures in MongoDB, which stores a small portion of the data set in an easy to traverse form. Ordered by the value of the field specified in the index, the index stores the value of a specific field or set of fields. Typically, Indexes are data structures that can store collection’s data set in a form that is easy to traverse. Queries are efficiently executed with the help of indexes in MongoDB.
     Indexes help MongoDB find documents that match the query criteria without performing a collection scan. If a query has an appropriate index, MongoDB uses the index and limits the number of documents it examines.
     Indexes store field values in the order of the value.The order in which the index entries are made support operations, such as equality matches and range-based queries. MongoDB sorts and returns the results by using the sequential order of the indexes
@@ -944,6 +926,9 @@ Explain what are indexes in MongoDB?
     Sparse Indexes
         This property ensures that queries search document entries having an indexed field. Documents without indexed fields are skipped during a query. Sparse index and the unique index can be combined to reject documents with duplicate field values and ignore documents without indexed keys.
 
+    db.collection.createIndex(): Builds an index on a collection.
+    db.collection.createIndexes(): Builds one or more indexes on a collection.
+
     db.items.createIndex( { “item" : 1 } ) //Single Field Index
     db.items.createIndex( {details.ISDN: 1 } ) //Embedded document Single Index
     db.products.createIndex( { "item": 1, "stock": 1 } ) //Compound Indexes
@@ -951,31 +936,107 @@ Explain what are indexes in MongoDB?
 Aggregations in MongoDB?
     Aggregation  are operations that process data records and return computed results. Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result. 
     The pipeline provides efficient data aggregation using native operations within MongoDB, and is the preferred method for data aggregation in MongoDB.
-    db.orders.aggregate([
-    { $match: { status: "A" } },
-    { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
-    ])
+    The MongoDB aggregation pipeline consists of stages. Each stage transforms the documents as they pass through the pipeline. Pipeline stages do not need to produce one output document for every input document. For example, some stages may generate new documents or filter out documents.
+        $match: The $match stage can use an index to filter documents if it occurs at the beginning of a pipeline.
+        $sort: The $sort stage can use an index as long as it is not preceded by a $project, $unwind, or $group stage.
+        $group: The $group stage can sometimes use an index to find the first document in each group if all of the following criteria are met:
+
+        db.orders.aggregate([
+        { $match: { status: "A" } },
+        { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }]);
+
+        First Stage: The $match stage filters the documents by the status field and passes to the next stage those documents that have status equal to "A".
+        Second Stage: The $group stage groups the documents by the cust_id field to calculate the sum of the amount for each unique cust_id.
+
     MongoDB also provides map-reduce operations to perform aggregation. In general, map-reduce operations have two phases: a map stage that processes each document and emits one or more objects for each input document, and reduce phase that combines the output of the map operation
-    db.orders.mapReduce(
-        function(){emit(this.cust_id, this.amount);},
-        function(key,values){return Array.sum(values)},
-        {query: {status: "A"}, out: "order_totals"}
-        )
     Map-reduce uses custom JavaScript functions to perform the map and reduce operations, as well as the optional finalize operation. While the custom JavaScript provide great flexibility compared to the aggregation pipeline, in general, map-reduce is less efficient and more complex than the aggregation pipeline.
 
     Single Purpose Aggregation Operations
-    MongoDB also provides db.collection.estimatedDocumentCount(), db.collection.count() and db.collection.distinct().
-    db.orders.distinct("cust_id")
+    db.collection.distinct(): Finds the distinct values for a specified field across a single collection or view and returns the results in an array.
+    db.collection.estimatedDocumentCount(): Returns the count of all documents in a collection or view. The method wraps the count command. Returns the count of documents that would match a find() query for the collection or view. The db.collection.count() method does not perform the find() operation but instead counts and returns the number of results that match a query.
 
-What is “Namespace” in MongoDB?
-    MongoDB stores BSON (Binary Interchange and Structure Object Notation) objects in the collection. The concatenation of the collection name and database name is called a namespace.
+Sessions?
+    MongoDB’s server sessions, or logical sessions, are the underlying framework used by client sessions to support Causal Consistency and retryable writes.
+
+        startSession	Starts a new server session.
+        endSessions:	Expires specified server sessions.
+        killAllSessions:	Kills all server sessions.tern.
+        killSessions:	Kills specified server sessions.
+    
+    If the deployment enforces authentication/authorization, the user must be authenticated to start a session, and only that user can use the session.
+
+Transaction?
+    In MongoDB, an operation on a single document is atomic. Because you can use embedded documents and arrays to capture relationships between data in a single document structure instead of normalizing across multiple documents and collections, this single-document atomicity obviates the need for multi-document transactions for many practical use cases.
+    For situations that require atomicity of reads and writes to multiple documents (in a single or multiple collections), MongoDB supports multi-document transactions. With distributed transactions, transactions can be used across multiple operations, collections, databases, documents, and shards.
+
+    Transactions are associated with a session; i.e. you start a transaction for a session.
+    At any given time, you can have at most one open transaction for a session.
+    When using the drivers, each operation in the transaction must be associated with the session. Refer to your driver specific documentation for details.
+    If a session ends and it has an open transaction, the transaction aborts.
+
+    session.withTransaction() to start a transaction, execute the callback, and commit (or abort on error)
+    // Note: The callback for withTransaction MUST be async and/or return a Promise.
+
+    To perform a transaction:
+        1. Obtain and start a client session with client.startSession().
+        2. (Optional) Define a read and write settings object for the transaction. Pass this object to the method called in the next step.
+        3. Use the session.withTransaction() method to start a transaction.
+        4. Execute the MongoDB queries that you would like to include in your transaction in the callback for this function, which needs to either be async or return a Promise. Be sure to pass the session to each query to ensure that it is included in the transaction.
+        5. If the callback encounters an error, you should abort the transaction with session.abortTransaction() in a Promise rejection handler with Promise.catch() or a try ... catch exception handler.
+        6. When the transaction is complete, call session.endSession() to end the session and free resources.
+
+    While the transaction is open, no data changes made by operations in the transaction is visible outside the transaction:
+    When a transaction commits, all data changes made in the transaction are saved and visible outside the transaction. That is, a transaction will not commit some of its changes while rolling back others.
+    Until a transaction commits, the data changes made in the transaction are not visible outside the transaction.
+    However, when a transaction writes to multiple shards, not all outside read operations need to wait for the result of the committed transaction to be visible across the shards. For example, if a transaction is committed and write 1 is visible on shard A but write 2 is not yet visible on shard B, an outside read at read concern "local" can read the results of write 1 without seeing write 2.
+
+    When a transaction aborts, all data changes made by the writes in the transaction are discarded without ever becoming visible and the transaction ends.
+        Multi-document transactions are atomic (i.e. provide an “all-or-nothing” proposition):
+        When a transaction commits, all data changes made in the transaction are saved and visible outside the transaction. That is, a transaction will not commit some of its changes while rolling back others.
+        Until a transaction commits, the data changes made in the transaction are not visible outside the transaction.
+        However, when a transaction writes to multiple shards, not all outside read operations need to wait for the result of the committed transaction to be visible across the shards. For example, if a transaction is committed and write 1 is visible on shard A but write 2 is not yet visible on shard B, an outside read at read concern "local" can read the results of write 1 without seeing write 2.
+        When a transaction aborts, all data changes made in the transaction are discarded without ever becoming visible. For example, if any operation in the transaction fails, the transaction aborts and all data changes made in the transaction are discarded without ever becoming visible.
 
 What is sharding in MongoDB?
-    The procedure of storing data records across multiple machines is referred as Sharding. It is a MongoDB approach to meet the demands of data growth. It is the horizontal partition of data in a database or search engine. Each partition is referred as shard or database shard.
-        Vertical Scaling involves increasing the capacity of a single server, such as using a more powerful CPU, adding more RAM, or increasing the amount of storage space. Limitations in available technology may restrict a single machine from being sufficiently powerful for a given workload. Additionally, Cloud-based providers have hard ceilings based on available hardware configurations. As a result, there is a practical maximum for vertical scaling.
+    The procedure of storing data records across multiple machines is referred as Sharding. It is a MongoDB approach to meet the demands of data growth. It is the horizontal partition of data in a database or search engine. Each partition is referred as shard or database shard. Database systems with large data sets or high throughput applications can challenge the capacity of a single server. For example, high query rates can exhaust the CPU capacity of the server. Working set sizes larger than the system’s RAM stress the I/O capacity of disk drives.
+
+        Vertical Scaling involves increasing the capacity of a single server, such as using a more powerful CPU, adding more RAM, or increasing the amount of storage space. Limitations in available technology may restrict a single machine from being sufficiently powerful for a given workload. Additionally, Cloud-based providers have hard ceilings based on available hardware configurations. As a result, there is a practical maximum for vertical scaling. 
 
         Horizontal Scaling involves dividing the system dataset and load over multiple servers, adding additional servers to increase capacity as required. While the overall speed or capacity of a single machine may not be high, each machine handles a subset of the overall workload, potentially providing better efficiency than a single high-speed high-capacity server. Expanding the capacity of the deployment only requires adding additional servers as needed, which can be a lower overall cost than high-end hardware for a single machine. The trade off is increased complexity in infrastructure and maintenance for the deployment.
 
+    Sharded Cluster: A MongoDB sharded cluster consists of the following components:
+        shard: Each shard contains a subset of the sharded data. Each shard can be deployed as a replica set.
+        mongos: The mongos acts as a query router, providing an interface between client applications and the sharded cluster. Starting in MongoDB 4.4, mongos can support hedged reads to minimize latencies.
+        config servers: Config servers store metadata and configuration settings for the cluster.
+
+    Shard Keys: MongoDB uses the shard key to distribute the collection’s documents across shards. The shard key consists of a field or multiple fields in the documents.
+
+
+Advantages of MongoDB over RDBMS?
+    Schema less − MongoDB is a document database in which one collection holds different documents. Number of fields, content and size of the document can differ from one document to another.
+    Structure of a single object is clear.
+    No complex joins.
+    Deep query-ability. MongoDB supports dynamic queries on documents using a document-based query language that's nearly as powerful as SQL.
+    Tuning.
+    Ease of scale-out − MongoDB is easy to scale.
+    Conversion/mapping of application objects to database objects not needed.
+    Uses internal memory for storing the (windowed) working set, enabling faster access of data.
+
+Why Use MongoDB?
+    Document Oriented Storage − Data is stored in the form of JSON style documents.
+    Index on any attribute
+    Replication and high availability
+    Auto-Sharding
+    Rich queries
+    Fast in-place updates
+    Professional support by MongoDB
+
+Where to Use MongoDB?
+    Big Data
+    Content Management and Delivery
+    Mobile and Social Infrastructure
+    User Data Management
+    Data Hub
 
 Mongoose?
     Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
