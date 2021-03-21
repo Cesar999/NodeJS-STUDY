@@ -128,7 +128,7 @@ app.get('/transactionExample', async (req, res)=>{
     const db = req.app.locals.db;
     const client = req.app.locals.client;
     let msg = '';
-   // await db.collection("Trainers").insertOne({name: 'Roberto', age: "30"});
+   // await db.collection("trainers").insertOne({name: 'Roberto', age: "30"});
    // await db.collection("pokemon").insertOne({name: 'Salamence', type: 'Dragon', level: 70});
   
   // Step 1: Start a Client Session
@@ -145,7 +145,7 @@ app.get('/transactionExample', async (req, res)=>{
   // Note: The callback for withTransaction MUST be async and/or return a Promise.
   try {
         const transactionResults = await session.withTransaction(async () => {
-            const coll1 = db.collection('Trainers');
+            const coll1 = db.collection('trainers');
             const coll2 = db.collection('pokemon');
             // Important:: You must pass the session to the operations
             await coll1.insertOne({name: 'Roberto', age: "30"}, { session });
