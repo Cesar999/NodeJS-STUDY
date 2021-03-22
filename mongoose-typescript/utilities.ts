@@ -24,6 +24,8 @@ async function formatData(data: any){
     const movesRandom: any = {};
     index = 0;
     
+    const urlArray = [];
+
     try {
         for(let i = 0; i<4; i++){
             index = Math.floor(Math.random()*data.moves.length);
@@ -32,16 +34,25 @@ async function formatData(data: any){
             }
             movesRandom[index] = true;
 
-            const movesProps: any = await axios.get(data.moves[index].move.url);
-            const movesData = movesProps.data.power +'/'+ movesProps.data.type.name +'/'+movesProps.data['damage_class'].name;
-            moves.push(data.moves[index].move.name +'/'+ movesData);
-
-            // const movesData = 80 +'/'+ 'normal' +'/'+'special';
-            // moves.push(data.moves[index].move.name +'/'+ movesData);
+            urlArray.push(data.moves[index].move.url);
         }
     } catch(e) {
         console.error(e);
     }
+
+    const promisesArray:any = urlArray.map(url=>axios.get(url));
+    let movesPropsArray: any = [];
+
+    try {
+        movesPropsArray = await Promise.all(promisesArray);
+    } catch(e) {
+        console.log(e);
+    }
+
+    movesPropsArray.forEach((movesProps:any)=>{
+        const movesData = movesProps.data.power +'/'+ movesProps.data.type.name +'/'+movesProps.data['damage_class'].name;
+        moves.push(movesProps.data.name +'/'+ movesData);
+    });
 
     data.types.forEach((type: any) =>{
         types.push(type.type.name);
