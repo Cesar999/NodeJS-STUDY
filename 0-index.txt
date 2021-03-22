@@ -821,6 +821,51 @@ How to create a NPM package?
     Use npm top publish and the flag to set the access to public.
     Use npm publish --access=public.
 
+Database?
+    A database is a systematic collection of data. They support electronic storage and manipulation of data. Databases make data management easy.
+    Database Management System (DBMS) is a collection of programs that enable its users to access databases, manipulate data, report, and represent data.
+
+    SQL databases: SQL databases use structured query language (SQL) for defining and manipulating data. On one hand, this is extremely powerful: SQL is one of the most versatile and widely-used options available, making it a safe choice and especially great for complex queries. On the other hand, it can be restrictive. SQL requires that you use predefined schemas to determine the structure of your data before you work with it. In addition, all of your data must follow the same structure. This can require significant up-front preparation, and, as with Town A, it can mean that a change in the structure would be both difficult and disruptive to your whole system.
+        They are also termed as Relational Databases (RDBMS)	
+        The structure of database is constituted as tables and views	
+        It includes a predefined schema	
+        It is very powerful for defining and manipulating data	
+
+    NoSQL databases: NoSQL databases, on the other hand, have dynamic schemas for unstructured data, and data is stored in many ways: They can be column-oriented, document-oriented, graph-based or organized as a KeyValue store. This flexibility means that:
+    You can create documents without having to first define their structure
+    Each document can have its own unique structure
+    The syntax can vary from database to database, and
+    You can add fields as you go.
+        They are called as non-relational or distributed database
+        It consists of document based and graph databases
+        It has a dynamic schema
+        It is powerful in maintaining data as collection of documents
+
+    SQL databases are relational, NoSQL are non-relational.
+    SQL databases use structured query language and have a predefined schema. NoSQL databases have dynamic schemas for unstructured data.
+    SQL databases are vertically scalable, NoSQL databases are horizontally scalable.
+    SQL databases are table based, while NoSQL databases are document, key-value, graph or wide-column stores.
+    SQL databases are better for multi-row transactions, NoSQL are better for unstructured data like documents or JSON.
+
+    The Scalability: In most situations, SQL databases are vertically scalable, which means that you can increase the load on a single server by increasing things like CPU, RAM or SSD. NoSQL databases, on the other hand, are horizontally scalable. This means that you handle more traffic by sharding, or adding more servers in your NoSQL database. It’s like adding more floors to the same building versus adding more buildings to the neighborhood. The latter can ultimately become larger and more powerful, making NoSQL databases the preferred choice for large or ever-changing data sets.
+
+    ODM-ORM
+        ORM: Object Relation Mapping is the idea of being able to write queries that interact with our database using our language of choice instead of SQL.
+        ODM: Object Document Mapping is the idea of being able to write queries that interact with our database using our language of choice instead of No-SQL.
+
+        When you first learn how to work with database, it all comes down to two types of database set ups which are ORM (object Relation Mapping) and ODM (Object Document Mapping)
+        ORM which is to map an object with a relational world, it basically converts data between incompatible types in object oriented programming languages. ORM wraps the implementation specific details of storage drivers in an API (application program interface), and maps the relational fields to an object members. For example if I have a table of employees, it is mapped to a single object for all employees, with various methods associated with it.
+        ODM on the other hand is an Object Document Mapper, which maps objects with a Document Database like MongoDB.
+
+        The main difference is that ORM is for MySQL databases, while ODM does the mapping for document representation of data.
+        best way to remember what ORM does would be to think of it as an excel spread sheet, with rows and columns. When using this set up, you want to be sure you have a great plan on how you want to tackle the current application, it does not allow as many modifications like ODM does. With ODM we can add new fields and properties easily but with ORM when adding a new field you need to keep in mind that nothing stays empty so it needs a value to be as default unless you want to go into each and modify.
+
+        What are some pros of using an ORM/ODM?
+            You get to write in the language you are already using anyway. If we’re being honest, we probably aren’t the greatest at writing SQL statements. SQL is a ridiculously powerful language, but most of us don’t write in it often. 
+            It abstracts away the database system so that switching from MySQL to PostgreSQL, or whatever flavor you prefer, is easy-peasy.
+            Depending on the ORM you get a lot of advanced features out of the box, such as support for transactions, connection pooling, migrations, seeds, streams, and all sorts of other goodies.
+            Many of the queries you write will perform better than if you wrote them yourself
+
 MongoDB?
     Mongo-DB is a document database which provides high performance, high availability and easy scalability.
     MongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document and data structure can be changed over time
@@ -842,18 +887,11 @@ MongoDB?
             ...
             fieldN: valueN
         }
-    The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
-        var mydoc = {
-                    _id: ObjectId("5099803df3f4948bd2f98391"),
-                    name: { first: "Alan", last: "Turing" },
-                    birth: new Date('Jun 23, 1912'),
-                    contribs: [ "Turing machine", "Turing test", "Turingery" ]
-                    }
 
+        The value of a field can be any of the BSON data types, including other documents, arrays, and arrays of documents.
         BSON is a binary serialization format used to store documents and make remote procedure calls in MongoDB. ObjectId, Timestamps, Date, String.
 
-        Embedded Documents
-        To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
+        Embedded Documents: To specify or access a field of an embedded document with dot notation, concatenate the embedded document name with the dot (.) and the field name, and enclose in quotes:
             {
             ...
             name: { first: "Alan", last: "Turing" },
@@ -862,6 +900,17 @@ MongoDB?
             }
         To specify the field named last in the name field, use the dot notation "name.last".
         To specify the number in the phone document in the contact field, use the dot notation "contact.phone.number".
+
+    The following are some of the benefits and strengths of MongoDB:
+        Free to use: Since October 2018, MongoDB's updates have been published under the Server Side Public License (SSPL) v1, and the database is free to use.
+        Dynamic schema: As mentioned, this gives you the flexibility to change your data schema without modifying any of your existing data.
+        Scalability: MongoDB is horizontally scalable, which helps reduce the workload and scale your business with ease.
+        Manageability: The database doesn’t require a database administrator. Since it is fairly user-friendly in this way, it can be used by both developers and administrators.
+        Speed: It’s high-performing for simple queries.
+        Flexibility: You can add new columns or fields on MongoDB without affecting existing rows or application performance.
+        Not Acid Compliant: As a NoSQL database, MongoDB is not ACID compliant. See PostgreSQL above for more about ACID compliance.
+        MongoDB Atlas (a new feature): MongoDB recently added MongoDB Atlas global cloud database technology to its offerings. This feature allows you to deploy fully-managed MongoDB via AWS, Azure, or GCP. MongoDB Atlas lets you use drivers, integrations, and tools to reduce the time required to manage your database. Here's the pricing information from Atlas.
+        Who Should Use It? MongoDB is a good choice for businesses that have rapid growth or databases with no clear schema definitions (i.e., you have a lot of unstructured data). If you cannot define a schema for your database, if you find yourself denormalizing data schemas, or if your data requirements and schemas are constantly evolving - as is often the case with mobile apps, real-time analytics, content management systems, etc. - MongoDB can be a strong choice for you.
 
 MongoDB Types?
     String: This is the most commonly used datatype to store the data. String in MongoDB must be UTF-8 valid.
@@ -1102,53 +1151,58 @@ Where to Use MongoDB?
 
 Mongoose?
     Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
-        import * as mongoose from 'mongoose';
-        const db_url = `mongodb://cesarenc:cesar90873@ds211083.mlab.com:11083/post_api`;
-        const connection = ()=>{
-            mongoose.connect(db_url, { useNewUrlParser: true });
-        };
-        export {connection};
 
     Mongoose Schema vs Model
     A Mongoose model is a wrapper on the Mongoose schema. A Mongoose schema defines the structure of the document, default values, validators, etc., whereas a Mongoose model provides an interface to the database for creating, querying, updating, deleting records, etc.
+        Schema: While Mongo is schema-less, SQL defines a schema via the table definition. A Mongoose ‘schema’ is a document data structure (or shape of the document) that is enforced via the application layer.
+        Models: are higher-order constructors that take a schema and create an instance of a document equivalent to records in a relational database.
 
-    const userSchema = new Schema({
-        username: {type: String, required: true, unique: true},
-        password: {type: String, required: true},
-        posts:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post'
-        }],
-        comments:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Comments'
-        }]
-    });
+    Schema: Everything in Mongoose starts with a Schema. Each schema maps to a MongoDB collection and defines the shape of the documents within that collection.
+    SchemaType: You can think of a Mongoose schema as the configuration object for a Mongoose model. A SchemaType is then a configuration object for an individual property. A SchemaType says what type a given path should have, whether it has any getters/setters, and what values are valid for that path.
+    Models: are fancy constructors compiled from Schema definitions. An instance of a model is called a document. Models are responsible for creating and reading documents from the underlying MongoDB database.
+    documents: Mongoose documents represent a one-to-one mapping to documents as stored in MongoDB. Each document is an instance of its Model.
+    subdocuments: Subdocuments are documents embedded in other documents. In Mongoose, this means you can nest schemas in other schemas. Mongoose has two distinct notions of subdocuments: arrays of subdocuments and single nested subdocuments.
+    Mongoose models provide several static helper functions for CRUD operations. Each of these functions returns a mongoose Query object.
+        Model.deleteMany()
+        Model.deleteOne()
+        Model.find()
+        Model.findById()
+        Model.findByIdAndDelete()
+        Model.findByIdAndRemove()
+        Model.findByIdAndUpdate()
+        Model.findOne()
+        Model.findOneAndDelete()
+        Model.findOneAndRemove()
+        Model.findOneAndReplace()
+        Model.findOneAndUpdate()
+        Model.replaceOne()
+        Model.updateMany()
+        Model.updateOne()
+    validation: 
+        Validation is defined in the SchemaType
+        Validation is middleware. Mongoose registers validation as a pre('save') hook on every schema by default.
+        You can disable automatic validation before save by setting the validateBeforeSave option
+        You can manually run validation using doc.validate(callback) or doc.validateSync()
+        You can manually mark a field as invalid (causing validation to fail) by using doc.invalidate(...)
+        Validators are not run on undefined values. The only exception is the required validator.
+        Validation is asynchronously recursive; when you call Model#save, sub-document validation is executed as well. If an error occurs, your Model#save callback receives it
+        Validation is customizable
 
-    const User = mongoose.model('User', userSchema);
-    const newUser = new User({
-        username: name,
-        password: pass
-    });
+        One final detail worth noting: update validators only run on the following update operators: $set, $unset, $push (>= 4.8.0), $addToSet (>= 4.8.0), $pull (>= 4.12.0), $pullAll (>= 4.12.0)
+        Also, $push, $addToSet, $pull, and $pullAll validation does not run any validation on the array itself, only individual elements of the array.
 
-    newUser.save();
-    User.findOne({username: name});
-    User.findOneAndUpdate({username: name}, { $set: {'password': newPassword}});
-    User.deleteOne({username: name});
+    Middleware: (also called pre and post hooks) are functions which are passed control during execution of asynchronous functions. Middleware is specified on the schema level and is useful for writing plugins. Mongoose has 4 types of middleware: document middleware, model middleware, aggregate middleware, and query middleware. Document middleware is supported for the following document functions. In document middleware functions, this refers to the document. validate, save, remove, updateOne and deleteOne.
+    Population: is the process of automatically replacing the specified paths in the document with document(s) from other collection(s). We may populate a single document, multiple documents, a plain object, multiple plain objects, or all objects returned from a query. 
+    Middleware are useful for atomizing model logic. Here are some other ideas:
+        complex validation
+        removing dependent documents (removing a user removes all their blogposts)
+        asynchronous defaults
+        asynchronous tasks that a certain action triggers
 
-    Class.find({professor: {$in: [professor_id]}})
-        .select('students name starts ends')
-        .populate({
-            path: 'students',
-            select: 'username classes',
-            model: 'Student',
-            populate:{
-                path: 'classes.class',
-                select: 'name -_id',
-                model: 'Class'
-            }
-        })
+    Pre middleware functions are executed one after another, when each middleware calls next. If you use next(), the next() call does not stop the rest of the code in your middleware function from executing. Use the early return pattern to prevent the rest of your middleware function from running when you call next().
 
+    Post middleware: post middleware are executed after the hooked method and all of its pre middleware have completed. If your post hook function takes at least 2 parameters, mongoose will assume the second parameter is a next() function that you will call to trigger the next middleware in the sequence.
+ 
 MySQL / SQL?
     MySQL is a relational database management system (RDBMS) currently developed by Oracle with open-source code. This code is available for free under the GNU General Public License, and commercial versions of MySQL are also available under various proprietary agreements.   host, user, password, port.
 

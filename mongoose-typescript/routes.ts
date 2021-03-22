@@ -14,7 +14,7 @@ async function createTrainer(req: any, res: any) {
         const newPokemonSaved = await newPokemon.save();
     
         const newTrainer = new Trainer({name, age, team:[pokemon_id]})
-        const newTrainerSaved = await newTrainer.save();
+        const newTrainerSaved = await newTrainer.save(req);
     
         if(newPokemonSaved && newTrainerSaved) {
             res.status(200).send({msg: 'Trainer Saved', data: newTrainerSaved});
@@ -55,11 +55,11 @@ async function savePokemon(req: any, res: any) {
 
         const trainer = await Trainer.findOne({name});
     
-        if(trainer.team.length<6){
+        if(trainer.team.length){
             const data = await getPokemon(id);
             const newPokemon = new Pokemon({...data, trainer: trainer._id});
             const newPokemonSaved = await newPokemon.save();
-            await Trainer.updateOne({name}, { $push: {team: newPokemonSaved._id}});
+            await Trainer.findOneAndUpdate({name}, { $push: {team: newPokemonSaved._id}});
             if(newPokemonSaved) {
                 res.status(200).send({msg: 'Pokemon Saved', data: newPokemonSaved});
             } else {

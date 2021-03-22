@@ -54,8 +54,6 @@ async function formatData(data: any){
         moves,
         types
     };
-
-    console.log(myPoke)
     
     return myPoke;
 }

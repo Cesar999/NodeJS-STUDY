@@ -44,6 +44,53 @@ trainerSchema.path('team').validate(function (value: any) {
     }
 });
 
+trainerSchema.pre('findOneAndUpdate', async function(next) {
+    // // If you call `next()` with an argument, that argument is assumed to be
+    // // an error.
+    // const docToUpdate = await this.findOne(this.getQuery());
+    // console.log(docToUpdate); // The document that `findOneAndUpdate()` will modify
+    // if(docToUpdate.team.length>=6){
+    //     const err = new Error('something went wrong');
+    //     next(err);
+    // }
+});
+
+// @ts-expect-error:
+trainerSchema.pre('save', function(next: any, req: any) {
+    console.log('Before Saving', req.body);
+    if(req.body.name === 'badword'){
+        const err = new Error('something went wrong');
+        next(err);
+    }
+    next();
+});
+
+trainerSchema.pre('updateOne', async function(){
+    // @ts-expect-error:
+    console.log('trainerSchema Pre updateOne', this._update); 
+    // @ts-expect-error:
+    console.log('trainerSchema Pre updateOne', this.getQuery()); 
+})
+
+pokemonSchema.pre('save', function(next) {
+    console.log('pokemonSchema Pre save', this.get('name'));
+    next();
+});
+pokemonSchema.pre('findOne', function() {
+    console.log('pokemonSchema Pre findOne', this.getQuery()); 
+});
+pokemonSchema.pre('deleteOne', function() {
+    // @ts-expect-error:
+    console.log('pokemonSchema Pre deleteOne', this.getQuery()); 
+});
+
+pokemonSchema.post('save', function(doc) {
+    console.log('pokemonSchema Post save', doc.name);
+});
+pokemonSchema.post('findOne', function(doc) {
+    console.log('pokemonSchema Post findOne', doc.name);
+});
+
 const Trainer = mongoose.model('trainer', trainerSchema);
 const Pokemon = mongoose.model('pokemon', pokemonSchema);
 
