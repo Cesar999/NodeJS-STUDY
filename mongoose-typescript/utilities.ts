@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function randomInitial(){
     const initials = [1, 4, 7, 152, 155, 158, 252, 255, 258, 387, 390, 393, 495, 498, 501, 650, 653, 656, 722, 725, 728];
     return initials[Math.floor(Math.random()*initials.length)];
@@ -8,11 +10,11 @@ function getRandomId(){
     return Math.ceil(Math.random()*MAX_ID);
 }
 
-function formatData(data: any){
+async function formatData(data: any){
     const name = data.name;
     const id = data.id;
     let ability = '';
-    const moves: Array<string> = [];
+    const moves: Array<any> = [];
     const types: Array<string> = [];
 
     let index = 0;
@@ -22,13 +24,23 @@ function formatData(data: any){
     const movesRandom: any = {};
     index = 0;
     
-    for(let i = 0; i<4; i++){
-        index = Math.floor(Math.random()*data.moves.length);
-        while(movesRandom[index]) {
+    try {
+        for(let i = 0; i<4; i++){
             index = Math.floor(Math.random()*data.moves.length);
+            while(movesRandom[index]) {
+                index = Math.floor(Math.random()*data.moves.length);
+            }
+            movesRandom[index] = true;
+
+            const movesProps: any = await axios.get(data.moves[index].move.url);
+            const movesData = movesProps.data.power +'/'+ movesProps.data.type.name +'/'+movesProps.data['damage_class'].name;
+            moves.push(data.moves[index].move.name +'/'+ movesData);
+
+            // const movesData = 80 +'/'+ 'normal' +'/'+'special';
+            // moves.push(data.moves[index].move.name +'/'+ movesData);
         }
-        movesRandom[index] = true;
-        moves.push(data.moves[index].move.name);
+    } catch(e) {
+        console.error(e);
     }
 
     data.types.forEach((type: any) =>{
@@ -42,6 +54,8 @@ function formatData(data: any){
         moves,
         types
     };
+
+    console.log(myPoke)
     
     return myPoke;
 }
