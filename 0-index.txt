@@ -1216,6 +1216,8 @@ PostgreSQL?
 
 MySQL?
 
+GIT?
+
 WebScokets?
     The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
     Once a websocket connection is established, both client and server may send the data to each other.
