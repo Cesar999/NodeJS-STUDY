@@ -1110,6 +1110,7 @@ Transaction?
         When a transaction aborts, all data changes made in the transaction are discarded without ever becoming visible. For example, if any operation in the transaction fails, the transaction aborts and all data changes made in the transaction are discarded without ever becoming visible.
 
 What is sharding in MongoDB?
+    Sharding is a concept in MongoDB, which splits large data sets into small data sets across multiple MongoDB instances.
     The procedure of storing data records across multiple machines is referred as Sharding. It is a MongoDB approach to meet the demands of data growth. It is the horizontal partition of data in a database or search engine. Each partition is referred as shard or database shard. Database systems with large data sets or high throughput applications can challenge the capacity of a single server. For example, high query rates can exhaust the CPU capacity of the server. Working set sizes larger than the system’s RAM stress the I/O capacity of disk drives.
 
         Vertical Scaling involves increasing the capacity of a single server, such as using a more powerful CPU, adding more RAM, or increasing the amount of storage space. Limitations in available technology may restrict a single machine from being sufficiently powerful for a given workload. Additionally, Cloud-based providers have hard ceilings based on available hardware configurations. As a result, there is a practical maximum for vertical scaling. 
@@ -1122,6 +1123,12 @@ What is sharding in MongoDB?
         config servers: Config servers store metadata and configuration settings for the cluster.
 
     Shard Keys: MongoDB uses the shard key to distribute the collection’s documents across shards. The shard key consists of a field or multiple fields in the documents.
+
+    Shards are implemented by using clusters which are nothing but a group of MongoDB instances.
+    The components of a Shard include:
+        A Shard – This is the basic thing, and this is nothing but a MongoDB instance which holds the subset of the data. In production environments, all shards need to be part of replica sets.
+        Config server – This is a mongodb instance which holds metadata about the cluster, basically information about the various mongodb instances which will hold the shard data.
+        A Router – This is a mongodb instance which basically is responsible to re-directing the commands send by the client to the right servers.
 
 Advantages of MongoDB over RDBMS?
     Schema less − MongoDB is a document database in which one collection holds different documents. Number of fields, content and size of the document can differ from one document to another.
@@ -1203,270 +1210,8 @@ Mongoose?
 
     Post middleware: post middleware are executed after the hooked method and all of its pre middleware have completed. If your post hook function takes at least 2 parameters, mongoose will assume the second parameter is a next() function that you will call to trigger the next middleware in the sequence.
  
-MySQL / SQL?
-    MySQL is a relational database management system (RDBMS) currently developed by Oracle with open-source code. This code is available for free under the GNU General Public License, and commercial versions of MySQL are also available under various proprietary agreements.   host, user, password, port.
+SQL?
 
-    SQL (pronounced "ess-que-el") stands for Structured Query Language. SQL is used to communicate with a database. According to ANSI (American National Standards Institute), it is the standard language for relational database management systems. SQL statements are used to perform tasks such as update data on a database, or retrieve data from a database.
-
-SQL Basic Queries?
-    CREATE DATABASE databasename;
-        CREATE DATABASE testDB;
-
-    DROP DATABASE databasename;
-        DROP DATABASE testDB;
-
-    CREATE TABLE table_name (
-        column1 datatype,
-        column2 datatype,
-        column3 datatype,
-    ....
-    );   
-        CREATE TABLE Persons (
-        PersonID int,
-        LastName varchar(255),
-        FirstName varchar(255),
-        Address varchar(255),
-        City varchar(255) 
-        );
-
-    Create Table Using Another Table
-    CREATE TABLE new_table_name AS
-    SELECT column1, column2,...
-    FROM existing_table_name
-    WHERE ....;
-        CREATE TABLE TestTable AS
-        SELECT customername, contactname
-        FROM customers;
-
-    CREATE TABLE Persons (
-        ID int NOT NULL,
-        LastName varchar(255) NOT NULL,
-        FirstName varchar(255),
-        Age int,
-        PRIMARY KEY (ID)
-    );
-        CREATE TABLE Persons (
-            ID int NOT NULL PRIMARY KEY,
-            LastName varchar(255) NOT NULL,
-            FirstName varchar(255),
-            Age int
-        );
-
-    A FOREIGN KEY is a key used to link two tables together.
-    A FOREIGN KEY is a field (or collection of fields) in one table that refers to the PRIMARY KEY in another table.
-    CREATE TABLE Orders (
-        OrderID int NOT NULL,
-        OrderNumber int NOT NULL,
-        PersonID int,
-        PRIMARY KEY (OrderID),
-        FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
-    );
-        CREATE TABLE Orders (
-        OrderID int NOT NULL PRIMARY KEY,
-        OrderNumber int NOT NULL,
-        PersonID int FOREIGN KEY REFERENCES Persons(PersonID)
-        );
-
-    SELECT column1, column2, ...
-    FROM table_name;
-        SELECT * FROM table_name;
-        SELECT CustomerName, City FROM Customers;
-
-    SELECT DISTINCT column1, column2, ...
-    FROM table_name;
-        SELECT DISTINCT Country FROM Customers;
-        SELECT COUNT(Country) FROM Customers;
-
-    SELECT column1, column2, ...
-    FROM table_name
-    WHERE condition;
-        SELECT * FROM Customers WHERE Country='Mexico';
-        SELECT * FROM Customers WHERE CustomerID=1;
-
-    SELECT column1, column2, ...
-    FROM table_name
-    WHERE condition1 AND condition2 AND condition3 ...;
-        SELECT * FROM Customers WHERE Country='Germany' AND City='Berlin';
-
-    SELECT column1, column2, ...
-    FROM table_name
-    WHERE condition1 OR condition2 OR condition3 ...;
-        SELECT * FROM Customers WHERE Country='Germany' OR Country='Spain';
-
-    SELECT column1, column2, ...
-    FROM table_name
-    WHERE NOT condition;
-        SELECT * FROM Customers WHERE NOT Country='Germany';
-
-    INSERT INTO table_name (column1, column2, column3, ...)
-    VALUES (value1, value2, value3, ...);
-
-    //If you are adding values for all the columns of the table, you do not need to specify the column names in the SQL query. However, make sure the order of the values is in the same order as the columns in the table.
-    INSERT INTO table_name
-    VALUES (value1, value2, value3, ...);
-        INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
-
-    UPDATE table_name
-    SET column1 = value1, column2 = value2, ...
-    WHERE condition;
-        UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
-
-    DELETE FROM table_name WHERE condition;
-        DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
-
-    SELECT MIN(column_name)
-    FROM table_name
-    WHERE condition;
-        SELECT MIN(Price) AS SmallestPrice FROM Products;
-
-    SELECT MAX(column_name)
-    FROM table_name
-    WHERE condition;
-        SELECT MAX(Price) AS LargestPrice FROM Products;
-
-SQL Joins?
-    (INNER) JOIN: Returns records that have matching values in both tables
-    LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
-    RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
-    FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
-
-    SQL JOIN: A JOIN clause is used to combine rows from two or more tables, based on a related column between them. 
-        SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
-
-    The LEFT JOIN keyword returns all records from the left table (table1), and the matched records from the right table (table2). The result is NULL from the right side, if there is no match.
-    SELECT column_name(s)
-    FROM table1
-    LEFT JOIN table2
-    ON table1.column_name = table2.column_name;
-        SELECT Customers.CustomerName, Orders.OrderID
-        FROM Customers
-        LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
-        ORDER BY Customers.CustomerName;
-        
-    The RIGHT JOIN keyword returns all records from the right table (table2), and the matched records from the left table (table1). The result is NULL from the left side, when there is no match.
-        SELECT column_name(s)
-    FROM table1
-    RIGHT JOIN table2
-    ON table1.column_name = table2.column_name;
-        SELECT Orders.OrderID, Employees.LastName, Employees.FirstName
-        FROM Orders
-        RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
-        ORDER BY Orders.OrderID;
-
-    SQL FULL OUTER JOIN Keyword
-    The FULL OUTER JOIN keyword return all records when there is a match in either left (table1) or right (table2) table records.
-    SELECT column_name(s)
-    FROM table1
-    FULL OUTER JOIN table2
-    ON table1.column_name = table2.column_name
-    WHERE condition;
-        SELECT Customers.CustomerName, Orders.OrderID
-        FROM Customers
-        FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID
-        ORDER BY Customers.CustomerName;
-
-    The UNION operator is used to combine the result-set of two or more SELECT statements.
-    Each SELECT statement within UNION must have the same number of columns
-    The columns must also have similar data types
-    The columns in each SELECT statement must also be in the same order
-    SELECT column_name(s) FROM table1
-    UNION
-    SELECT column_name(s) FROM table2;
-        SELECT City FROM Customers
-        UNION
-        SELECT City FROM Suppliers
-
-SQL Trigger?
-    trigger is a database object that is associated with a table. It will be activated when a defined action is executed for the table. The trigger can be executed when you run one of the following MySQL statements on the table: INSERT, UPDATE and DELETE and it can be invoked before or after the event.
-    A SQL trigger is a set of  SQL statements stored in the database catalog. A SQL trigger is executed or fired whenever an event associated with a table occurs e.g.,  insert, update or delete.
-    A SQL trigger is a special type of stored procedure. It is special because it is not called directly like a stored procedure. The main difference between a trigger and a stored procedure is that a trigger is called automatically when a data modification event is made against a table whereas a stored procedure must be called explicitly.
-
-    CREATE TRIGGER trigger_name trigger_time trigger_event
-    ON table_name
-    FOR EACH ROW
-    BEGIN
-    ...
-    END;
-
-        DELIMITER $$
-        CREATE TRIGGER before_employee_update 
-            BEFORE UPDATE ON employees
-            FOR EACH ROW 
-        BEGIN
-            INSERT INTO employees_audit
-            SET action = 'update',
-            employeeNumber = OLD.employeeNumber,
-                lastname = OLD.lastname,
-                changedat = NOW(); 
-        END$$
-        DELIMITER ;
-
-Sequelizer?
-    Sequelize is a promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite and Microsoft SQL Server. It features solid transaction support, relations, eager and lazy loading, read replication and more.
-
-    const Sequelize = require('sequelize');
-
-    // Option 1: Passing parameters separately
-    const sequelize = new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
-    });
-
-    // Option 2: Passing a connection URI
-    const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname');
-
-    //testing the connection
-    sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
-
-    //Modeling a table
-    const User = sequelize.define('user', {
-    // attributes
-    firstName: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: Sequelize.STRING
-        // allowNull defaults to true
-    }
-    }, {
-    // options
-    });
-
-    // Find all users
-    User.findAll().then(users => {
-    console.log("All users:", JSON.stringify(users, null, 4));
-    });
-
-    // Create a new user
-    User.create({ firstName: "Jane", lastName: "Doe" }).then(jane => {
-    console.log("Jane's auto-generated ID:", jane.id);
-    });
-
-    // Delete everyone named "Jane"
-    User.destroy({
-    where: {
-        firstName: "Jane"
-    }
-    }).then(() => {
-    console.log("Done");
-    });
-
-    // Change everyone without a last name to "Doe"
-    User.update({ lastName: "Doe" }, {
-    where: {
-        lastName: null
-    }
-    }).then(() => {
-    console.log("Done");
-    });
 
 WebScokets?
     The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
