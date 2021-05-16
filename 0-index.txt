@@ -1,3 +1,156 @@
+GIT?
+
+    repo: A Git "Repo" or repository is a work space which tracks and manages files within a folder.
+
+    branch: A Git branch is essentially an independent line of development.  It isolates your work, if we make changes on one branch they do not impact the other branches (unless we merge the changes).
+    master/main branch? It is the default branch. It is designated as the "source of truth" or "official branch" for the codebase.
+
+    commit: It is a git command to save your changes to the local repository.
+    HEAD: A Git branch is essentially an independent line of development. You can take advantage of branching when working on new features or bug fixes because it isolates your work from that of other team members. It is a pointer that refers to the current "location" in your repository.
+
+        Unstaged changes exist in your working directory, but Git hasn’t recorded them into its version history yet. You’ll usually want to stage them (mark them to become part of your next commit) or discard them by restoring the last committed version of the file.
+
+        Staged changes are a lot like unstaged changes, except that they’ve been marked to be committed the next time you run git commit. Upon your next commit, your staged changes become part of your Git history. git status will no longer list them as changes since they’re part of your last commit now.
+
+    stashing: Provides an easy way of stashing uncommitted changes so that we can return to them later, without having to make unnecessary commits.
+    The command helps you save changes that are not yet ready to commit. You can stash changes and then come back to them later. You can add multiple stashes onto the stack of staches. They will all be stashed in the order you added them.
+
+    merge: Merging is a common practice for developers using version control systems. Whether branches are created for testing, bug fixes, or other reasons, merging commits changes to another location. To be more specific, merging takes the contents of a source branch and integrates them with a target branch. In this process, only the target branch is changed. The source branch history remains the same. 
+        The basic steps: 
+            - Switch to the branch you want to merge the changes into (receiving branch).
+            - Use the git merge command to merge the changes from a specific branch into the current branch.
+
+        fast forward: A fast forward merge may occur when there is a linear process from the end of the current branch to the target branch. Instead of "actually" merging the branches, all Git has to do to integrate the histories is move (that is, "fast forward") the end of the current branch to the end of the destination branch. 
+
+    conflicts: Git can merge commits automatically unless there are conflicting changes to both commit sequences. Basic steps to resolve conflicts:
+        - open up the files with merge conflicts.
+        - edit the files to remove the conflics. Decide which branch's content you want to keep in each conflict. Or keep the content from both.
+        - Remove the conflict "markers" in the document.
+        - Add your changes and the make a commit.
+
+    github: GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+
+    cloning/forking? Forking is a concept while cloning is a process. Forking is just containing a separate copy of the repository and there is no command involved. Cloning is done through the command "git clone" and it is a process of receiving all the code files to the local machine.
+
+        A fork is a copy of a repository that allows you to freely experiment with changes without affecting the original project. A forked repository differs from a clone in that a connection exists between your fork and the original repository itself. In this way, your fork acts as a bridge between the original repository and your personal copy where you can contribute back to the original project using Pull Requests. Pull from original project push to the fork repo and the fork repo sends a pull request to the original repo.
+
+        When you create a new repository on GitHub, it exists as a remote 145 location where your project is stored. You can clone your repository to create a local copy on your computer so that you can sync between both the local and remote locations of the project. Unlike forking, you won’t be able to pull down changes from the original repository you cloned from, and if the project is owned by someone else you won’t be able to contribute back to it unless you are specifically invited as a collaborator 113. Cloning is ideal for instances when you need a way to quickly get your own copy of a repository where you may not be contributing to the original project.
+    
+    pull request: A pull request is a request that the owner of a fork of a repository makes to the owner of the original repository so that the latter incorporates the commits that are in the fork. What you do is request that another developer (for example, the maintainer of the project) add (or pull) a branch from your repository to theirs. The direct translation would be something like “Validation Request”. A Pull Request is the action of validating a code that is going to be merged from one branch to another. They allow developers to alert team-member to new work that needs to be reviewed. They provide a mechanism to approve or reject the work on a given branch. Workflow: 
+        1. Do some work locally on a feature branch.
+        2. Push up the feature branch to Github.
+        3. Open a pull request using the feature branch just pushed up to Github.
+        4. Wait for the PR to be approved and merged.
+
+    gitKraken APP? It is a GUI Git client that facilitates efficient and reliable usage of Git on a desktop and offer most of the command line operations.
+
+    git init: The command git init creates a new Git repository. It can be used to convert an existing, versionless project to a Git repository or initialize a new, empty repository. Upon execution git init, a subdirectory of is created .gitin the current working directory, containing all the Git metadata required for the new repository. This metadata includes subdirectories of objects, references, and template files. A file is also generated HEAD that points to the extracted commit.
+
+    git status: gives information on the current status of a git repository and its contents.
+
+    git add: command to stage changes to be commited. (way to say git to include this change in out next commit).
+
+    git commit: command to commit changes from the staging area. Note that you have to explicitly tell Git which changes you want to include in a commit before running the "git commit" command.
+        -m: messages for the commit.
+        -a: includes all currently changed files in this commit.
+        --amend: a handy way to modify the most recent commit.
+
+    git log: shows the commit logs.
+        --oneline: the commit message is prefixed with this information on the same line.
+
+    .gitignore: it is used for files you don't want to commit. It is created at the root of a repository. We can write patterns to igrnore the files,folders and extensions: .filename folderName/ .html
+
+    git show HEAD: Show the current reference value for the HEAD.
+
+    git branch: it is used to view a list of your existing branches. Where an * is added to the current branch.
+        <branch-name>: to create a new branch based upon the current HEAD. It does not change to the branch.
+        -d <branch-name>: deletes a branch.
+        -m: renames a branch. (Must be on the branch to be renamed)
+        -r: to view the remote branches our local repository knows about.
+
+    git switch <branch-name>: it is used to switch to a branch.
+        -c <branch-name>: creates the branch and switch to it.
+
+    git checkout: 
+        <branch-name>: it is used to switch to a branch.
+        -b <branch-name>: creates the branch and switch to it.
+        <commit-hash>: to view a previous commit.
+        HEAD~<n>: refers to the n commit before HEAD.
+        HEAD <filename>: to discard any changes in that file
+        -- <filename>: restore the file.
+
+    git merge <target-branch>: The command git mergeallows taking the independent development lines created by git branchand integrating them into a single branch. The current branch will be updated to reflect the merge, but the target branch will not be affected at all. 
+
+    git diff: Diffing is a function that takes two input data sets and outputs the changes between them. git diff is a multi-use Git command that when executed runs a diff function on Git data sources. These data sources can be commits, branches, files and more. Without aditional options "git diff" list all the changes in our working directory that are not staged for the next commit.
+        - HEAD: list all changes in the working tree since your last commit.
+        - <file-name1> <file-name2>: list all changes between two files.
+        - <branch-name1>..<branch-name1>: list all changes between two branches.
+        - <commit-hash1>..<commit-hash2>: list all changes between two commits.
+        -- staged: list the changes between the staging area and our last commit.
+
+    git stash: takes all uncommitted changes (staged an unstaged) and stash them (save), reverting the changes in your working copy.
+        pop: remove the most recently stashed changes in your stash and re-apply them to your working copy.
+        list: shows the list of the stashed changes.
+        apply <stash@{id}>: use to apply whatever is stashed away without removing it from the stash. This can be useful if you want to apply stashed changes to multiple branches.
+        drop <stash@{id}>: to delete a particular stash.
+        clear: to clear out all stashes.
+
+    git restore: Restore specified paths in the working tree with some contents from a restore source.
+        <file-name>: restores using the HEAD as the default source.
+        --source <newSource> <file-name>: restores using the newSource.
+        --staged <file-name>: to remove a file from the stage, basically unstaging.
+
+    git reset: it is use to undo commits. Moves the branch pointer backward, eliminating commits. if you want to reverse commits that you haven't shared with others, use reset and no one will ever know.
+        <commit-hash>: will reset the repo back to a specific commit. The commits after that one are gone.
+        --hard <commit-hash>: if you want to undo both the commits AND the actual changes in your files. Deletes de last commit and the associated changes.
+    
+    git revert <commit-hash>: it is use to undo commits. Instead creates a brand new commit which reverses/undos the changes from a commit. Because it results in a new commit, you will be prompted to enter a commit message.
+    if you want to reverse some commits that other people already have on their machines, you should use revert.
+
+    git clone <source>: The git clone command is used to create a copy of a specific repository or branch within a repository.
+
+    git fetch <remote>: commands fetches branches and history from a specific remote repository. It only updates remote tracking branches. If not specify defaults to origin.
+        <remote> <branch>: fetchs from a remote branch.
+        gets changes from remote branches.
+        updates the remote tracking branches with new changes.
+        Does not merge changes onto your current HEAD branch.
+        Safe to do at anytime.
+
+    git pull <remote>: retrieves changes from a remote repository. Unlinke fetch, pull actually updates our HEAD branch with whatever changes are retrieved from the remote.
+        <remote> <branch>: pulls from a remote branch.
+        it matters where we run this command from. Whatever branch we run it from is where the changes will be merged into.
+        gets changes from remote branches.
+        updates the current branch with the new changes, merging them in.
+        can result in merge conflicts
+        not recommended if you have uncommitted changes.
+
+    git push <remote> <branch>: command is used to transfer or push the commit, which is made on a local branch in your computer to a remote repository like GitHub.
+        - u: option allows us to set the upstream of the branch we're pushing. You can think of this as a link connecting our local branch to a branch on Github. 
+
+    git remote : With no arguments, shows a list of existing remotes.
+        -v: Shows URLs of remote repositories when listing your current remote connections. By default, listing remote repositories only shows you their shortnames (e.g. "origin"). Using the "-v" option, you will also see the remote's URLs in listings.
+        add <remote>: adds a new remote
+        removes <remote>: adds a new remote
+
+    git cherry-pick <target-commit>: is a powerful command that allows arbitrary Git commits to be chosen by reference and added to the current working HEAD. Running cherry-pick is the act of picking a commit from one branch and applying it to another. 
+
+    git rebase <base-branch>: Reapply commits on top of another base tip. Reorganization is the process of moving or combining a sequence of commits into a new base commit. Current branch is rebase against the target base branch. This moves the entire feature branch so that it BEGINS at the tip of the master/main branch. All of the work is still there, but we have re-written history. Instead of using a merge commit, rebasing rewrites history by creating new commits for each of the original feature branch commits. The main reason to reorganize is to keep track of the linear project. NEVER rebase commits that have been shared with others. If you already pushed commits up to Github DO NOT rebase them unless you are positive no one on the team is using those commits.
+
+    git tags: Listing the existing tags in Git is straightforward. Tags are pointers that refer to particular points in Git history. We can mark a particular momment in time with a tag. Tags are most often used to mark version releases in projects. Basically it's just a label for a commit. lightweight tags are just name/label that point to a particular commit. annotated tahgs store some extra data including author's name and email, the date or a message. Tags are not push automatically so we have to use git push --tags.
+        -l <pattern>: You can also search for tags that match a particular pattern.
+        <tag-label>: creates lightweight tag in the current commit.
+        -a <tag-label>: creates an annotated tag. Opens editor to write extra content.
+        <tag-label> <commit-hash>: creates an annotated tag for a previous commit.
+        -f <tag-label>: we try to reuse a tag that is already referring to a commit. if we use the -f option, we can force out tag through.
+        -d <tag-label>: deletes a tag.
+
+    git reflog: keeps a record of when the tips of branches and other references were updated in the repo. We can view and update these reference logs using the git reflog command. With reflogs you can search for a commit that was deleted (not part of git log) and use git reset -hard {commit-hash|branch@{n}} to restore the commit (new tip). 
+        show <branch>: will show the log of a specific reference. (it defualts to HEAD)
+        branch@{timestamp}: filter reflogs with time qualifiers.
+
+
+---------------------------------------------------------------------------
+
 What is NodeJS?
     Node.js is a server side scripting based on Google’s V8 JavaScript engine. It is used to build scalable programs especially web applications that are computationally simple but are frequently accessed.   
 
@@ -1216,7 +1369,6 @@ PostgreSQL?
 
 MySQL?
 
-GIT?
 
 WebScokets?
     The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
