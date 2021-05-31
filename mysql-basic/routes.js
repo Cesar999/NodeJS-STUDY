@@ -120,6 +120,66 @@ const getTrainerPokemon = async (req, res) => {
     res.status(200).send({data: pokemon});
 }
 
+const trainerCustomPokemon = async (req, res) => {
+    const con = req.app.locals.db;
+    const trainerName = req.params.name;
+    const pokeNum = req.params.poke;
+
+    const {data} = await getRandomPokemon_request(pokeNum);
+    const pokemon = await formatPokemon(data);
+
+    const query_0 = () => new Promise (resolve => {
+        con.beginTransaction((err)=>{
+            if(err) { throw err; }
+            resolve(true);
+        });
+    });
+
+    const query_1 = (q) => new Promise (resolve => {
+        con.query('INSERT INTO trainers SET ?', {name: trainerName}, function (error, results, fields) {
+            if (error) {
+              return con.rollback(function() {
+                throw error;
+              });
+            }
+            console.log(`query_0: ${q} from query_1`);
+            resolve(results.insertId);
+        });
+    });
+
+    const query_2 = (q) => new Promise (resolve => {
+        con.query('INSERT INTO pokemon SET ?', {...pokemon, trainer_id: q}, function (error, results, fields) {
+            if (error) {
+              return con.rollback(function() {
+                throw error;
+              });
+            }
+            console.log(`query_1: ${q} from query_2`);
+            resolve(results.insertId);
+        });
+    });
+
+    const query_3 = (q) => new Promise (resolve => {
+        con.commit(function(err) {
+            if (err) {
+              return con.rollback(function() {
+                throw err;
+              });
+            }
+            console.log(`query_2: ${q} from query_3`);
+            resolve('success!');
+          });
+    });
+
+    const q0 = await query_0();
+    const q1 = await query_1(q0);
+    const q2 = await query_2(q1);
+    const q3 = await query_3(q2);
+
+    console.log(q3);
+    res.status(200).send({msg: q3});
+}
+
 module.exports = {
     getRandomPokemon,
     getCurentPokemon,
@@ -127,5 +187,6 @@ module.exports = {
     setCurrentTrainer,
     getCurentTrainer,
     catchPokemon,
-    getTrainerPokemon
+    getTrainerPokemon,
+    trainerCustomPokemon
 }

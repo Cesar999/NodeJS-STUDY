@@ -1,6 +1,6 @@
 const express = require('express');
 const {connect} = require('./database');
-const {getRandomPokemon, getCurentPokemon, createTrainer, setCurrentTrainer, getCurentTrainer, catchPokemon, getTrainerPokemon} = require('./routes');
+const {getRandomPokemon, getCurentPokemon, createTrainer, setCurrentTrainer, getCurentTrainer, catchPokemon, getTrainerPokemon, trainerCustomPokemon} = require('./routes');
 
 const app = express();
 app.use(express.json());
@@ -19,3 +19,5 @@ app.get('/getCurentTrainer', getCurentTrainer);
 
 app.get('/catchPokemon', catchPokemon);
 app.get('/getTrainerPokemon', getTrainerPokemon);
+
+app.get('/trainerCustomPokemon/:name/:poke', trainerCustomPokemon);
