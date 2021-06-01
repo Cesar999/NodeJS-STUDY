@@ -1401,6 +1401,7 @@ SQL?
             CHECK - Ensures that the values in a column satisfies a specific condition
             DEFAULT - Sets a default value for a column if no value is specified
             CREATE INDEX - Used to create and retrieve data from the database very quickly
+            ON DELETE CASCADE: The clause in MySQL is used to automatically remove the matching records from the child table when we delete the rows from the parent table. It is a kind of referential action related to the foreign key.
         -PRIMARY KEY: The PRIMARY KEY constraint uniquely identifies each record in a table. Primary keys must contain UNIQUE values, and cannot contain NULL values. A table can have only ONE primary key; and in the table, this primary key can consist of single or multiple columns (fields).
         -FOREIGN KEY: The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables. A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table. The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
         -DEFAULT: The DEFAULT constraint is used to set a default value for a column. The default value will be added to all new records, if no other value is specified.
@@ -1635,6 +1636,19 @@ Sequilize?
         .belongsToMany(target: Model, options: object): Create an N:M association with a join table. Defining through is required.
         .hasMany(target: Model, options: object): Creates a 1:m association between this (the source) and the provided target. The foreign key is added on the target.
         .hasOne(target: Model, options: object): Creates an association between this (the source) and the provided target. The foreign key is added on the target.
+
+    Ordering and Grouping:
+        The order option takes an array of items to order the query by or a sequelize method. These items are themselves arrays in the form [column, direction]. The column will be escaped correctly and the direction will be checked in a whitelist of valid directions (such as ASC, DESC, NULLS FIRST, etc).
+        the elements of the order array can be the following:
+            A string (which will be automatically quoted)
+            An array, whose first element will be quoted, second will be appended verbatim
+            An object with a raw field:
+            The content of raw will be added verbatim without quoting
+            Everything else is ignored, and if raw is not set, the query will fail
+            A call to Sequelize.fn (which will generate a function call in SQL)
+            A call to Sequelize.col (which will quoute the column name)
+        The syntax for grouping and ordering are equal, except that grouping does not accept a direction as last argument of the array (there is no ASC, DESC, NULLS FIRST, etc).
+    Limits and Pagination: The limit and offset options allow you to work with limiting / pagination. {limit: 1, offset: 1}
 
     Transactions: The transaction object is used to identify a running transaction. It is created by calling Sequelize.transaction(). To run a query under a transaction, you should pass the transaction in the options object. Sequelize supports two ways of using transactions:
         Unmanaged transactions: Committing and rolling back the transaction should be done manually by the user (by calling the appropriate Sequelize methods).

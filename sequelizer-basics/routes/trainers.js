@@ -29,4 +29,21 @@ router.post('/create', async (req, res) => {
 
 });
 
+router.delete('/delete/:id', async (req, res) => {
+  const {id} = req.params;
+  Trainer.destroy({
+    where: {
+      id: id
+    }
+  });
+  res.status(200).send({msg: `Tainer id:${id} deleted`});
+});
+
+router.patch('/update', async (req, res) => {
+  const {name, id} = req.body;
+  const updatedTrainer = await Trainer.update({ name }, { where: {id} });
+  res.status(200).send({updatedTrainer});
+});
+
+
 module.exports = router;
