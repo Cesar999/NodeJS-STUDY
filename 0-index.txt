@@ -1391,7 +1391,8 @@ SQL?
         -ALTER TABLE: The ALTER TABLE statement is used to add, delete, or modify columns in an existing table. The ALTER TABLE statement is also used to add and drop various constraints on an existing table.
             ADD: Adds a new column to the table.
             DROP COLUM: To delete a column in a table (notice that some database systems don't allow deleting a column).
-            MODIFY: To modify the type of a column;
+            MODIFY: To modify the type of a column.
+            RENAME: Renames column1 TO column2. 
         -constraints:  SQL constraints are used to specify rules for the data in a table. Constraints are used to limit the type of data that can go into a table. This ensures the accuracy and reliability of the data in the table. If there is any violation between the constraint and the data action, the action is aborted. Constraints can be column level or table level. Column level constraints apply to a column, and table level constraints apply to the whole table. The following constraints are commonly used in SQL:
             NOT NULL - Ensures that a column cannot have a NULL value
             UNIQUE - Ensures that all values in a column are different
@@ -1570,8 +1571,74 @@ Postgres vs MySQL?
 Sequilize?
     Sequelize is a promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite and Microsoft SQL Server. It features solid transaction support, relations, eager and lazy loading, read replication and more.
 
+    Models: Models are the essence of Sequelize. A model is an abstraction that represents a table in your database. In Sequelize, it is a class that extends Model.
+    The model tells Sequelize several things about the entity it represents, such as the name of the table in the database and which columns it has (and their data types).
+    A model in Sequelize has a name. This name does not have to be the same name of the table it represents in the database. Usually, models have singular names (such as User) while tables have pluralized names (such as Users), although this is fully configurable.
+        .define(modelName: string, attributes: object, options: object): Define a new model, representing a table in the database. The table columns are defined by the object that is given as the second argument. Each key of the object represents a column
 
+    sync: When you define a model, you're telling Sequelize a few things about its table in the database. However, what if the table actually doesn't even exist in the database? What if it exists, but it has different columns, less columns, or any other difference? This is where model synchronization comes in. A model can be synchronized with the database by calling model.sync(options), an asynchronous function (that returns a Promise). With this call, Sequelize will automatically perform an SQL query to the database. Note that this changes only the table in the database, not the model in the JavaScript side.
+        .sync() - This creates the table if it doesn't exist (and does nothing if it already exists)
+        .sync({ force: true }) - This creates the table, dropping it first if it already existed
+        .sync({ alter: true }) - This checks what is the current state of the table in the database (which columns it has, what are their data types, etc), and then performs the necessary changes in the table to make it match the model.
 
+    DataTypes:  
+        DataTypes.STRING // VARCHAR(255)
+        DataTypes.STRING(1234) // VARCHAR(1234)
+        DataTypes.INTEGER // INTEGER
+        DataTypes.DECIMAL // DECIMAL
+        DataTypes.DECIMAL(10, 2) // DECIMAL(10,2)
+        DataTypes.BOOLEAN // TINYINT(1)
+        DataTypes.DATE // DATETIME for mysql / sqlite, TIMESTAMP WITH TIME ZONE for postgres
+
+    Where: The where option is used to filter the query. There are lots of operators to use for the where clause, available as Symbols from Op.
+    Operators: Sequelize provides several operators. const { Op } = require("sequelize");
+        [Op.and]: [{ a: 5 }, { b: 6 }], // (a = 5) AND (b = 6)
+        [Op.or]: [{ a: 5 }, { b: 6 }], // (a = 5) OR (b = 6)
+
+        // Basics
+        [Op.eq]: 3, // = 3
+        [Op.ne]: 20, // != 20
+        [Op.is]: null, // IS NULL
+        [Op.not]: true, // IS NOT TRUE
+        [Op.or]: [5, 6], // (someAttribute = 5) OR (someAttribute = 6)
+
+        // Using dialect specific column identifiers (PG in the following example):
+        [Op.col]: 'user.organization_id', // = "user"."organization_id"
+
+        // Number comparisons
+        [Op.gt]: 6, // > 6
+        [Op.gte]: 6, // >= 6
+        [Op.lt]: 10, // < 10
+        [Op.lte]: 10, // <= 10
+        [Op.between]: [6, 10], // BETWEEN 6 AND 10
+        [Op.notBetween]: [11, 15], // NOT BETWEEN 11 AND 15
+
+        // Other operators
+        [Op.all]: sequelize.literal('SELECT 1'), // > ALL (SELECT 1)
+        [Op.in]: [1, 2], // IN [1, 2]
+        [Op.notIn]: [1, 2], // NOT IN [1, 2]
+
+    Models methods:
+        .create(values: object, options: object): Builds a new model instance and calls save on it.
+        .findAll(options: object): Search for multiple instances.
+        .findOne(options: object): Search for a single instance. Returns the first instance found, or null if none can be found.
+        .destroy(options: object): Destroy the row corresponding to this instance. Depending on your setting for paranoid, the row will either be completely deleted, or have its deletedAt timestamp set to the current time.
+        .update(values: object, options: object): Update multiple instances that match the where options.
+
+        .aggregate(attribute: string, aggregateFunction: string, options: object): Run an aggregation method on the specified field
+        .count(options: object): Count the number of records matching the provided where clause. If you provide an include option, the number of matching associations will be counted instead.
+        .sum(field: string, options: object): Find the sum of field
+        .max(field: string, options: object): Find the maximum value of field
+        .min(field: string, options: object): Find the minimum value of field
+
+        .belongsTo(target: Model, options: object): Creates an association between this (the source) and the provided target. The foreign key is added on the source.
+        .belongsToMany(target: Model, options: object): Create an N:M association with a join table. Defining through is required.
+        .hasMany(target: Model, options: object): Creates a 1:m association between this (the source) and the provided target. The foreign key is added on the target.
+        .hasOne(target: Model, options: object): Creates an association between this (the source) and the provided target. The foreign key is added on the target.
+
+    Transactions: The transaction object is used to identify a running transaction. It is created by calling Sequelize.transaction(). To run a query under a transaction, you should pass the transaction in the options object. Sequelize supports two ways of using transactions:
+        Unmanaged transactions: Committing and rolling back the transaction should be done manually by the user (by calling the appropriate Sequelize methods).
+        Managed transactions: Sequelize will automatically rollback the transaction if any error is thrown, or commit the transaction otherwise. Also, if CLS (Continuation Local Storage) is enabled, all queries within the transaction callback will automatically receive the transaction object.
 
 WebScokets?
     The WebSocket protocol, described in the specification RFC 6455 provides a way to exchange data between browser and server via a persistent connection.
