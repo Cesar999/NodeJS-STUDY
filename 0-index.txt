@@ -963,6 +963,29 @@ Packages?
         curried(1)(2)(3);
         // => [1, 2, 3]
 
+    cors: CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
+        Simple Usage (Enable All CORS Requests)
+            const cors = require('cors');
+            app.use(cors())
+
+        Enable CORS for a Single Route:
+                const cors = require('cors');
+                app.get('/products/:id', cors(), function (req, res, next) {
+                    res.json({msg: 'This is CORS-enabled for a Single Route'})
+                });
+
+        Configuring CORS
+            const cors = require('cors');
+            const corsOptions = {
+                origin: 'http://example.com',
+                optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+            };
+            app.get('/products/:id', cors(corsOptions), function (req, res, next) {
+                res.json({msg: 'This is CORS-enabled for only example.com.'})
+            });
+
+    dotenv: Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology. As early as possible in your application, require and configure dotenv. require('dotenv').config(); Create a .env file in the root directory of your project. Add environment-specific variables on new lines in the form of NAME=VALUE. process.env now has the keys and values you defined in your .env file.
+
 How to create a NPM package?
     First we need Npm account.
     Login in the console npm login.
@@ -1678,22 +1701,67 @@ WebScokets?
 
     WebSocket by itself does not include reconnection, authentication and many other high-level mechanisms. So there are client/server libraries for that, and it’s also possible to implement these capabilities manually.
 
+    ws: is a simple to use, blazing fast, and thoroughly tested WebSocket client and server implementation.
+
     socket.io: Socket.IO enables real-time bidirectional event-based communication. It consists of: a Node.js server and a Javascript client library for the browser (or a Node.js client).
+    Socket.IO is NOT a WebSocket implementation. Although Socket.IO indeed uses WebSocket as a transport when possible, it adds additional metadata to each packet. That is why a WebSocket client will not be able to successfully connect to a Socket.IO server, and a Socket.IO client will not be able to connect to a plain WebSocket server either.
+    socket.io-client: is used to connect a client to the Socket.IO server.
 
-        const server = require('http').createServer();
-        const io = require('socket.io')(server);
-        io.on('connection', client => {
-        client.on('event', data => { /* … */ });
-        client.on('disconnect', () => { /* … */ });
-        });
-        server.listen(3000);
+    The WebSocket transport consists, well, in a WebSocket connection, which provides a bidirectional and low-latency communication channel between the server and the client.
+    At the beginning of the Engine.IO connection, the server sends some information:
+        -The sid is the ID of the session, it must be included in the sid query parameter in all subsequent HTTP requests
+        -The upgrades array contains the list of all “better” transports that are supported by the server
+        -The pingInterval and pingTimeout values are used in the heartbeat mechanism
 
-        const io = require('socket.io')();
-        io.on('connection', client => { ... });
-        io.listen(3000);
+    Namespaces: A Namespace is a communication channel that allows you to split the logic of your application over a single shared connection (also called “multiplexing”). you want to create a special namespace that only authorized users have access to, so the logic related to those users is separated from the rest of the application
+    To set up a custom namespace, you can call the of function on the server-side.
+    io.of('/namespace')
+    Client initialization: io("/namespace");
 
-        socket.emit() // Emitter
-        socket.on() // Listener
+    Middlewares: A middleware function is a function that gets executed for every incoming connection. Middleware functions can be useful for:
+        logging
+        authentication / authorization
+        rate limiting
+    io.use((socket, next) => { next(); });
+
+    Socket: A Socket is the fundamental class for interacting with the server. A Socket belongs to a certain Namespace (by default /) and uses an underlying Manager to communicate. A Socket is basically an EventEmitter which sends events to — and receive events from — the server over the network.
+
+    socket.id: An unique identifier for the socket session. Set after the connect event is triggered, and updated after the reconnect event. String.
+    socket.connected: This attribute describes whether the socket is currently connected to the server. True or False.
+    socket.disconnected: Whether or not the socket is disconnected from the server. True or False.
+    socket.emit(event, data): Emits an event to the socket identified by the string name. Any other parameters can be included. All serializable datastructures are supported, including Buffer. This method allows an arbitrary set of arguments to be passed to the listener functions. 
+    socket.on(event, function): method that listen for an event.
+    socket.disconnect(): Manually disconnects the socket. In that case, the socket will not try to reconnect.
+
+    io.on('connection): Each new connection is assigned a random 20-characters identifier. This identifier is synced with the value on the server-side.
+    socket.on('connect'): This event is fired by the Socket instance upon connection and reconnection.
+
+    The Engine.IO connection is considered as closed when:
+        -one HTTP request (either GET or POST) fails (for example, when the server is shutdown)
+        -the WebSocket connection is closed (for example, when the user closes the tab in its browser)
+        -socket.disconnect() is called on the server-side or on the client-side
+    There is also a heartbeat mechanism which checks that the connection between the server and the client is still up and running:
+        At a given interval (the pingInterval value sent in the handshake) the server sends a PING packet and the client has a few seconds (the pingTimeout value) to send a PONG packet back. If the server does not receive a PONG packet back, it will consider that the connection is closed. Conversely, if the client does not receive a PING packet within pingInterval + pingTimeout, it will consider that the connection is closed.
+
+    socket.on('disconnect'): This event is fired upon disconnection. Here is the list of possible reasons:
+        -io server disconnect: The server has forcefully disconnected the socket with socket.disconnect()
+        -io client disconnect: The socket was manually disconnected using socket.disconnect()
+        -ping timeout: The server did not send a PING within the pingInterval + pingTimeout range
+        -transport close: The connection was closed (example: the user has lost connection, or the network was changed from WiFi to 4G)
+        - transport error: The connection has encountered an error (example: the server was killed during a HTTP long-polling cycle)
+
+    Rooms: A room is an arbitrary channel that sockets can join and leave. It can be used to broadcast events to a subset of clients:
+        socket.join(room): makes the matching socket instances join the specified rooms.
+        socket.leave(room): makes the matching socket instances leave the specified rooms
+    Simply use to or in (they are the same) when broadcasting or emitting: io.to('some room').emit('some event');
+    Default room: Each Socket in Socket.IO is identified by a random, unguessable, unique identifier Socket#id. For your convenience, each socket automatically joins a room identified by its own id.
+
+    io.emit('broadcast')||socket.broadcast.emit(): Socket.IO makes it easy to send events to all the connected clients. Please note that broadcasting is a server-only feature.
+
+    io.disconnectSockets(): makes the matching socket instances disconnect
+    io.fetchSockets(): returns the matching socket instances
+
+    io.sockets.adapter: An Adapter is a server-side component which is responsible for broadcasting events to all or a subset of clients. When scaling to multiple Socket.IO servers, you will need to replace the default in-memory adapter by another implementation, so the events are properly routed to all clients.
 
  Testing JEST?
     Jest: Jest is a library for testing JavaScript code is a Test runner. It's an open source project maintained by Facebook, and it's especially well suited for React code testing, although not limited to that: it can test any JavaScript code. the biggest feature of Jest is it’s an out of the box solution that works without having to interact with other testing libraries to perform its job.
